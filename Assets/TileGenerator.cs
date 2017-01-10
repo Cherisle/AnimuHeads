@@ -8,14 +8,12 @@ public class TileGenerator : MonoBehaviour
 	public GameObject[,] array;
 	private GameObject genLocation;
 	private int colControl;
-	private int colDestroy;
 	private GameObject go;
 	private int fallCounter;
 	// Use this for initialization
 	void Start ()
 	{
 		fallCounter = 0;
-		colDestroy = 0;
 		colControl = 5; // default row value for generator
 		genLocation = transform.parent.GetComponent<GameBoundary> ().array2D [colControl, 0];
 		myPrefabs = Resources.LoadAll ("Characters", typeof(GameObject)).Cast<GameObject> ().ToArray ();
@@ -25,18 +23,17 @@ public class TileGenerator : MonoBehaviour
 	{
 		go = (GameObject) myPrefabs[RandomNumber()];
 		colControl = 5;
-		genLocation = Instantiate (go, transform.parent.GetComponent<GameBoundary> ().array2D [colControl,0].transform.position, Quaternion.identity) as GameObject;
-		Debug.Log ("[5,0] " + "contains " + genLocation.name);
+		transform.parent.GetComponent<GameBoundary> ().array2D[colControl,fallCounter] = Instantiate(go,new Vector2(colControl*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
 	void Falling()
 	{
 		if (fallCounter < 9)
 		{	
-			if (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1].GetComponent<AnimuHead>() != null)
+			if (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1].GetComponent<AnimuHead>() != null) // AnimuHead below exists
 			{
 				CancelInvoke ("Falling");
-				if (fallCounter + 1 == 1)
+				if (fallCounter == 0)
 				{
 					//don't create new prefab
 				}
@@ -46,35 +43,18 @@ public class TileGenerator : MonoBehaviour
 					CreatePrefab ();
 				}
 			}
-			else
+			else // tile below is NOT an AnimuHead, then is DEFAULT
 			{
-				if (fallCounter == 0)
+				/*if(fallCounter==0)
 				{
-					transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1] = genLocation;
-				}
-				else
-				{
-					for (int ii = 0; ii < transform.parent.GetComponent<GameBoundary> ().columns; ii++)
-					{
-						if (transform.parent.GetComponent<GameBoundary> ().array2D [ii, fallCounter].GetComponent<AnimuHead> () != null)
-						{
-							transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1] = transform.parent.GetComponent<GameBoundary> ().array2D [ii, fallCounter];
-							colDestroy = ii;
-							break;
-						}
-					}
-				}
-				//--------------------------------------------------------------------------------------------------------------------
+					Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter]);
+				}*/
 				Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1]); // destroy tile below
-				transform.parent.GetComponent<GameBoundary>().array2D[colControl, fallCounter + 1] = Instantiate (transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter+1], new Vector2(colControl*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
-				Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colDestroy, fallCounter]); // destroy AnimuHead tile above
-				transform.parent.GetComponent<GameBoundary>().array2D[colDestroy, fallCounter] = Instantiate (Resources.Load("Default/DefaultTile"), new Vector2(colControl*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				transform.parent.GetComponent<GameBoundary>().array2D[colControl, fallCounter + 1] = Instantiate (go, new Vector2(colControl*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
+				Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter]); // destroy current tile
+				transform.parent.GetComponent<GameBoundary>().array2D[colControl, fallCounter] = Instantiate (Resources.Load("Default/DefaultTile"), new Vector2(colControl*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				Debug.Log ("[" + colControl + "," + (fallCounter + 1) + "] contains " + transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter+1]);
 				Debug.Log ("[" + colControl + "," + fallCounter + "] contains " + transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter].name);
-				if (fallCounter == 0)
-				{
-					Destroy (genLocation);
-				}
 				fallCounter++;
 			}
 		} 
