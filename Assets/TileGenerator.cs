@@ -5,7 +5,6 @@ using System.Linq;
 public class TileGenerator : MonoBehaviour
 {
 	public Object[] myPrefabs;
-	public GameObject[,] array;
 	private GameObject genLocation;
 	private int colControl;
 	private GameObject go;
@@ -101,11 +100,19 @@ public class TileGenerator : MonoBehaviour
 	{
 		if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0)
 		{
-			colControl = colControl - 1;
-		}
+            //prevents overlapping
+            if (transform.parent.GetComponent<GameBoundary>().array2D[colControl - 1, fallCounter].GetComponent<AnimuHead>() == null)
+                colControl -= 1;
+            else
+                Debug.Log("You hit an animu head on the left D:");  //debugging purposes, delete later
+        }
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colControl < 9)
 		{
-			colControl = colControl + 1;
-		}
+            //prevents overlapping
+            if (transform.parent.GetComponent<GameBoundary>().array2D[colControl + 1, fallCounter].GetComponent<AnimuHead>() == null)
+                colControl += 1;
+            else
+                Debug.Log("You hit an animu head on the right!!!");  //debugging purposes, delete later
+        }
 	}		
 }
