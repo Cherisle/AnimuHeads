@@ -20,6 +20,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4263206377596906}
   - component: {fileID: 212063089653116912}
+  - component: {fileID: 114752101773272680}
+  - component: {fileID: 114581220954439548}
+  - component: {fileID: 61932756367385256}
   m_Layer: 0
   m_Name: MisakaMikoto
   m_TagString: Untagged
@@ -34,12 +37,48 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1725482870317214}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 10}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61932756367385256
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1725482870317214}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Size: {x: 2, y: 2}
+--- !u!114 &114581220954439548
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1725482870317214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e809263442421b34a93f04b911117422, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114752101773272680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1725482870317214}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da782e4d31bc6d04abbfb45c375b264a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!212 &212063089653116912
 SpriteRenderer:
   m_ObjectHideFlags: 1
