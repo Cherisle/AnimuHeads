@@ -1,29 +1,29 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Linq;
-
-public class TileGenerator : MonoBehaviour
+﻿public class TileGenerator : MonoBehaviour
 {
 	public Object[] myPrefabs;
 	public GameObject[,] array;
 	private GameObject genLocation;
+	private float xLoc;
 	private int colControl;
 	private GameObject go;
+	private GameObject rowZeroClone;
+	private GameObject goBelow;
+	private GameObject goCurrent;
 	private int fallCounter;
 	// Use this for initialization
 	void Start ()
 	{
-		fallCounter = 0;
+		fallCounter = 0; // default fall counter, 0 means at the very top row, e.g. row 0
 		colControl = 5; // default row value for generator
-		genLocation = transform.parent.GetComponent<GameBoundary> ().array2D [colControl, 0];
+		xLoc = colControl*2f-9; // tile x location
 		myPrefabs = Resources.LoadAll ("Characters", typeof(GameObject)).Cast<GameObject> ().ToArray ();
 		CreatePrefab();
 	}
 	void CreatePrefab()
 	{
-		go = (GameObject) myPrefabs[RandomNumber()];
-		colControl = 5;
-		transform.parent.GetComponent<GameBoundary> ().array2D[colControl,fallCounter] = Instantiate(go,new Vector2(colControl*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+		colControl = 5; // resetting purposes
+		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
+		rowZeroClone = Instantiate(go,new Vector2(xLoc,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
 	void Falling()
@@ -45,21 +45,39 @@ public class TileGenerator : MonoBehaviour
 			}
 			else // tile below is NOT an AnimuHead, then is DEFAULT
 			{
-				/*if(fallCounter==0)
+				goCurrent = goBelow; //goBelow was previous below, now's current
+				if (fallCounter == 0)
 				{
-					Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter]);
-				}*/
-				Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1]); // destroy tile below
-				transform.parent.GetComponent<GameBoundary>().array2D[colControl, fallCounter + 1] = Instantiate (go, new Vector2(colControl*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
-				Destroy (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter]); // destroy current tile
-				transform.parent.GetComponent<GameBoundary>().array2D[colControl, fallCounter] = Instantiate (Resources.Load("Default/DefaultTile"), new Vector2(colControl*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-				Debug.Log ("[" + colControl + "," + (fallCounter + 1) + "] contains " + transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter+1]);
-				Debug.Log ("[" + colControl + "," + fallCounter + "] contains " + transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter].name);
+					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
+				}
+				if (fallCounter == 8) // final iteration of THIS else loop
+				{
+					transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter+1] = Instantiate(go,new Vector2(xLoc,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
+				}
+				else
+				{
+					// instantiate GameObject tile below current tile
+					goBelow = Instantiate (go, new Vector2 (xLoc, (fallCounter + 1) * -2 + 9), Quaternion.identity) as GameObject;
+				}
+				// destroys current tile to prepare for new instantiation
+				Destroy(goCurrent);
+				//--------------------------------------------------------------------------------------------------------------------------
+				// instantiate current tile to default (transparent)
+				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (xLoc, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				//--------------------------------------------------------------------------------------------------------------------------
+
 				fallCounter++;
 			}
 		} 
 		else
 		{
+			goCurrent = goBelow; //goBelow was previous below, now's current
+			// destroys current tile to prepare for new instantiation
+			Destroy(goCurrent);
+			//--------------------------------------------------------------------------------------------------------------------------
+			// instantiate current tile to default (transparent)
+			goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (xLoc, fallCounter*-2+9), Quaternion.identity) as GameObject;
+			//--------------------------------------------------------------------------------------------------------------------------
 			CancelInvoke ("Falling");
 			fallCounter = 0;
 			CreatePrefab();
@@ -73,14 +91,13 @@ public class TileGenerator : MonoBehaviour
 	}
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0)
+		/*if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0)
 		{
 			colControl = colControl - 1;
 		}
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colControl < 9)
 		{
 			colControl = colControl + 1;
-		}
-	}
-				
+		}*/
+	}		
 }
