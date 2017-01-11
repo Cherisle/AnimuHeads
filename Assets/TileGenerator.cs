@@ -11,6 +11,7 @@ public class TileGenerator : MonoBehaviour
 	private GameObject rowZeroClone;
 	private GameObject goBelow;
 	private GameObject goCurrent;
+	private GameObject goHorz;
 	private int fallCounter;
 	// Use this for initialization
 	void Start ()
@@ -53,7 +54,7 @@ public class TileGenerator : MonoBehaviour
 			{
 				Debug.Log(fallCounter);
 				goCurrent = goBelow; //goBelow was previous below, now's current
-				if (fallCounter == 0)
+				if (fallCounter == 0 && rowZeroClone != null)
 				{
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
@@ -78,6 +79,7 @@ public class TileGenerator : MonoBehaviour
 		} 
 		else
 		{
+			Debug.Log("what happened here");
 			goCurrent = goBelow; //goBelow was previous below, now's current
 			// destroys current tile to prepare for new instantiation
 			Destroy(goCurrent);
@@ -102,17 +104,41 @@ public class TileGenerator : MonoBehaviour
 		{
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().array2D[colControl - 1, fallCounter].GetComponent<AnimuHead>() == null)
-                colControl -= 1;
+			{
+				if (fallCounter == 0 && rowZeroClone != null)
+				{
+					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
+				}
+				Destroy(goBelow);
+				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colControl*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				colControl -= 1;
+				goHorz = Instantiate(go,new Vector2(colControl*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject; // make left/right GameObject
+				goBelow = goHorz; // make current Gameobject now left/right GameObject
+			}
             else
+			{
                 Debug.Log("You hit an animu head on the left D:");  //debugging purposes, delete later
+			}
         }
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colControl < 9)
 		{
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().array2D[colControl + 1, fallCounter].GetComponent<AnimuHead>() == null)
-                colControl += 1;
+			{
+				if (fallCounter == 0 && rowZeroClone != null)
+				{
+					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
+				}
+				Destroy(goBelow);
+				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colControl*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				colControl += 1;
+				goHorz = Instantiate(go,new Vector2(colControl*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+				goBelow = goHorz;
+			}
             else
+			{
                 Debug.Log("You hit an animu head on the right!!!");  //debugging purposes, delete later
+			}
         }
 	}		
 }
