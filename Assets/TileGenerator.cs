@@ -100,7 +100,7 @@ public class TileGenerator : MonoBehaviour
 	}
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0)
+		if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0 && fallCounter < 8)
 		{
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().array2D[colControl - 1, fallCounter].GetComponent<AnimuHead>() == null)
@@ -120,7 +120,7 @@ public class TileGenerator : MonoBehaviour
                 Debug.Log("You hit an animu head on the left D:");  //debugging purposes, delete later
 			}
         }
-		if (Input.GetKeyDown (KeyCode.RightArrow) && colControl < 9)
+		if (Input.GetKeyDown (KeyCode.RightArrow) && colControl < 9 && fallCounter < 8)
 		{
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().array2D[colControl + 1, fallCounter].GetComponent<AnimuHead>() == null)
