@@ -1,4 +1,8 @@
-﻿public class TileGenerator : MonoBehaviour
+﻿using UnityEngine;
+using System.Collections;
+using System.Linq;
+
+public class TileGenerator : MonoBehaviour
 {
 	public Object[] myPrefabs;
 	public GameObject[,] array;
