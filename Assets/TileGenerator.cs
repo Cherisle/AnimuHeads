@@ -7,7 +7,6 @@ public class TileGenerator : MonoBehaviour
 	public Object[] myPrefabs;
 	public GameObject[,] array;
 	private GameObject genLocation;
-	private float xLoc;
 	private int colControl;
 	private GameObject go;
 	private GameObject rowZeroClone;
@@ -19,7 +18,6 @@ public class TileGenerator : MonoBehaviour
 	{
 		fallCounter = 0; // default fall counter, 0 means at the very top row, e.g. row 0
 		colControl = 5; // default row value for generator
-		xLoc = colControl*2f-9; // tile x location
 		myPrefabs = Resources.LoadAll ("Characters", typeof(GameObject)).Cast<GameObject> ().ToArray ();
 		CreatePrefab();
 	}
@@ -27,7 +25,7 @@ public class TileGenerator : MonoBehaviour
 	{
 		colControl = 5; // resetting purposes
 		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
-		rowZeroClone = Instantiate(go,new Vector2(xLoc,fallCounter*-2+9),Quaternion.identity) as GameObject;
+		rowZeroClone = Instantiate(go,new Vector2(colControl*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
 	void Falling()
@@ -37,10 +35,10 @@ public class TileGenerator : MonoBehaviour
 			if (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1].GetComponent<AnimuHead>() != null) // AnimuHead below exists
 			{
 				Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
-				transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter] = Instantiate(go,new Vector2(xLoc,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter] = Instantiate(go,new Vector2(colControl*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				goCurrent = goBelow; //goBelow was previous below, now's current
 				Destroy(goCurrent);
-				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (xLoc, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colControl*2-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
 				CancelInvoke ("Falling");
 				if (fallCounter == 0)
 				{
@@ -62,18 +60,18 @@ public class TileGenerator : MonoBehaviour
 				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
-					transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter+1] = Instantiate(go,new Vector2(xLoc,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
+					transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter+1] = Instantiate(go,new Vector2(colControl*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
 				}
 				else
 				{
 					// instantiate GameObject tile below current tile
-					goBelow = Instantiate (go, new Vector2 (xLoc, (fallCounter + 1) * -2 + 9), Quaternion.identity) as GameObject;
+					goBelow = Instantiate (go, new Vector2 (colControl*2f-9, (fallCounter + 1) * -2 + 9), Quaternion.identity) as GameObject;
 				}
 				// destroys current tile to prepare for new instantiation
 				Destroy(goCurrent);
 				//--------------------------------------------------------------------------------------------------------------------------
 				// instantiate current tile to default (transparent)
-				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (xLoc, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colControl*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
 				//--------------------------------------------------------------------------------------------------------------------------
 
 				fallCounter++;
@@ -86,7 +84,7 @@ public class TileGenerator : MonoBehaviour
 			Destroy(goCurrent);
 			//--------------------------------------------------------------------------------------------------------------------------
 			// instantiate current tile to default (transparent)
-			goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (xLoc, fallCounter*-2+9), Quaternion.identity) as GameObject;
+			goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colControl*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
 			//--------------------------------------------------------------------------------------------------------------------------
 			CancelInvoke ("Falling");
 			fallCounter = 0;
@@ -101,13 +99,13 @@ public class TileGenerator : MonoBehaviour
 	}
 	void Update()
 	{
-		/*if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0)
+		if (Input.GetKeyDown (KeyCode.LeftArrow) && colControl > 0)
 		{
 			colControl = colControl - 1;
 		}
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colControl < 9)
 		{
 			colControl = colControl + 1;
-		}*/
+		}
 	}		
 }
