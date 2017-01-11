@@ -44,7 +44,7 @@ public class GameBoundary : MonoBehaviour
 			{
 				array2D [ii, jj] = Instantiate (myObject, new Vector2(ii*2-9,jj*-2+9), Quaternion.identity) as GameObject;
 				myObject.name = "Default Tile [" + ii + "," + jj + "]";
-				Debug.Log ("[" + ii + "," + jj + "] contains " + myObject.name);
+				//Debug.Log ("[" + ii + "," + jj + "] contains " + myObject.name);
 			}
 		}
 	}

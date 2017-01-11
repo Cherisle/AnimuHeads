@@ -25,6 +25,7 @@ public class TileGenerator : MonoBehaviour
 	{
 		colNum = 5; // resetting purposes
 		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
+		Debug.Log(go.name);
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
@@ -36,23 +37,22 @@ public class TileGenerator : MonoBehaviour
 			{
 				Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
 				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-				goCurrent = goBelow; //goBelow was previous below, now's current
-				Destroy(goCurrent);
-				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
 				CancelInvoke ("Falling");
 				if (fallCounter == 0)
 				{
-					//don't create new prefab
+					Debug.Log("Game should be over");
 				}
 				else
 				{
+					Destroy(goCurrent);
+					goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
 					fallCounter = 0;
 					CreatePrefab ();
 				}
 			}
 			else // tile below is NOT an AnimuHead, then is DEFAULT
 			{
-				Debug.Log(fallCounter);
+				//Debug.Log(fallCounter);
 				goCurrent = goBelow; //goBelow was previous below, now's current
 				if (fallCounter == 0 && rowZeroClone != null)
 				{
@@ -60,6 +60,7 @@ public class TileGenerator : MonoBehaviour
 				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
+					Debug.Log("Reached lowest possible default tile, stamp AnimuHead on grid");
 					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1] = Instantiate(go,new Vector2(colNum*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
 				}
 				else
@@ -78,7 +79,6 @@ public class TileGenerator : MonoBehaviour
 		} 
 		else
 		{
-			Debug.Log("what happened here");
 			goCurrent = goBelow; //goBelow was previous below, now's current
 			// destroys current tile to prepare for new instantiation
 			Destroy(goCurrent);
