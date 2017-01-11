@@ -36,6 +36,11 @@ public class TileGenerator : MonoBehaviour
 		{	
 			if (transform.parent.GetComponent<GameBoundary> ().array2D [colControl, fallCounter + 1].GetComponent<AnimuHead>() != null) // AnimuHead below exists
 			{
+				Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
+				transform.parent.GetComponent<GameBoundary>().array2D[colControl,fallCounter] = Instantiate(go,new Vector2(xLoc,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goCurrent = goBelow; //goBelow was previous below, now's current
+				Destroy(goCurrent);
+				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (xLoc, fallCounter*-2+9), Quaternion.identity) as GameObject;
 				CancelInvoke ("Falling");
 				if (fallCounter == 0)
 				{
@@ -49,6 +54,7 @@ public class TileGenerator : MonoBehaviour
 			}
 			else // tile below is NOT an AnimuHead, then is DEFAULT
 			{
+				Debug.Log(fallCounter);
 				goCurrent = goBelow; //goBelow was previous below, now's current
 				if (fallCounter == 0)
 				{
