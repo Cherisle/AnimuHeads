@@ -5,18 +5,27 @@ using System.Linq;
 public class TileGenerator : MonoBehaviour
 {
 	public Object[] myPrefabs;
-	private GameObject genLocation;
 	private int colNum;
+	private int fallCounter;
+	//-----------------------------------------------
+	private GameObject genLocation;
 	private GameObject go;
-	private GameObject rowZeroClone;
 	private GameObject goBelow;
 	private GameObject goCurrent;
 	private GameObject goHorz;
-	private int fallCounter;
+	private GameObject rowZeroClone;
+	//---Vars Below Here Used For Combo ALgorithm----
+	private int goGridCnt; // gameObject grid count
+	private int fpRow; //focal point row value
+	private int fpCol; //focal point col value
+
 	// Use this for initialization
 	void Start ()
 	{
+		fpRow = 0;
+		fpCol = 0;
 		fallCounter = 0; // default fall counter, 0 means at the very top row, e.g. row 0
+		goGridCnt = 0;
 		colNum = 5; // default row value for generator
 		myPrefabs = Resources.LoadAll ("Characters", typeof(GameObject)).Cast<GameObject> ().ToArray ();
 		CreatePrefab();
@@ -35,8 +44,17 @@ public class TileGenerator : MonoBehaviour
 		{	
 			if (transform.parent.GetComponent<GameBoundary> ().array2D [colNum, fallCounter + 1].GetComponent<AnimuHead>() != null) // AnimuHead below exists
 			{
-				Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
+				//Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
 				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
+				if(goGridCnt >=3)
+				{
+					fpRow = fallCounter;
+					fpCol = colNum;
+					Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+					SurroundCheck(fpRow,fpCol);
+				}
+				//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				CancelInvoke ("Falling");
 				if (fallCounter == 0)
 				{
@@ -60,8 +78,16 @@ public class TileGenerator : MonoBehaviour
 				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
-					Debug.Log("Reached lowest possible default tile, stamp AnimuHead on grid");
 					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1] = Instantiate(go,new Vector2(colNum*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
+					goGridCnt++;
+					if(goGridCnt >=3)
+					{
+						fpRow = fallCounter;
+						fpCol = colNum;
+						Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+						SurroundCheck(fpRow,fpCol);
+					}
+					//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				}
 				else
 				{
@@ -92,11 +118,36 @@ public class TileGenerator : MonoBehaviour
 		}
 
 	}
+
+	void SurroundCheck(int row, int col) //parameters are of focal point "fp"
+	{
+		if(row==9)
+		{
+			CheckPillar(9,col);
+		}
+		else
+		{
+			CheckBox(row,col);
+		}
+	}
+
+	void CheckPillar(int row, int col)
+	{
+		//string check = "
+		//string[] tokens = str.Split(',');
+	}
+
+	void CheckBox(int row, int col)
+	{
+		//stuff
+	}
+
 	int RandomNumber()
 	{
 		System.Random rand = new System.Random();
 		return rand.Next(0,myPrefabs.Length);
 	}
+
 	void Update()
 	{
 		if (Input.GetKeyDown (KeyCode.LeftArrow) && colNum > 0 && fallCounter < 9)
