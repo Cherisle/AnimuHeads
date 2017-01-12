@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - AkariAkaza
+  - Aqua
+  - Archer
+  - ChitogeKirisaki
+  - KanadeTachibana
+  - Megumin
+  - MisakaMikoto
+  - TomoyoKanzaki
   layers:
   - Default
   - TransparentFX
