@@ -25,13 +25,7 @@ public class GameBoundary : MonoBehaviour
 
 	void Start ()
 	{
-        for (int ii = 0; ii < rows; ii++)
-        {
-            for (int jj = 0; jj < columns; jj++)
-            {
-                debugGrid[ii, jj] = 0;
-            }
-        }
+		
         maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
@@ -53,6 +47,15 @@ public class GameBoundary : MonoBehaviour
 				array2D [ii, jj] = Instantiate (myObject, new Vector2(ii*2-9,jj*-2+9), Quaternion.identity) as GameObject;
 				myObject.name = "Default Tile [" + ii + "," + jj + "]";
 				//Debug.Log ("[" + ii + "," + jj + "] contains " + myObject.name);
+			}
+		}
+		//--------------------------------------------------------------------------------
+		debugGrid = new int[rows,columns];
+		for (int ii = 0; ii < rows; ii++)
+		{
+			for (int jj = 0; jj < columns; jj++)
+			{
+				debugGrid[ii, jj] = 0;
 			}
 		}
 	}
@@ -95,17 +98,17 @@ public class GameBoundary : MonoBehaviour
 
     void tileMaker()
     {
-        for(int ii=0;ii< rows;ii++)
+        for(int ii = 0;ii< rows;ii++)
         {
             for (int jj = 0; jj < columns; jj++)
             {
                 if(array2D[ii,jj].GetComponent<AnimuHead>() != null)
                 {
-                    debugGrid[ii, jj] = 1;
+                    debugGrid[ii,jj] = 1;
                 }
                 else
                 {
-                    debugGrid[ii, jj] = 0;
+                    debugGrid[ii,jj] = 0;
                 }
             }
         }
