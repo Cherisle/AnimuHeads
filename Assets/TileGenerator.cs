@@ -133,8 +133,33 @@ public class TileGenerator : MonoBehaviour
 
 	void CheckPillar(int row, int col)
 	{
-		//string check = "
-		//string[] tokens = str.Split(',');
+		int numMatches = 0;
+		int leftOfCol = col-1;
+		int rightOfCol = col+1;
+		int rowAbove = row-1;
+		int fpName = transform.parent.GetComponent<GameBoundary>().array2D[row,col].name;
+		for(int ii = leftOfCol; ii<=rightOfCol; ii++)
+		{
+			if(fpName == transform.parent.GetComponent<GameBoundary>().array2D[rowAbove,ii].name) //matching gameObject name
+			{
+				numMatches++;
+				if(ii == leftOfCol) // matched with northwest AnimuHead
+				{
+					Debug.Log("Found a match with northwest AnimuHead");
+				}
+				if(ii == col) // matched with north AnimuHead
+				{
+					Debug.Log("Found a match with north AnimuHead");
+				}
+				if(ii == rightOfCol) // matched with northeast AnimuHead
+				{
+					Debug.Log("Found a match with northeast AnimuHead");
+				}
+			}
+			else // is DefaultTile
+			{
+				//do nothing
+			}
 	}
 
 	void CheckBox(int row, int col)
