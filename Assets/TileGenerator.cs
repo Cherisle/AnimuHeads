@@ -34,7 +34,7 @@ public class TileGenerator : MonoBehaviour
 	{
 		colNum = 5; // resetting purposes
 		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
-		//Debug.Log(go.tag);
+		go.tag = go.name;
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
