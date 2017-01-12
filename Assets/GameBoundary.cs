@@ -7,6 +7,7 @@ public class GameBoundary : MonoBehaviour
 	public int columns;
 	public GameObject[,] array2D;
 	public GameObject myObject;
+	private int goGridCnt; // gameobject grid count
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
@@ -24,6 +25,7 @@ public class GameBoundary : MonoBehaviour
 
 	void Start ()
 	{
+		goGridCnt = 0; // initialize variable
 		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
