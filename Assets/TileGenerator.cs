@@ -82,7 +82,7 @@ public class TileGenerator : MonoBehaviour
 					goGridCnt++;
 					if(goGridCnt >=3)
 					{
-						fpRow = fallCounter;
+						fpRow = fallCounter+1;
 						fpCol = colNum;
 						Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
 						SurroundCheck(fpRow,fpCol);
