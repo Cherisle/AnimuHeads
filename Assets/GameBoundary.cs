@@ -6,7 +6,7 @@ public class GameBoundary : MonoBehaviour
 	public int rows;
 	public int columns;
 	public GameObject[,] array2D;
-    private int[,] debugGrid;
+  private int[,] debugGrid;
 	public GameObject myObject;
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
@@ -26,7 +26,7 @@ public class GameBoundary : MonoBehaviour
 	void Start ()
 	{
 		
-        maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
+    maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
 		ctrYLoc = transform.position.y;
@@ -63,7 +63,7 @@ public class GameBoundary : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-        /*hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
+		/*hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
 		hitEast = Physics2D.RaycastAll (eastSide.origin, eastSide.direction,maxRayDistY);
 		hitSouth = Physics2D.RaycastAll (southSide.origin, southSide.direction,maxRayDistX);
 		hitWest = Physics2D.RaycastAll (westSide.origin, westSide.direction,maxRayDistY);
