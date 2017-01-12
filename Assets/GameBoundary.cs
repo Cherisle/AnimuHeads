@@ -6,6 +6,7 @@ public class GameBoundary : MonoBehaviour
 	public int rows;
 	public int columns;
 	public GameObject[,] array2D;
+    private int[,] debugGrid;
 	public GameObject myObject;
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
@@ -24,7 +25,14 @@ public class GameBoundary : MonoBehaviour
 
 	void Start ()
 	{
-		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
+        for (int ii = 0; ii < rows; ii++)
+        {
+            for (int jj = 0; jj < columns; jj++)
+            {
+                debugGrid[ii, jj] = 0;
+            }
+        }
+        maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
 		ctrYLoc = transform.position.y;
@@ -52,7 +60,7 @@ public class GameBoundary : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		/*hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
+        /*hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
 		hitEast = Physics2D.RaycastAll (eastSide.origin, eastSide.direction,maxRayDistY);
 		hitSouth = Physics2D.RaycastAll (southSide.origin, southSide.direction,maxRayDistX);
 		hitWest = Physics2D.RaycastAll (westSide.origin, westSide.direction,maxRayDistY);
@@ -81,5 +89,34 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log ("Detected collision with West side boundary");
 			}
 		}*/
+
+        Invoke("tileMaker", 3.0f);
 	}
+
+    void tileMaker()
+    {
+        for(int ii=0;ii< rows;ii++)
+        {
+            for (int jj = 0; jj < columns; jj++)
+            {
+                if(array2D[ii,jj].GetComponent<AnimuHead>() != null)
+                {
+                    debugGrid[ii, jj] = 1;
+                }
+                else
+                {
+                    debugGrid[ii, jj] = 0;
+                }
+            }
+        }
+
+        for (int i = 0; i < debugGrid.GetLength(0); i++)
+        {
+            for (int j = 0; j < debugGrid.GetLength(1); j++)
+            {
+                Debug.Log(debugGrid[i, j]);
+            }
+            Debug.Log("\n");
+        }
+    }
 }
