@@ -125,10 +125,10 @@ public class TileGenerator : MonoBehaviour
 		{
 			CheckPillar(9,col);
 		}
-		else
+		/*else
 		{
 			CheckBox(row,col);
-		}
+		}*/
 	}
 
 	void CheckPillar(int row, int col)
@@ -137,7 +137,7 @@ public class TileGenerator : MonoBehaviour
 		int leftOfCol = col-1;
 		int rightOfCol = col+1;
 		int rowAbove = row-1;
-		int fpName = transform.parent.GetComponent<GameBoundary>().array2D[row,col].name;
+		string fpName = transform.parent.GetComponent<GameBoundary>().array2D[row,col].name;
 		for(int ii = leftOfCol; ii<=rightOfCol; ii++)
 		{
 			if(fpName == transform.parent.GetComponent<GameBoundary>().array2D[rowAbove,ii].name) //matching gameObject name
@@ -160,12 +160,13 @@ public class TileGenerator : MonoBehaviour
 			{
 				//do nothing
 			}
+		}
 	}
 
-	void CheckBox(int row, int col)
+	/*void CheckBox(int row, int col)
 	{
 		//stuff
-	}
+	}*/
 
 	int RandomNumber()
 	{
