@@ -113,13 +113,13 @@ public class GameBoundary : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < debugGrid.GetLength(0); i++)
+        /*for (int i = 0; i < debugGrid.GetLength(0); i++)
         {
             for (int j = 0; j < debugGrid.GetLength(1); j++)
             {
                 Debug.Log(debugGrid[i, j]);
             }
             Debug.Log("\n");
-        }
+        }*/
     }
 }

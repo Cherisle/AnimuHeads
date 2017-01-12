@@ -34,7 +34,7 @@ public class TileGenerator : MonoBehaviour
 	{
 		colNum = 5; // resetting purposes
 		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
-		Debug.Log(go.name);
+		//Debug.Log(go.name);
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
@@ -145,21 +145,35 @@ public class TileGenerator : MonoBehaviour
 				numMatches++;
 				if(ii == leftOfCol) // matched with northwest AnimuHead
 				{
-					Debug.Log("Found a match with northwest AnimuHead");
+					Debug.Log("Found a match with northwest neighbor AnimuHead");
 				}
 				if(ii == col) // matched with north AnimuHead
 				{
-					Debug.Log("Found a match with north AnimuHead");
+					Debug.Log("Found a match with north neighbor AnimuHead");
 				}
 				if(ii == rightOfCol) // matched with northeast AnimuHead
 				{
-					Debug.Log("Found a match with northeast AnimuHead");
+					Debug.Log("Found a match with northeast neighbor AnimuHead");
 				}
 			}
-			else // is DefaultTile
-			{
-				//do nothing
-			}
+		}
+		if(fpName == transform.parent.GetComponent<GameBoundary>().array2D[row,leftOfCol].name)
+		{
+			numMatches++;
+			Debug.Log("Found a match with west neighbor AnimuHead");
+		}
+		if(fpName == transform.parent.GetComponent<GameBoundary>().array2D[row,rightOfCol].name)
+		{
+			numMatches++;
+			Debug.Log("Found a match with east neighbor AnimuHead");
+		}
+		if(numMatches == 1)
+		{
+			//continue checking in the direction of the match once more
+		}
+		if(numMatches == 2)
+		{
+			Debug.Log("We have a 3-combo! :D");
 		}
 	}
 
