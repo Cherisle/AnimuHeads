@@ -42,7 +42,6 @@ public class TileGenerator : MonoBehaviour
 		colNum = 5; // resetting purposes
 		nameMatch = false; //resetting purposes
 		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
-		Debug.Log(createdHeads.Count(s => s != null));
 		if(createdHeads.Count(s => s != null) == 0)
 		{
 			createdHeads[0] = go.name;
@@ -58,17 +57,17 @@ public class TileGenerator : MonoBehaviour
 					nameMatch = true;
 					go.GetComponent<AnimuHead>().headNum = ii;
 					Debug.Log("matching names detected");
+					break;
 				}
 			}
 			if(nameMatch == false)
 			{
 				createdHeads[createdHeads.Count(s => s != null)] = go.name; // adds new AnimuHead name into string array, previous DNE
-				go.GetComponent<AnimuHead>().headNum = createdHeads.Count(s => s != null);
+				go.GetComponent<AnimuHead>().headNum = createdHeads.Count(s => s != null) - 1;
 				Debug.Log("detected unknown name, added into createdHeads array");
 			}
 		}
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
-		rowZeroClone.tag = go.tag;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
 	void Falling()
@@ -79,14 +78,14 @@ public class TileGenerator : MonoBehaviour
 			{
 				//Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
 				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter].GetComponent<AnimuHead>().headNum = go.GetComponent<AnimuHead>().headNum;
+				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter].GetComponent<AnimuHead>().SetHeadNum(go.GetComponent<AnimuHead>().headNum);
 				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
 				if(goGridCnt >=3)
 				{
 					fpRow = fallCounter;
 					fpCol = colNum;
-					Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
-					SurroundCheck(fpRow,fpCol);
+					//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+					SurroundCheck(fpRow,fpCol,transform.parent.GetComponent<GameBoundary>().array2D);
 				}
 				//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				CancelInvoke ("Falling");
@@ -104,7 +103,6 @@ public class TileGenerator : MonoBehaviour
 			}
 			else // tile below is NOT an AnimuHead, then is DEFAULT
 			{
-				//Debug.Log(fallCounter);
 				goCurrent = goBelow; //goBelow was previous below, now's current
 				if (fallCounter == 0 && rowZeroClone != null)
 				{
@@ -113,14 +111,14 @@ public class TileGenerator : MonoBehaviour
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
 					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1] = Instantiate(go,new Vector2(colNum*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
-					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1].GetComponent<AnimuHead>().headNum = go.GetComponent<AnimuHead>().headNum;
+					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1].GetComponent<AnimuHead>().SetHeadNum(go.GetComponent<AnimuHead>().headNum);
 					goGridCnt++;
 					if(goGridCnt >=3)
 					{
 						fpRow = fallCounter+1;
 						fpCol = colNum;
 						//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
-						SurroundCheck(fpRow,fpCol);
+						SurroundCheck(fpRow,fpCol,transform.parent.GetComponent<GameBoundary>().array2D);
 					}
 					//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				}
@@ -154,11 +152,11 @@ public class TileGenerator : MonoBehaviour
 
 	}
 
-	void SurroundCheck(int row, int col) //parameters are of focal point "fp"
+	public void SurroundCheck(int row, int col, GameObject[,] array2D) //parameters are of focal point "fp"
 	{
 		if(row==9)
 		{
-			CheckPillar(9,col);
+			CheckPillar(row, col, array2D);
 		}
 		/*else
 		{
@@ -166,13 +164,13 @@ public class TileGenerator : MonoBehaviour
 		}*/
 	}
 
-	void CheckPillar(int row, int col)
+	public void CheckPillar(int row, int col, GameObject[,] array2D)
 	{
 		int numMatches = 0;
 		int leftOfCol = col-1;
 		int rightOfCol = col+1;
 		int rowAbove = row-1;
-		int fpNum = transform.parent.GetComponent<GameBoundary>().array2D[row,col].GetComponent<AnimuHead>().headNum;
+		int fpNum = array2D[row,col].GetComponent<AnimuHead>().headNum;
 		if(col == 0 || col == 9)
 		{
 			return; //should check something though
@@ -181,9 +179,9 @@ public class TileGenerator : MonoBehaviour
 		{
 			for(int ii = leftOfCol; ii<=rightOfCol; ii++)
 			{
-				if (transform.parent.GetComponent<GameBoundary> ().array2D [row-1,ii].GetComponent<AnimuHead>() != null) // north AnimuHead neighbors exist
+				if (array2D[rowAbove,ii].GetComponent<AnimuHead>() != null) // north AnimuHead neighbors exist
 				{
-					if(fpNum == transform.parent.GetComponent<GameBoundary> ().array2D [row-1,ii].GetComponent<AnimuHead>().headNum)
+					if(fpNum == array2D[rowAbove,ii].GetComponent<AnimuHead>().headNum)
 					{
 						numMatches++;
 						if(ii == leftOfCol) // matched with northwest AnimuHead
@@ -201,17 +199,17 @@ public class TileGenerator : MonoBehaviour
 					}
 				}
 			}
-			if (transform.parent.GetComponent<GameBoundary> ().array2D [row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
+			if (array2D [row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
 			{
-				if(fpNum == transform.parent.GetComponent<GameBoundary> ().array2D [row,leftOfCol].GetComponent<AnimuHead>().headNum)
+				if(fpNum == array2D [row,leftOfCol].GetComponent<AnimuHead>().headNum)
 				{
 					numMatches++;
 					Debug.Log("Found a match with west neighbor AnimuHead");
 				}
 			}
-			if (transform.parent.GetComponent<GameBoundary> ().array2D [row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
+			if (array2D [row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
 			{
-				if(fpNum == transform.parent.GetComponent<GameBoundary> ().array2D [row,rightOfCol].GetComponent<AnimuHead>().headNum)
+				if(fpNum == array2D [row,rightOfCol].GetComponent<AnimuHead>().headNum)
 				{
 					numMatches++;
 					Debug.Log("Found a match with west neighbor AnimuHead");

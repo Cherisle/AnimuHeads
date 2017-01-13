@@ -9,6 +9,16 @@ public class AnimuHead : MonoBehaviour
 	{
 		headNum = 8; //default, unused value in createdHeads array
 	}
+
+	public void SetHeadNum(int num)
+	{
+		headNum = num;
+	}
+
+	public int GetHeadNum()
+	{
+		return headNum;
+	}
 	
 	// Update is called once per frame
 	void Update () {
