@@ -6,7 +6,6 @@ public class GameBoundary : MonoBehaviour
 	public int rows;
 	public int columns;
 	public GameObject[,] array2D;
-  private int[,] debugGrid;
 	public GameObject myObject;
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
@@ -14,7 +13,8 @@ public class GameBoundary : MonoBehaviour
 	private Ray2D northSide,eastSide,southSide,westSide;
 	private RaycastHit2D[] hitNorth,hitEast,hitSouth,hitWest;
 	private RaycastHit2D hitN,hitE,hitS,hitW;
-    public int[,] headNumIdentifier;
+	private int[,] debugGrid;
+    public int[,] identifier;
 
 	void FixedUpdate()
 	{
@@ -41,23 +41,17 @@ public class GameBoundary : MonoBehaviour
 		//--------------------------------------------------------------------------------
 		myObject = Resources.Load("Default/DefaultTile") as GameObject;
 		array2D = new GameObject[columns,rows];
-        headNumIdentifier = new int[columns, rows];
+        identifier = new int[columns, rows];
+		debugGrid = new int[rows,columns];
 		for(int ii=0;ii<columns;ii++)
 		{
 			for(int jj=0;jj<rows;jj++)
 			{
 				array2D [ii, jj] = Instantiate (myObject, new Vector2(ii*2-9,jj*-2+9), Quaternion.identity) as GameObject;
+				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
+				debugGrid[ii, jj] = 0; //default value for debuggerGrid
 				myObject.name = "Default Tile [" + ii + "," + jj + "]";
 				//Debug.Log ("[" + ii + "," + jj + "] contains " + myObject.name);
-			}
-		}
-		//--------------------------------------------------------------------------------
-		debugGrid = new int[rows,columns];
-		for (int ii = 0; ii < rows; ii++)
-		{
-			for (int jj = 0; jj < columns; jj++)
-			{
-				debugGrid[ii, jj] = 0;
 			}
 		}
 	}
