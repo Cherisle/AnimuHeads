@@ -81,8 +81,8 @@ public class TileGenerator : MonoBehaviour
 				//Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
 				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				//parameters (row,col,GO,Vector2,Quaternion)
-				transform.parent.GetComponent<GameBoundary>().identifier[colNum,fallCounter] = goHeadNum;
-				transform.parent.GetComponent<GameBoundary>().idUpdate(colNum,fallCounter,goHeadNum); 
+				transform.parent.GetComponent<GameBoundary>().identifier[fallCounter,colNum] = goHeadNum;
+				transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
 				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
 				if(goGridCnt >=3)
 				{
@@ -114,8 +114,8 @@ public class TileGenerator : MonoBehaviour
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
 					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1] = Instantiate(go,new Vector2(colNum*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
-					transform.parent.GetComponent<GameBoundary>().identifier[colNum,fallCounter+1] = goHeadNum;
-					transform.parent.GetComponent<GameBoundary>().idUpdate(colNum,fallCounter+1,goHeadNum); 
+					transform.parent.GetComponent<GameBoundary>().identifier[fallCounter+1,colNum] = goHeadNum;
+					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
 					goGridCnt++;
 					if(goGridCnt >=3)
 					{

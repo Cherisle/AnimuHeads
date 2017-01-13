@@ -41,11 +41,11 @@ public class GameBoundary : MonoBehaviour
 		//--------------------------------------------------------------------------------
 		myObject = Resources.Load("Default/DefaultTile") as GameObject;
 		array2D = new GameObject[columns,rows];
-        identifier = new int[columns, rows];
+        identifier = new int[rows,columns];
 		debugGrid = new int[rows,columns];
-		for(int ii=0;ii<columns;ii++)
+		for(int ii=0;ii<rows;ii++)
 		{
-			for(int jj=0;jj<rows;jj++)
+			for(int jj=0;jj<columns;jj++)
 			{
 				array2D [ii, jj] = Instantiate (myObject, new Vector2(ii*2-9,jj*-2+9), Quaternion.identity) as GameObject;
 				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
@@ -113,16 +113,10 @@ public class GameBoundary : MonoBehaviour
 		return numMatches;
 	}
 
-	public void AHGridUpdate(int r, int c, GameObject g, Vector2 v, Quaternion q)
-	{
-		//transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-		array2D[r,c] = Instantiate(g,v,q) as GameObject;
-	}
-
 	public void idUpdate(int r, int c, int hNum)
 	{
-		identifier[c,r] = hNum;
-		Debug.Log("Identifier [" + c + "," + r + "] = " + hNum);
+		identifier[r,c] = hNum;
+		Debug.Log("Identifier [" + r + "," + c + "] = " + hNum);
 	}
 
 	// Update is called once per frame
