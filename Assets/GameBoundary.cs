@@ -6,7 +6,7 @@ public class GameBoundary : MonoBehaviour
 {
 	public const int rows = 10;
 	public const int columns = 10;
-	public GameObject[,] array2D;
+	public GameObject[,] gameGrid;
 	public GameObject myObject;
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
@@ -14,7 +14,6 @@ public class GameBoundary : MonoBehaviour
 	private Ray2D northSide,eastSide,southSide,westSide;
 	private RaycastHit2D[] hitNorth,hitEast,hitSouth,hitWest;
 	private RaycastHit2D hitN,hitE,hitS,hitW;
-	private int[,] debugGrid;
     public int[,] identifier;
 
 	void FixedUpdate()
@@ -40,18 +39,15 @@ public class GameBoundary : MonoBehaviour
 		westSide = new Ray2D (rectNWCorner, Vector2.down);
 		//--------------------------------------------------------------------------------
 		myObject = Resources.Load("Default/DefaultTile") as GameObject;
-		array2D = new GameObject[columns,rows];
+		gameGrid = new GameObject[rows,columns];
         identifier = new int[rows,columns];
-		debugGrid = new int[rows,columns];
 		for(int ii=0;ii<rows;ii++)
 		{
 			for(int jj=0;jj<columns;jj++)
 			{
-				array2D [ii, jj] = Instantiate (myObject, new Vector2(ii*2-9,jj*-2+9), Quaternion.identity) as GameObject;
+				gameGrid [ii, jj] = Instantiate (myObject, new Vector2(jj*2-8,ii*-2+11), Quaternion.identity) as GameObject; // -8,11 should be [0,0], -6,11 is [0,1]
 				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
-				debugGrid[ii, jj] = 0; //default value for debuggerGrid
 				myObject.name = "Default Tile [" + ii + "," + jj + "]";
-				//Debug.Log ("[" + ii + "," + jj + "] contains " + myObject.name);
 			}
 		}
 	}
@@ -71,7 +67,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			for(int ii = leftOfCol; ii<=rightOfCol; ii++)
 			{
-				if (array2D[rowAbove,ii].GetComponent<AnimuHead>() != null) // does AH script exist? in any of the northern neighbors?
+				if (gameGrid[rowAbove,ii].GetComponent<AnimuHead>() != null) // does AH script exist? in any of the northern neighbors?
 				{
 					if(fpIdentifier == identifier[rowAbove,ii])
 					{
@@ -151,34 +147,5 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log ("Detected collision with West side boundary");
 			}
 		}*/
-
-        Invoke("tileMaker", 3.0f);
 	}
-
-    void tileMaker()
-    {
-        for(int ii = 0;ii< rows;ii++)
-        {
-            for (int jj = 0; jj < columns; jj++)
-            {
-                if(array2D[ii,jj].GetComponent<AnimuHead>() != null)
-                {
-                    debugGrid[ii,jj] = 1;
-                }
-                else
-                {
-                    debugGrid[ii,jj] = 0;
-                }
-            }
-        }
-
-        /*for (int i = 0; i < debugGrid.GetLength(0); i++)
-        {
-            for (int j = 0; j < debugGrid.GetLength(1); j++)
-            {
-                Debug.Log(debugGrid[i, j]);
-            }
-            Debug.Log("\n");
-        }*/
-    }
 }

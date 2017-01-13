@@ -59,7 +59,6 @@ public class TileGenerator : MonoBehaviour
 				{
 					nameMatch = true;
 					goHeadNum = ii; 
-					Debug.Log("matching names detected");
 					break;
 				}
 			}
@@ -69,18 +68,19 @@ public class TileGenerator : MonoBehaviour
 				goHeadNum = createdHeads.Count(s => s != null) - 1;
 			}
 		}
-		rowZeroClone = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+		//Debug.Log("["+(colNum*2-9)+","+(fallCounter*-2+9)+"]");
+		rowZeroClone = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
 	void Falling()
 	{
 		if (fallCounter < 9)
 		{	
-			if (transform.parent.GetComponent<GameBoundary> ().array2D [colNum, fallCounter + 1].GetComponent<AnimuHead>() != null) // AnimuHead below exists
+			if (transform.parent.GetComponent<GameBoundary> ().gameGrid [fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists
 			{
 				//Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
-				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-				//parameters (row,col,GO,Vector2,Quaternion)
+				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + goHeadNum);
 				transform.parent.GetComponent<GameBoundary>().identifier[fallCounter,colNum] = goHeadNum;
 				transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
 				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
@@ -99,7 +99,7 @@ public class TileGenerator : MonoBehaviour
 				else
 				{
 					Destroy(goCurrent);
-					goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+					goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 					fallCounter = 0;
 					CreatePrefab ();
 				}
@@ -113,7 +113,8 @@ public class TileGenerator : MonoBehaviour
 				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
-					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1] = Instantiate(go,new Vector2(colNum*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
+					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
+					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + goHeadNum);
 					transform.parent.GetComponent<GameBoundary>().identifier[fallCounter+1,colNum] = goHeadNum;
 					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
 					goGridCnt++;
@@ -130,13 +131,13 @@ public class TileGenerator : MonoBehaviour
 				else
 				{
 					// instantiate GameObject tile below current tile
-					goBelow = Instantiate (go, new Vector2 (colNum*2f-9, (fallCounter + 1) * -2 + 9), Quaternion.identity) as GameObject;
+					goBelow = Instantiate (go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
 				}
 				// destroys current tile to prepare for new instantiation
 				Destroy(goCurrent);
 				//--------------------------------------------------------------------------------------------------------------------------
 				// instantiate current tile to default (transparent)
-				goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goCurrent = Instantiate (Resources.Load("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				//--------------------------------------------------------------------------------------------------------------------------
 				fallCounter++;
 			}
@@ -148,7 +149,7 @@ public class TileGenerator : MonoBehaviour
 			Destroy(goCurrent);
 			//--------------------------------------------------------------------------------------------------------------------------
 			// instantiate current tile to default (transparent)
-			goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+			goCurrent = Instantiate (Resources.Load ("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 			//--------------------------------------------------------------------------------------------------------------------------
 			CancelInvoke ("Falling");
 			fallCounter = 0;
@@ -173,16 +174,16 @@ public class TileGenerator : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.LeftArrow) && colNum > 0 && fallCounter < 9)
 		{
             //prevents overlapping
-            if (transform.parent.GetComponent<GameBoundary>().array2D[colNum - 1, fallCounter].GetComponent<AnimuHead>() == null)
+            if (transform.parent.GetComponent<GameBoundary>().gameGrid[colNum - 1, fallCounter].GetComponent<AnimuHead>() == null)
 			{
 				if (fallCounter == 0 && rowZeroClone != null)
 				{
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
 				Destroy(goBelow);
-				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				colNum -= 1;
-				goHorz = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject; // make left/right GameObject
+				goHorz = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject; // make left/right GameObject
 				goBelow = goHorz; // make current Gameobject now left/right GameObject
 			}
             else
@@ -193,16 +194,16 @@ public class TileGenerator : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colNum < 9 && fallCounter < 9)
 		{
             //prevents overlapping
-            if (transform.parent.GetComponent<GameBoundary>().array2D[colNum + 1, fallCounter].GetComponent<AnimuHead>() == null)
+            if (transform.parent.GetComponent<GameBoundary>().gameGrid[colNum + 1, fallCounter].GetComponent<AnimuHead>() == null)
 			{
 				if (fallCounter == 0 && rowZeroClone != null)
 				{
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
 				Destroy(goBelow);
-				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"), new Vector2 (colNum*2f-9, fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				colNum += 1;
-				goHorz = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+				goHorz = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 				goBelow = goHorz;
 			}
             else
