@@ -50,7 +50,6 @@ public class TileGenerator : MonoBehaviour
 		{
 			createdHeads[0] = go.name;
 			goHeadNum = 0;
-			Debug.Log("first name loaded in createdHeads array");
 		}
 		else // array contains previously existing charHead names
 		{
@@ -68,7 +67,6 @@ public class TileGenerator : MonoBehaviour
 			{
 				createdHeads[createdHeads.Count(s => s != null)] = go.name; // adds new AnimuHead name into string array, previous DNE
 				goHeadNum = createdHeads.Count(s => s != null) - 1;
-				Debug.Log("detected unknown name, added into createdHeads array");
 			}
 		}
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2f-9,fallCounter*-2+9),Quaternion.identity) as GameObject;

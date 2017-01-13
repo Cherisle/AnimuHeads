@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class GameBoundary : MonoBehaviour
 {
@@ -90,20 +91,26 @@ public class GameBoundary : MonoBehaviour
 					}
 				}
 			}
-			if (array2D [row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
+			Debug.Log(array2D[row,leftOfCol].name);
+			if (array2D[row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
 			{
+				Debug.Log(fpIdentifier);
+				Debug.Log(identifier[row,leftOfCol]);
 				if(fpIdentifier == identifier[row,leftOfCol])
 				{
 					numMatches++;
 					Debug.Log("Found a match with west neighbor AnimuHead");
 				}
 			}
-			if (array2D [row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
+			Debug.Log(array2D[row,rightOfCol].name);
+			if (array2D[row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
 			{
+				Debug.Log(fpIdentifier);
+				Debug.Log(identifier[row,rightOfCol]);
 				if(fpIdentifier == identifier[row,rightOfCol])
 				{
 					numMatches++;
-					Debug.Log("Found a match with west neighbor AnimuHead");
+					Debug.Log("Found a match with east neighbor AnimuHead");
 				}
 			}
 		}
@@ -116,6 +123,11 @@ public class GameBoundary : MonoBehaviour
 			Debug.Log("We have a 3-combo! :D");
 		}
 		return numMatches;
+	}
+
+	public void AHGridUpdate(int r, int c, GameObject g, Vector2 v, Quaternion q)
+	{
+		//
 	}
 
 	// Update is called once per frame
