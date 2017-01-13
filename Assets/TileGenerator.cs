@@ -70,6 +70,7 @@ public class TileGenerator : MonoBehaviour
 		}
 		//Debug.Log("["+(colNum*2-9)+","+(fallCounter*-2+9)+"]");
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+		rowZeroClone.name = go.name;
 		InvokeRepeating ("Falling", 0.6f, 0.6f);
 	}
 	void Falling()
@@ -80,6 +81,7 @@ public class TileGenerator : MonoBehaviour
 			{
 				//Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
 				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name;
 				Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + goHeadNum);
 				transform.parent.GetComponent<GameBoundary>().identifier[fallCounter,colNum] = goHeadNum;
 				transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
@@ -114,6 +116,7 @@ public class TileGenerator : MonoBehaviour
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
+					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
 					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + goHeadNum);
 					transform.parent.GetComponent<GameBoundary>().identifier[fallCounter+1,colNum] = goHeadNum;
 					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
