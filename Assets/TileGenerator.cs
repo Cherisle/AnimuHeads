@@ -24,6 +24,7 @@ public class TileGenerator : MonoBehaviour
 	private int fpCol; //focal point col value
 	private int goGridCnt; // gameObject grid count
 	private int goHeadNum; // gameObject head number -- used to represent character name
+	private int numMatches; // number of matches detected for AnimuHead
 
 	// Use this for initialization
 	void Start ()
@@ -88,7 +89,6 @@ public class TileGenerator : MonoBehaviour
 					fpRow = fallCounter;
 					fpCol = colNum;
 					//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
-					SurroundCheck(fpRow,fpCol,transform.parent.GetComponent<GameBoundary>().array2D);
 				}
 				//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				CancelInvoke ("Falling");
@@ -121,7 +121,8 @@ public class TileGenerator : MonoBehaviour
 						fpRow = fallCounter+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 						fpCol = colNum;
 						//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
-						SurroundCheck(fpRow,fpCol,transform.parent.GetComponent<GameBoundary>().identifier);
+						//row here is guaranteed to be 9 so...
+						numMatches = transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
 					}
 					//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				}
@@ -153,81 +154,6 @@ public class TileGenerator : MonoBehaviour
 			CreatePrefab();
 		}
 
-	}
-
-	public void SurroundCheck(int row, int col, GameObject[,] array2D) //parameters are of focal point "fp"
-	{
-		if(row==9)
-		{
-			CheckPillar(row, col, array2D);
-		}
-		/*else
-		{
-			CheckBox(row,col);
-		}*/
-	}
-
-	public void CheckPillar(int row, int col, GameObject[,] array2D)
-	{
-		int numMatches = 0;
-		int leftOfCol = col-1;
-		int rightOfCol = col+1;
-		int rowAbove = row-1;
-		int fpNum = array2D[row,col].GetComponent<AnimuHead>().headNum;
-		if(col == 0 || col == 9)
-		{
-			return; //should check something though
-		}
-		else
-		{
-			for(int ii = leftOfCol; ii<=rightOfCol; ii++)
-			{
-				if (array2D[rowAbove,ii].GetComponent<AnimuHead>() != null) // does AH script exist? in any of the northern neighbors?
-				{
-					if(fpNum == array2D[rowAbove,ii].GetComponent<AnimuHead>().headNum)
-					{
-						numMatches++;
-						if(ii == leftOfCol) // matched with northwest AnimuHead
-						{
-							Debug.Log("Found a match with northwest neighbor AnimuHead");
-						}
-						if(ii == col) // matched with north AnimuHead
-						{
-							Debug.Log("Found a match with north neighbor AnimuHead");
-						}
-						if(ii == rightOfCol) // matched with northeast AnimuHead
-						{
-							Debug.Log("Found a match with northeast neighbor AnimuHead");
-						}
-					}
-				}
-			}
-			if (array2D [row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
-			{
-				if(fpNum == array2D [row,leftOfCol].GetComponent<AnimuHead>().headNum)
-				{
-					numMatches++;
-					Debug.Log("Found a match with west neighbor AnimuHead");
-				}
-			}
-			if (array2D [row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
-			{
-				if(fpNum == array2D [row,rightOfCol].GetComponent<AnimuHead>().headNum)
-				{
-					numMatches++;
-					Debug.Log("Found a match with west neighbor AnimuHead");
-				}
-			}
-
-		}
-		if(numMatches == 1)
-		{
-			//continue checking in the direction of the match once more
-		}
-		if(numMatches == 2)
-		{
-			Debug.Log("We have a 3-combo! :D");
-		}
 	}
 
 	/*void CheckBox(int row, int col)

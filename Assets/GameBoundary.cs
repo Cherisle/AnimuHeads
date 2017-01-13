@@ -26,8 +26,7 @@ public class GameBoundary : MonoBehaviour
 
 	void Start ()
 	{
-		
-    maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
+		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
 		ctrYLoc = transform.position.y;
@@ -54,6 +53,69 @@ public class GameBoundary : MonoBehaviour
 				//Debug.Log ("[" + ii + "," + jj + "] contains " + myObject.name);
 			}
 		}
+	}
+
+	public int CheckPillar(int row, int col)
+	{
+		int numMatches = 0; // value we want to return
+		int leftOfCol = col-1;
+		int rightOfCol = col+1;
+		int rowAbove = row-1;
+		int fpIdentifier = identifier[row,col];
+		if(col == 0 || col == 9)
+		{
+			return 100; //should check something though
+		}
+		else
+		{
+			for(int ii = leftOfCol; ii<=rightOfCol; ii++)
+			{
+				if (array2D[rowAbove,ii].GetComponent<AnimuHead>() != null) // does AH script exist? in any of the northern neighbors?
+				{
+					if(fpIdentifier == identifier[rowAbove,ii])
+					{
+						numMatches++;
+						if(ii == leftOfCol) // matched with northwest AnimuHead
+						{
+							Debug.Log("Found a match with northwest neighbor AnimuHead");
+						}
+						if(ii == col) // matched with north AnimuHead
+						{
+							Debug.Log("Found a match with north neighbor AnimuHead");
+						}
+						if(ii == rightOfCol) // matched with northeast AnimuHead
+						{
+							Debug.Log("Found a match with northeast neighbor AnimuHead");
+						}
+					}
+				}
+			}
+			if (array2D [row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
+			{
+				if(fpIdentifier == identifier[row,leftOfCol])
+				{
+					numMatches++;
+					Debug.Log("Found a match with west neighbor AnimuHead");
+				}
+			}
+			if (array2D [row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
+			{
+				if(fpIdentifier == identifier[row,rightOfCol])
+				{
+					numMatches++;
+					Debug.Log("Found a match with west neighbor AnimuHead");
+				}
+			}
+		}
+		if(numMatches == 1)
+		{
+			//continue checking in the direction of the match once more
+		}
+		if(numMatches == 2)
+		{
+			Debug.Log("We have a 3-combo! :D");
+		}
+		return numMatches;
 	}
 
 	// Update is called once per frame
