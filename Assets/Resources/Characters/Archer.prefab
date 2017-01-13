@@ -25,7 +25,7 @@ GameObject:
   - component: {fileID: 61000013669181412}
   m_Layer: 0
   m_Name: Archer
-  m_TagString: Archer
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
