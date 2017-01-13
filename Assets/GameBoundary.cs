@@ -14,6 +14,7 @@ public class GameBoundary : MonoBehaviour
 	private Ray2D northSide,eastSide,southSide,westSide;
 	private RaycastHit2D[] hitNorth,hitEast,hitSouth,hitWest;
 	private RaycastHit2D hitN,hitE,hitS,hitW;
+    public int[,] headNumIdentifier;
 
 	void FixedUpdate()
 	{
@@ -40,6 +41,7 @@ public class GameBoundary : MonoBehaviour
 		//--------------------------------------------------------------------------------
 		myObject = Resources.Load("Default/DefaultTile") as GameObject;
 		array2D = new GameObject[columns,rows];
+        headNumIdentifier = new int[columns, rows];
 		for(int ii=0;ii<columns;ii++)
 		{
 			for(int jj=0;jj<rows;jj++)
