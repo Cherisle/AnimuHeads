@@ -4,8 +4,8 @@ using System.Linq;
 
 public class GameBoundary : MonoBehaviour
 {
-	public int rows;
-	public int columns;
+	public const int rows = 10;
+	public const int columns = 10;
 	public GameObject[,] array2D;
 	public GameObject myObject;
 	private float maxRayDistX, maxRayDistY;
@@ -91,27 +91,15 @@ public class GameBoundary : MonoBehaviour
 					}
 				}
 			}
-			Debug.Log(array2D[row,leftOfCol].name);
-			if (array2D[row,leftOfCol].GetComponent<AnimuHead>() != null) // west AH neighbor exists
+			if(fpIdentifier == identifier[row,leftOfCol])
 			{
-				Debug.Log(fpIdentifier);
-				Debug.Log(identifier[row,leftOfCol]);
-				if(fpIdentifier == identifier[row,leftOfCol])
-				{
-					numMatches++;
-					Debug.Log("Found a match with west neighbor AnimuHead");
-				}
+				numMatches++;
+				Debug.Log("Found a match with west neighbor AnimuHead");
 			}
-			Debug.Log(array2D[row,rightOfCol].name);
-			if (array2D[row,rightOfCol].GetComponent<AnimuHead>() != null) // east AH neighbor exists
+			if(fpIdentifier == identifier[row,rightOfCol])
 			{
-				Debug.Log(fpIdentifier);
-				Debug.Log(identifier[row,rightOfCol]);
-				if(fpIdentifier == identifier[row,rightOfCol])
-				{
-					numMatches++;
-					Debug.Log("Found a match with east neighbor AnimuHead");
-				}
+				numMatches++;
+				Debug.Log("Found a match with east neighbor AnimuHead");
 			}
 		}
 		if(numMatches == 1)
@@ -127,7 +115,14 @@ public class GameBoundary : MonoBehaviour
 
 	public void AHGridUpdate(int r, int c, GameObject g, Vector2 v, Quaternion q)
 	{
-		//
+		//transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+		array2D[r,c] = Instantiate(g,v,q) as GameObject;
+	}
+
+	public void idUpdate(int r, int c, int hNum)
+	{
+		identifier[c,r] = hNum;
+		Debug.Log("Identifier [" + c + "," + r + "] = " + hNum);
 	}
 
 	// Update is called once per frame
