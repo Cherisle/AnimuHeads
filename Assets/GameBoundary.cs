@@ -45,7 +45,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			for(int jj=0;jj<columns;jj++)
 			{
-				gameGrid [ii, jj] = Instantiate (myObject, new Vector2(jj*2-8,ii*-2+11), Quaternion.identity) as GameObject; // -8,11 should be [0,0], -6,11 is [0,1]
+				gameGrid[ii, jj] = Instantiate (myObject,new Vector2(jj*2-9,ii*-2+9), Quaternion.identity) as GameObject;
 				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
 				myObject.name = "Default Tile [" + ii + "," + jj + "]";
 			}
