@@ -23,6 +23,7 @@ public class TileGenerator : MonoBehaviour
 	private int fpRow; //focal point row value
 	private int fpCol; //focal point col value
 	private int goGridCnt; // gameObject grid count
+	private int goHeadNum; // gameObject head number -- used to represent character name
 
 	// Use this for initialization
 	void Start ()
@@ -31,6 +32,7 @@ public class TileGenerator : MonoBehaviour
 		fpRow = 0;
 		fpCol = 0;
 		goGridCnt = 0;
+		goHeadNum = 8; // cannot be 0-7
 		fallCounter = 0; // default fall counter, 0 means at the very top row, e.g. row 0
 		nameMatch = false; // default value for boolean to check for matching gameObject names
 		colNum = 5; // default row value for generator
@@ -39,23 +41,24 @@ public class TileGenerator : MonoBehaviour
 	}
 	void CreatePrefab()
 	{
+		goHeadNum = 8;
 		colNum = 5; // resetting purposes
 		nameMatch = false; //resetting purposes
 		go = (GameObject) myPrefabs[RandomNumber()]; //randomly generated GameObject "go"
 		if(createdHeads.Count(s => s != null) == 0)
 		{
 			createdHeads[0] = go.name;
-			go.GetComponent<AnimuHead>().headNum = 0;
+			goHeadNum = 0;
 			Debug.Log("first name loaded in createdHeads array");
 		}
 		else // array contains previously existing charHead names
 		{
 			for(int ii=0;ii<createdHeads.Length;ii++) // loop to check through createdHeads name array, and set boolean value accordingly
 			{
-				if(go.name == createdHeads[ii]) // matching charHead names detected
+				if(go.name == createdHeads[ii])
 				{
 					nameMatch = true;
-					go.GetComponent<AnimuHead>().headNum = ii;
+					goHeadNum = ii; 
 					Debug.Log("matching names detected");
 					break;
 				}
@@ -63,7 +66,7 @@ public class TileGenerator : MonoBehaviour
 			if(nameMatch == false)
 			{
 				createdHeads[createdHeads.Count(s => s != null)] = go.name; // adds new AnimuHead name into string array, previous DNE
-				go.GetComponent<AnimuHead>().headNum = createdHeads.Count(s => s != null) - 1;
+				goHeadNum = createdHeads.Count(s => s != null) - 1;
 				Debug.Log("detected unknown name, added into createdHeads array");
 			}
 		}
@@ -78,7 +81,7 @@ public class TileGenerator : MonoBehaviour
 			{
 				//Debug.Log("Detected AnimuHead at fall counter " + fallCounter);
 				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-				transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter].GetComponent<AnimuHead>().SetHeadNum(go.GetComponent<AnimuHead>().headNum);
+				transform.parent.GetComponent<GameBoundary>().identifier[colNum,fallCounter] = goHeadNum;
 				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
 				if(goGridCnt >=3)
 				{
@@ -111,14 +114,14 @@ public class TileGenerator : MonoBehaviour
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
 					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1] = Instantiate(go,new Vector2(colNum*2f-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
-					transform.parent.GetComponent<GameBoundary>().array2D[colNum,fallCounter+1].GetComponent<AnimuHead>().SetHeadNum(go.GetComponent<AnimuHead>().headNum);
+					transform.parent.GetComponent<GameBoundary>().identifier[colNum,fallCounter+1] = goHeadNum;
 					goGridCnt++;
 					if(goGridCnt >=3)
 					{
-						fpRow = fallCounter+1;
+						fpRow = fallCounter+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 						fpCol = colNum;
 						//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
-						SurroundCheck(fpRow,fpCol,transform.parent.GetComponent<GameBoundary>().array2D);
+						SurroundCheck(fpRow,fpCol,transform.parent.GetComponent<GameBoundary>().identifier);
 					}
 					//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				}
@@ -179,7 +182,7 @@ public class TileGenerator : MonoBehaviour
 		{
 			for(int ii = leftOfCol; ii<=rightOfCol; ii++)
 			{
-				if (array2D[rowAbove,ii].GetComponent<AnimuHead>() != null) // north AnimuHead neighbors exist
+				if (array2D[rowAbove,ii].GetComponent<AnimuHead>() != null) // does AH script exist? in any of the northern neighbors?
 				{
 					if(fpNum == array2D[rowAbove,ii].GetComponent<AnimuHead>().headNum)
 					{
