@@ -112,10 +112,7 @@ public class TileGenerator : MonoBehaviour
 			}
 			else // tile below is NOT an AnimuHead, then is DEFAULT
 			{
-				if(fallCounter!=0)
-				{
-					goCurrent = goBelow; //goBelow was previous below, now's current
-				}
+				goCurrent = goBelow; //goBelow was previous below, now's current
 				if (rowZeroClone != null)
 				{
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
@@ -158,6 +155,10 @@ public class TileGenerator : MonoBehaviour
 			// destroys all illusion tiles to prepare for new instantiation
 			Destroy(goCurrent);
 			Destroy(goBelow);
+			if (rowZeroClone != null)
+			{
+				Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
+			}
 			CancelInvoke ("Falling");
 			fallCounter = 0;
 			CreatePrefab();
@@ -183,7 +184,7 @@ public class TileGenerator : MonoBehaviour
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().gameGrid[colNum - 1, fallCounter].GetComponent<AnimuHead>() == null)
 			{
-				if (fallCounter == 0 && rowZeroClone != null)
+				if (rowZeroClone != null)
 				{
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
@@ -203,7 +204,7 @@ public class TileGenerator : MonoBehaviour
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().gameGrid[colNum + 1, fallCounter].GetComponent<AnimuHead>() == null)
 			{
-				if (fallCounter == 0 && rowZeroClone != null)
+				if (rowZeroClone != null)
 				{
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
