@@ -122,7 +122,7 @@ public class TileGenerator : MonoBehaviour
 					Destroy(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum]); // destroys stamped DefaultTile from initialization
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
-					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + goHeadNum);
+					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
 					transform.parent.GetComponent<GameBoundary>().identifier[fallCounter+1,colNum] = goHeadNum;
 					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
 					goGridCnt++;
