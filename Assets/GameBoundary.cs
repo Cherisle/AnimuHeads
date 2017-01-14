@@ -17,7 +17,7 @@ public class GameBoundary : MonoBehaviour
     public int[,] identifier;
 
     //use this to do anything with directions
-    public enum directions { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
+    public enum directions { UNSET, NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
 
     void FixedUpdate()
 	{
@@ -61,6 +61,7 @@ public class GameBoundary : MonoBehaviour
 		int rightOfCol = col+1;
 		int rowAbove = row-1;
 		int fpIdentifier = identifier[row,col];
+		directions dir = directions.UNSET; // unset direction path used for default
 		if(col == 0 || col == 9)
 		{
 			return 100; //should check something though
@@ -74,16 +75,16 @@ public class GameBoundary : MonoBehaviour
 					if(fpIdentifier == identifier[rowAbove,ii])
 					{
 						numMatches++;
-						if(ii == leftOfCol) // matched with northwest AnimuHead
-						{
+						if(ii == leftOfCol){ // matched with northwest AnimuHead 
+							dir = directions.NORTHWEST;
 							Debug.Log("Found a match with northwest neighbor AnimuHead");
 						}
-						if(ii == col) // matched with north AnimuHead
-						{
+						if(ii == col){ // matched with north AnimuHead
+							dir = directions.NORTH;
 							Debug.Log("Found a match with north neighbor AnimuHead");
 						}
-						if(ii == rightOfCol) // matched with northeast AnimuHead
-						{
+						if(ii == rightOfCol){ // matched with northeast AnimuHead
+							dir = directions.NORTHEAST;
 							Debug.Log("Found a match with northeast neighbor AnimuHead");
 						}
 					}
@@ -92,6 +93,7 @@ public class GameBoundary : MonoBehaviour
 			if(fpIdentifier == identifier[row,leftOfCol])
 			{
 				numMatches++;
+
 				Debug.Log("Found a match with west neighbor AnimuHead");
 			}
 			if(fpIdentifier == identifier[row,rightOfCol])
@@ -106,7 +108,7 @@ public class GameBoundary : MonoBehaviour
 		}
 		if(numMatches == 2)
 		{
-			Debug.Log("We have a 3-combo! :D");
+			//Debug.Log("We have a 3-combo! :D");
 		}
 		return numMatches;
 	}
