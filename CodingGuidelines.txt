@@ -1,12 +1,28 @@
 Coding Guidelines
 
-1.  Curly braces should appear on their own line.
+1.  Curly braces should appear on their own line when they are not nested over 3 times from the beginning.
 	Ex.
 		public void Poo() 
 		{
 			Stuff;
 		}
+		
+	Under the case that they are nested over 3 times, the deepest nested braces may have initial curly brace on the same line.
+	
+	Ex.
+		public void Poo() 
+		{
+			if(stuff == null)
+			{
+				if(stuff2 == null)
+				{
+					if(stuff3 == null){   //curly brace may be on the same line at this point
+						doSomething;
+					}
+				}
+			}
+		}	
 
-2.  For all if-else condition statements, use curly braces, even if the body is only one line.
+2.  For all if-else condition statements, use curly braces, even if the body is only one line. No exceptions.
 
-3.  When you add your own variables to a script, make sure to organize them and not toss them somewhere random.
+3.  When you add your own variables to a script, make sure to organize them and not toss them somewhere random. [Readability]
