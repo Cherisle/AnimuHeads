@@ -120,7 +120,8 @@ public class GameBoundary : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		/*hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
+		/*
+		hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
 		hitEast = Physics2D.RaycastAll (eastSide.origin, eastSide.direction,maxRayDistY);
 		hitSouth = Physics2D.RaycastAll (southSide.origin, southSide.direction,maxRayDistX);
 		hitWest = Physics2D.RaycastAll (westSide.origin, westSide.direction,maxRayDistY);

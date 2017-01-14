@@ -84,7 +84,6 @@ public class TileGenerator : MonoBehaviour
 				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
 				Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
-				transform.parent.GetComponent<GameBoundary>().identifier[fallCounter,colNum] = goHeadNum;
 				transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
 				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
 				if(goGridCnt >=3)
@@ -93,7 +92,6 @@ public class TileGenerator : MonoBehaviour
 					fpCol = colNum;
 					//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
 				}
-				//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				CancelInvoke ("Falling");
 				if (fallCounter == 0)
 				{
@@ -123,7 +121,6 @@ public class TileGenerator : MonoBehaviour
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
 					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
-					transform.parent.GetComponent<GameBoundary>().identifier[fallCounter+1,colNum] = goHeadNum;
 					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
 					goGridCnt++;
 					if(goGridCnt >=3)
@@ -164,7 +161,7 @@ public class TileGenerator : MonoBehaviour
 
 	/*void CheckBox(int row, int col)
 	{
-		//stuff
+		//this method should be in GameBoundary
 	}*/
 
 	int RandomNumber()
@@ -192,7 +189,7 @@ public class TileGenerator : MonoBehaviour
 			}
             else
 			{
-                Debug.Log("You hit an animu head on the left D:");  //debugging purposes, delete later
+                Debug.Log("You hit an animu head on the left D:");  //debugging purposes
 			}
         }
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colNum < 9 && fallCounter < 9)
@@ -212,7 +209,7 @@ public class TileGenerator : MonoBehaviour
 			}
             else
 			{
-                Debug.Log("You hit an animu head on the right!!!");  //debugging purposes, delete later
+                Debug.Log("You hit an animu head on the right!!!");  //debugging purposes
 			}
         }
 	}		
