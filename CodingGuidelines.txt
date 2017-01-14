@@ -1,0 +1,12 @@
+Coding Guidelines
+
+1.  Curly braces should appear on their own line.
+	Ex.
+		public void Poo() 
+		{
+			Stuff;
+		}
+
+2.  For all if-else condition statements, use curly braces, even if the body is only one line.
+
+3.  When you add your own variables to a script, make sure to organize them and not toss them somewhere random.
