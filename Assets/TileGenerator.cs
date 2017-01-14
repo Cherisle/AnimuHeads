@@ -182,7 +182,7 @@ public class TileGenerator : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.LeftArrow) && colNum > 0 && fallCounter < 9)
 		{
             //prevents overlapping
-            if (transform.parent.GetComponent<GameBoundary>().gameGrid[colNum - 1, fallCounter].GetComponent<AnimuHead>() == null)
+			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum - 1].GetComponent<AnimuHead>() == null)
 			{
 				if (rowZeroClone != null)
 				{
@@ -202,7 +202,7 @@ public class TileGenerator : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.RightArrow) && colNum < 9 && fallCounter < 9)
 		{
             //prevents overlapping
-            if (transform.parent.GetComponent<GameBoundary>().gameGrid[colNum + 1, fallCounter].GetComponent<AnimuHead>() == null)
+			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum + 1].GetComponent<AnimuHead>() == null)
 			{
 				if (rowZeroClone != null)
 				{
