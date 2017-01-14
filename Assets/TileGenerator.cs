@@ -3,6 +3,7 @@ using Object = UnityEngine.Object;
 using System;
 using System.Collections;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class TileGenerator : MonoBehaviour
 {
@@ -101,6 +102,9 @@ public class TileGenerator : MonoBehaviour
 						Destroy(rowZeroClone);
 					}
 					Debug.Log("Game should be over");
+
+                    //reload game over scene right here, once we have created the scene itself
+                    SceneManager.LoadScene("GameOverScene");
 				}
 				else
 				{

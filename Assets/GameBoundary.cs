@@ -16,7 +16,10 @@ public class GameBoundary : MonoBehaviour
 	private RaycastHit2D hitN,hitE,hitS,hitW;
     public int[,] identifier;
 
-	void FixedUpdate()
+    //use this to do anything with directions
+    public enum directions { NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
+
+    void FixedUpdate()
 	{
 		Debug.DrawLine (rectNWCorner, rectNWCorner + Vector2.right * maxRayDistX);
 		Debug.DrawLine (rectNECorner, rectNECorner + Vector2.down * maxRayDistY);
