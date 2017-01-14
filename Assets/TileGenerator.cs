@@ -97,12 +97,8 @@ public class TileGenerator : MonoBehaviour
 				CancelInvoke ("Falling");
 				if (fallCounter == 0)
 				{
-					if(rowZeroClone != null)
-					{
-						Destroy(rowZeroClone);
-					}
+					Destroy(rowZeroClone);
 					Debug.Log("Game should be over");
-
                     //reload game over scene right here, once we have created the scene itself
                     SceneManager.LoadScene("GameOverScene");
 				}
@@ -159,10 +155,6 @@ public class TileGenerator : MonoBehaviour
 			// destroys all illusion tiles to prepare for new instantiation
 			Destroy(goCurrent);
 			Destroy(goBelow);
-			if (rowZeroClone != null)
-			{
-				Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
-			}
 			CancelInvoke ("Falling");
 			fallCounter = 0;
 			CreatePrefab();

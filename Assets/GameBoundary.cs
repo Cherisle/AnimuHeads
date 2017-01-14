@@ -50,7 +50,6 @@ public class GameBoundary : MonoBehaviour
 			{
 				gameGrid[ii, jj] = Instantiate (myObject,new Vector2(jj*2-9,ii*-2+9), Quaternion.identity) as GameObject;
 				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
-				myObject.name = "Default Tile [" + ii + "," + jj + "]";
 			}
 		}
 	}
@@ -125,30 +124,6 @@ public class GameBoundary : MonoBehaviour
 		hitEast = Physics2D.RaycastAll (eastSide.origin, eastSide.direction,maxRayDistY);
 		hitSouth = Physics2D.RaycastAll (southSide.origin, southSide.direction,maxRayDistX);
 		hitWest = Physics2D.RaycastAll (westSide.origin, westSide.direction,maxRayDistY);
-		for (int ii = 0; ii < hitEast.Length; ii++)
-		{
-			RaycastHit2D hitSingleEast = hitEast [ii];
-			if (hitSingleEast != false && hitSingleEast.collider != null)
-			{
-				Debug.Log ("Detected collision with East side boundary");
-			}
-		}
-		for (int ii = 0; ii < hitSouth.Length; ii++)
-		{
-			RaycastHit2D hitSingleSouth = hitSouth [ii];
-			if (hitSingleSouth != false && hitSingleSouth.collider != null && hitSingleSouth.collider.GetComponent<AnimuHead>() != null
-				&& hitSingleSouth.collider.name != "DefaultTile")
-			{
-				Debug.Log ("Detected collision with South side boundary");
-			}
-		}
-		for (int ii = 0; ii < hitWest.Length; ii++)
-		{
-			RaycastHit2D hitSingleWest = hitWest [ii];
-			if (hitSingleWest != false && hitSingleWest.collider != null)
-			{
-				Debug.Log ("Detected collision with West side boundary");
-			}
-		}*/
+		*/
 	}
 }
