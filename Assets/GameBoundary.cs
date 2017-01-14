@@ -11,9 +11,6 @@ public class GameBoundary : MonoBehaviour
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
-	private Ray2D northSide,eastSide,southSide,westSide;
-	private RaycastHit2D[] hitNorth,hitEast,hitSouth,hitWest;
-	private RaycastHit2D hitN,hitE,hitS,hitW;
     public int[,] identifier;
 
     //use this to do anything with directions
@@ -36,10 +33,6 @@ public class GameBoundary : MonoBehaviour
 		rectNWCorner = new Vector2 (ctrXLoc - maxRayDistX / 2, ctrYLoc + maxRayDistY / 2);
 		rectNECorner = new Vector2 (ctrXLoc + maxRayDistX / 2, ctrYLoc + maxRayDistY / 2);
 		rectSWCorner = new Vector2 (ctrXLoc - maxRayDistX / 2, ctrYLoc - maxRayDistY / 2);
-		northSide = new Ray2D (rectNWCorner, Vector2.right);
-		eastSide = new Ray2D (rectNECorner, Vector2.down);
-		southSide = new Ray2D (rectSWCorner, Vector2.right);
-		westSide = new Ray2D (rectNWCorner, Vector2.down);
 		//--------------------------------------------------------------------------------
 		myObject = Resources.Load("Default/DefaultTile") as GameObject;
 		gameGrid = new GameObject[rows,columns];
@@ -93,12 +86,13 @@ public class GameBoundary : MonoBehaviour
 			if(fpIdentifier == identifier[row,leftOfCol])
 			{
 				numMatches++;
-
+				dir = directions.WEST;
 				Debug.Log("Found a match with west neighbor AnimuHead");
 			}
 			if(fpIdentifier == identifier[row,rightOfCol])
 			{
 				numMatches++;
+				dir = directions.EAST;
 				Debug.Log("Found a match with east neighbor AnimuHead");
 			}
 		}
@@ -113,20 +107,69 @@ public class GameBoundary : MonoBehaviour
 		return numMatches;
 	}
 
+	private void ContDirCheck(directions d) //continue direction check
+	{
+		switch(d)
+		{
+			case directions.NORTH: ContNorthCheck(); break;
+			case directions.SOUTH: ContSouthCheck(); break;
+			case directions.WEST: ContWestCheck(); break;
+			case directions.EAST: ContEastCheck(); break;
+			case directions.NORTHWEST: ContNWCheck(); break;
+			case directions.NORTHEAST: ContNECheck(); break;
+			case directions.SOUTHWEST: ContSWCheck(); break;
+			case directions.SOUTHEAST: ContSECheck(); break;
+		}
+	}
+
+	private void ContNorthCheck()
+	{
+		//continue your northern combo check;
+	}
+
+	private void ContSouthCheck()
+	{
+		//continue your southern combo check;
+	}
+
+	private void ContWestCheck()
+	{
+		//continue your western combo check;
+	}
+
+	private void ContEastCheck()
+	{
+		//continue your eastern combo check;
+	}
+
+	private void ContNWCheck()
+	{
+		//continue your northwest combo check;
+	}
+
+	private void ContNECheck()
+	{
+		//continue your northeast combo check;
+	}
+
+	private void ContSWCheck()
+	{
+		//continue your southwest combo check;
+	}
+
+	private void ContSECheck()
+	{
+		//continue your southeast combo check;
+	}
+
 	public void idUpdate(int r, int c, int hNum)
 	{
 		identifier[r,c] = hNum;
 		Debug.Log("Identifier [" + r + "," + c + "] = " + hNum);
 	}
-
-	// Update is called once per frame
+		
 	void Update ()
 	{
-		/*
-		hitNorth = Physics2D.RaycastAll (northSide.origin, northSide.direction,maxRayDistX);
-		hitEast = Physics2D.RaycastAll (eastSide.origin, eastSide.direction,maxRayDistY);
-		hitSouth = Physics2D.RaycastAll (southSide.origin, southSide.direction,maxRayDistX);
-		hitWest = Physics2D.RaycastAll (westSide.origin, westSide.direction,maxRayDistY);
-		*/
+		
 	}
 }
