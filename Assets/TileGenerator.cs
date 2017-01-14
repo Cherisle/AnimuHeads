@@ -95,6 +95,9 @@ public class TileGenerator : MonoBehaviour
 				if (fallCounter == 0)
 				{
 					Debug.Log("Game should be over");
+
+                    //reload game over scene right here, once we have created the scene itself
+                    //Scene.Load("scene name");
 				}
 				else
 				{
