@@ -80,41 +80,77 @@ public class TileGenerator : MonoBehaviour
 	{
 		if (fallCounter < 9)
 		{	
-			if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists
+			if(transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists
 			{
-				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
-				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
-				Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
-				transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
-				goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
-				if(goGridCnt >=3)
+				if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists?
 				{
-					fpRow = fallCounter;
-					fpCol = colNum;
-					//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
+					Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
+					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
+					goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
+					if(goGridCnt >=3)
+					{
+						fpRow = fallCounter;
+						fpCol = colNum;
+						//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+					}
+					CancelInvoke ("Falling");
+					if (fallCounter == 0)
+					{
+						Destroy(rowZeroClone);
+						Debug.Log("Game should be over");
+	                    //reload game over scene right here, once we have created the scene itself
+	                    SceneManager.LoadScene("GameOverScene");
+					}
+					else
+					{
+						//Destroy(goCurrent);
+						Destroy(goBelow);
+						CreatePrefab ();
+					}
 				}
-				CancelInvoke ("Falling");
-				if (fallCounter == 0)
+				else // tile below is NOT an AnimuHead, then is DEFAULT
 				{
-					Destroy(rowZeroClone);
-					Debug.Log("Game should be over");
-                    //reload game over scene right here, once we have created the scene itself
-                    SceneManager.LoadScene("GameOverScene");
-				}
-				else
-				{
-					//Destroy(goCurrent);
-					Destroy(goBelow);
-					CreatePrefab ();
+					goCurrent = goBelow; //goBelow was previous below, now's current
+					if (rowZeroClone != null)
+					{
+						Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
+					}
+					if (fallCounter == 8) // final iteration of THIS else loop
+					{
+						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
+						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
+						Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
+						transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
+						goGridCnt++;
+						if(goGridCnt >=3)
+						{
+							fpRow = fallCounter+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
+							fpCol = colNum;
+							//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+							//row here is guaranteed to be 9 so...
+							numMatches = transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+						}
+						//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
+					}
+					else
+					{
+						// instantiate GameObject tile below current tile
+						goBelow = Instantiate (go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
+					}
+					// destroys current tile to prepare for new instantiation
+					Destroy(goCurrent);
+					//--------------------------------------------------------------------------------------------------------------------------
+					// set current tile equal to default (transparent) NOTE: DO NOT INSTANTIATE
+					goCurrent = Resources.Load("Default/DefaultTile") as GameObject;
+					//--------------------------------------------------------------------------------------------------------------------------
+					fallCounter++;
 				}
 			}
-			else // tile below is NOT an AnimuHead, then is DEFAULT
+			else
 			{
 				goCurrent = goBelow; //goBelow was previous below, now's current
-				if (rowZeroClone != null)
-				{
-					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
-				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
@@ -130,19 +166,9 @@ public class TileGenerator : MonoBehaviour
 						//row here is guaranteed to be 9 so...
 						numMatches = transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
 					}
-					//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 				}
-				else
-				{
-					// instantiate GameObject tile below current tile
-					goBelow = Instantiate (go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
-				}
-				// destroys current tile to prepare for new instantiation
 				Destroy(goCurrent);
-				//--------------------------------------------------------------------------------------------------------------------------
-				// instantiate current tile to default (transparent)
 				goCurrent = Resources.Load("Default/DefaultTile") as GameObject;
-				//--------------------------------------------------------------------------------------------------------------------------
 				fallCounter++;
 			}
 		} 
