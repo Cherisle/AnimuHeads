@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class TileGenerator : MonoBehaviour
 {
 	private const int headMax = 8;
+	private const float fallDownDelay = 0.5f;
 	public Object[] myPrefabs;
 	private bool nameMatch;
 	private int colNum;
@@ -72,7 +73,7 @@ public class TileGenerator : MonoBehaviour
 		//Debug.Log("["+(colNum*2-9)+","+(fallCounter*-2+9)+"]");
 		rowZeroClone = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		rowZeroClone.name = go.name;
-		InvokeRepeating ("Falling", 0.6f, 0.6f);
+		InvokeRepeating ("Falling", fallDownDelay, fallDownDelay);
 	}
 	void Falling()
 	{

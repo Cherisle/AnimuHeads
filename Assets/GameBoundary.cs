@@ -6,11 +6,14 @@ public class GameBoundary : MonoBehaviour
 {
 	public const int rows = 10;
 	public const int columns = 10;
+	private const float fallDownDelay = 0.6f;
 	public GameObject[,] gameGrid;
 	public GameObject myObject;
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
+	private directions dir;
+	private int comboCnt;
     public int[,] identifier;
 
     //use this to do anything with directions
@@ -26,6 +29,8 @@ public class GameBoundary : MonoBehaviour
 
 	void Start ()
 	{
+		comboCnt = 0; // initialize
+		dir = directions.UNSET; // initialize
 		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
@@ -49,12 +54,15 @@ public class GameBoundary : MonoBehaviour
 
 	public int CheckPillar(int row, int col)
 	{
-		int numMatches = 0; // value we want to return
 		int leftOfCol = col-1;
 		int rightOfCol = col+1;
 		int rowAbove = row-1;
 		int fpIdentifier = identifier[row,col];
-		directions dir = directions.UNSET; // unset direction path used for default
+		bool checkWest = false;
+		bool checkNorthWest = false;
+		bool checkNorth = false;
+		bool checkNorthEast = false;
+		bool checkEast = false;
 		if(col == 0 || col == 9)
 		{
 			return 100; //should check something though
@@ -63,101 +71,129 @@ public class GameBoundary : MonoBehaviour
 		{
 			for(int ii = leftOfCol; ii<=rightOfCol; ii++)
 			{
-				if (gameGrid[rowAbove,ii].GetComponent<AnimuHead>() != null) // does AH script exist? in any of the northern neighbors?
+				if(fpIdentifier == identifier[rowAbove,ii])
 				{
-					if(fpIdentifier == identifier[rowAbove,ii])
-					{
-						numMatches++;
-						if(ii == leftOfCol){ // matched with northwest AnimuHead 
-							dir = directions.NORTHWEST;
-							Debug.Log("Found a match with northwest neighbor AnimuHead");
-						}
-						if(ii == col){ // matched with north AnimuHead
-							dir = directions.NORTH;
-							Debug.Log("Found a match with north neighbor AnimuHead");
-						}
-						if(ii == rightOfCol){ // matched with northeast AnimuHead
-							dir = directions.NORTHEAST;
-							Debug.Log("Found a match with northeast neighbor AnimuHead");
-						}
+					comboCnt++;
+					if(ii == leftOfCol){ // matched with northwest AnimuHead 
+						dir = directions.NORTHWEST;
+						checkNorthWest = true;
+						ContDirCheck(dir,rowAbove,leftOfCol);
+						//Debug.Log("Found a match with northwest neighbor AnimuHead");
+					}
+					if(ii == col){ // matched with north AnimuHead
+						dir = directions.NORTH;
+						checkNorth = true;
+						ContDirCheck(dir,rowAbove,col);
+						//Debug.Log("Found a match with north neighbor AnimuHead");
+					}
+					if(ii == rightOfCol){ // matched with northeast AnimuHead
+						dir = directions.NORTHEAST;
+						checkNorthEast = true;
+						ContDirCheck(dir,rowAbove,rightOfCol);
+						//Debug.Log("Found a match with northeast neighbor AnimuHead");
 					}
 				}
 			}
 			if(fpIdentifier == identifier[row,leftOfCol])
 			{
-				numMatches++;
+				comboCnt++;
 				dir = directions.WEST;
-				Debug.Log("Found a match with west neighbor AnimuHead");
+				checkWest = true;
+				ContDirCheck(dir,row,leftOfCol);
+				//Debug.Log("Found a match with west neighbor AnimuHead");
 			}
 			if(fpIdentifier == identifier[row,rightOfCol])
 			{
-				numMatches++;
+				comboCnt++;
 				dir = directions.EAST;
-				Debug.Log("Found a match with east neighbor AnimuHead");
+				checkEast = true;
+				ContDirCheck(dir,row,rightOfCol);
+				//Debug.Log("Found a match with east neighbor AnimuHead");
 			}
 		}
-		if(numMatches == 1)
+		if(checkWest == true && checkEast == true) //instant combo 1st condition, w/o continual dirCheck
 		{
-			//continue checking in the direction of the match once more
+			if(checkNorthWest != true && checkNorth != true && checkNorthEast != true) //northern neighbors don't match, then can break 3-5 in a row HORZ
+			{
+				if(comboCnt>3){ // must be 4 or 5 combo as a result of the above
+					//break the combo'd heads with original focal point somewhere in the middle
+				}
+				else{ // must be a 3 combo with focal point directly in the middl
+					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+					Destroy(gameGrid[row,col],fallDownDelay);
+					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+					gameGrid[row,leftOfCol] = Instantiate(myObject,new Vector2(leftOfCol*2-9,row*-2+9), Quaternion.identity) as GameObject;
+					gameGrid[row,col] = Instantiate(myObject,new Vector2(col*2-9,row*-2+9),Quaternion.identity) as GameObject;
+					gameGrid[row,rightOfCol] = Instantiate(myObject,new Vector2(rightOfCol*2-9,row*-2+9),Quaternion.identity) as GameObject;
+				}
+			}
 		}
-		if(numMatches == 2)
-		{
-			//Debug.Log("We have a 3-combo! :D");
-		}
-		return numMatches;
+		return comboCnt;
 	}
 
-	private void ContDirCheck(directions d) //continue direction check
+	private void ContDirCheck(directions d, int fpRow, int fpCol) //continue direction check w/ UPDATED focal point
 	{
 		switch(d)
 		{
-			case directions.NORTH: ContNorthCheck(); break;
-			case directions.SOUTH: ContSouthCheck(); break;
-			case directions.WEST: ContWestCheck(); break;
-			case directions.EAST: ContEastCheck(); break;
-			case directions.NORTHWEST: ContNWCheck(); break;
-			case directions.NORTHEAST: ContNECheck(); break;
-			case directions.SOUTHWEST: ContSWCheck(); break;
-			case directions.SOUTHEAST: ContSECheck(); break;
+			case directions.NORTH: ContNorthCheck(fpRow,fpCol); break;
+			case directions.SOUTH: ContSouthCheck(fpRow,fpCol); break;
+			case directions.WEST: ContWestCheck(fpRow,fpCol); break;
+			case directions.EAST: ContEastCheck(fpRow,fpCol); break;
+			case directions.NORTHWEST: ContNWCheck(fpRow,fpCol); break;
+			case directions.NORTHEAST: ContNECheck(fpRow,fpCol); break;
+			case directions.SOUTHWEST: ContSWCheck(fpRow,fpCol); break;
+			case directions.SOUTHEAST: ContSECheck(fpRow,fpCol); break;
+			case directions.UNSET: break; //does nothing
 		}
 	}
 
-	private void ContNorthCheck()
+	private void ContNorthCheck(int fpRow, int fpCol)
 	{
 		//continue your northern combo check;
 	}
 
-	private void ContSouthCheck()
+	private void ContSouthCheck(int fpRow, int fpCol)
 	{
 		//continue your southern combo check;
 	}
 
-	private void ContWestCheck()
+	private void ContWestCheck(int fpRow, int fpCol)
 	{
 		//continue your western combo check;
+		if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol-1])
+		{
+			comboCnt++;
+			dir = directions.WEST;
+			ContDirCheck(dir,fpRow,fpCol-1); // send in an updated focal point
+			Debug.Log("Found continuous match with west neighbor AnimuHead");
+		}
+		else
+		{
+			//combo has ended in this direction, return if is 3 or more
+		}
 	}
 
-	private void ContEastCheck()
+	private void ContEastCheck(int fpRow, int fpCol)
 	{
 		//continue your eastern combo check;
 	}
 
-	private void ContNWCheck()
+	private void ContNWCheck(int fpRow, int fpCol)
 	{
 		//continue your northwest combo check;
 	}
 
-	private void ContNECheck()
+	private void ContNECheck(int fpRow, int fpCol)
 	{
 		//continue your northeast combo check;
 	}
 
-	private void ContSWCheck()
+	private void ContSWCheck(int fpRow, int fpCol)
 	{
 		//continue your southwest combo check;
 	}
 
-	private void ContSECheck()
+	private void ContSECheck(int fpRow, int fpCol)
 	{
 		//continue your southeast combo check;
 	}
