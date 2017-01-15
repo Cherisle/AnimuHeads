@@ -82,7 +82,6 @@ public class TileGenerator : MonoBehaviour
 		{	
 			if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists
 			{
-				Destroy(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum]); // destroys stamped DefaultTile from initialization
 				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 				transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
 				Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
@@ -104,7 +103,7 @@ public class TileGenerator : MonoBehaviour
 				}
 				else
 				{
-					Destroy(goCurrent);
+					//Destroy(goCurrent);
 					Destroy(goBelow);
 					CreatePrefab ();
 				}
@@ -118,7 +117,6 @@ public class TileGenerator : MonoBehaviour
 				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
-					Destroy(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum]); // destroys stamped DefaultTile from initialization
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
 					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
@@ -143,7 +141,7 @@ public class TileGenerator : MonoBehaviour
 				Destroy(goCurrent);
 				//--------------------------------------------------------------------------------------------------------------------------
 				// instantiate current tile to default (transparent)
-				goCurrent = Instantiate (Resources.Load("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goCurrent = Resources.Load("Default/DefaultTile") as GameObject;
 				//--------------------------------------------------------------------------------------------------------------------------
 				fallCounter++;
 			}
@@ -151,7 +149,7 @@ public class TileGenerator : MonoBehaviour
 		else //fallCounter >= 9
 		{
 			// destroys all illusion tiles to prepare for new instantiation
-			Destroy(goCurrent);
+			//Destroy(goCurrent);
 			Destroy(goBelow);
 			CancelInvoke ("Falling");
 			CreatePrefab();
@@ -182,7 +180,7 @@ public class TileGenerator : MonoBehaviour
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
 				Destroy(goBelow);
-				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goBelow = Resources.Load ("Default/DefaultTile") as GameObject;
 				colNum -= 1;
 				goHorz = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject; // make left/right GameObject
 				goBelow = goHorz; // make current Gameobject now left/right GameObject
@@ -202,7 +200,7 @@ public class TileGenerator : MonoBehaviour
 					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 				}
 				Destroy(goBelow);
-				goBelow = Instantiate (Resources.Load ("Default/DefaultTile"),new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+				goBelow = Resources.Load ("Default/DefaultTile") as GameObject;
 				colNum += 1;
 				goHorz = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 				goBelow = goHorz;

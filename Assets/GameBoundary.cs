@@ -35,7 +35,7 @@ public class GameBoundary : MonoBehaviour
 	{
 		comboCnt = 0; // initialize
 		dir = directions.UNSET; // initialize
-		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false;
+		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // initialize
 		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // initialize
 		//--------------------------------------------------------------------------------
 		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
@@ -53,7 +53,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			for(int jj=0;jj<columns;jj++)
 			{
-				gameGrid[ii, jj] = Instantiate (myObject,new Vector2(jj*2-9,ii*-2+9), Quaternion.identity) as GameObject;
+				gameGrid[ii,jj] = myObject;
 				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
 			}
 		}
@@ -173,9 +173,6 @@ public class GameBoundary : MonoBehaviour
 					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
 					Destroy(gameGrid[row,col],fallDownDelay);
 					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
-					gameGrid[row,leftOfCol] = Instantiate(myObject,new Vector2(leftOfCol*2-9,row*-2+9), Quaternion.identity) as GameObject;
-					gameGrid[row,col] = Instantiate(myObject,new Vector2(col*2-9,row*-2+9),Quaternion.identity) as GameObject;
-					gameGrid[row,rightOfCol] = Instantiate(myObject,new Vector2(rightOfCol*2-9,row*-2+9),Quaternion.identity) as GameObject;
 				}
 			}
 		}
