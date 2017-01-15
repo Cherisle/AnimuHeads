@@ -44,6 +44,7 @@ public class TileGenerator : MonoBehaviour
 	}
 	void CreatePrefab()
 	{
+		fallCounter = 0;
 		goHeadNum = 8;
 		colNum = 5; // resetting purposes
 		nameMatch = false; //resetting purposes
@@ -105,7 +106,6 @@ public class TileGenerator : MonoBehaviour
 				{
 					Destroy(goCurrent);
 					Destroy(goBelow);
-					fallCounter = 0;
 					CreatePrefab ();
 				}
 			}
@@ -154,7 +154,6 @@ public class TileGenerator : MonoBehaviour
 			Destroy(goCurrent);
 			Destroy(goBelow);
 			CancelInvoke ("Falling");
-			fallCounter = 0;
 			CreatePrefab();
 		}
 
