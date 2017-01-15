@@ -6,13 +6,17 @@ public class GameBoundary : MonoBehaviour
 {
 	public const int rows = 10;
 	public const int columns = 10;
-	private const float fallDownDelay = 0.6f;
+	private const float fallDownDelay = 0.5f;
 	public GameObject[,] gameGrid;
 	public GameObject myObject;
+	//--------------------------------------------------------
 	private float maxRayDistX, maxRayDistY;
 	private float ctrXLoc, ctrYLoc;
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
+	//--------------------------------------------------------
 	private directions dir;
+	private bool checkWest, checkNorthWest, checkNorth, checkNorthEast, checkEast; //detected initial AH match in this direction
+	private bool checkContW, checkContNW, checkContN, checkContNE, checkContE; //detected continuous AH match in this direction (more than 1)
 	private int comboCnt;
     public int[,] identifier;
 
@@ -31,6 +35,9 @@ public class GameBoundary : MonoBehaviour
 	{
 		comboCnt = 0; // initialize
 		dir = directions.UNSET; // initialize
+		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false;
+		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // initialize
+		//--------------------------------------------------------------------------------
 		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
 		ctrXLoc = transform.position.x;
@@ -54,15 +61,15 @@ public class GameBoundary : MonoBehaviour
 
 	public int CheckPillar(int row, int col)
 	{
-		int leftOfCol = col-1;
-		int rightOfCol = col+1;
-		int rowAbove = row-1;
-		int fpIdentifier = identifier[row,col];
-		bool checkWest = false;
-		bool checkNorthWest = false;
-		bool checkNorth = false;
-		bool checkNorthEast = false;
-		bool checkEast = false;
+		comboCnt = 0; //reset
+		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset
+		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // reset
+		//------------------------------------------------------------------------------------
+		int leftOfCol = col-1; // these lines between the comments are used to simplify meaning
+		int rightOfCol = col+1; // this one too
+		int rowAbove = row-1; // this one too
+		int fpIdentifier = identifier[row,col]; // this one too
+		//------------------------------------------------------------------------------------
 		if(col == 0 || col == 9)
 		{
 			return 100; //should check something though
@@ -96,11 +103,11 @@ public class GameBoundary : MonoBehaviour
 			}
 			if(fpIdentifier == identifier[row,leftOfCol])
 			{
-				comboCnt++;
+				comboCnt++; // indentifiers match, comboCnt increments by 1
 				dir = directions.WEST;
 				checkWest = true;
-				ContDirCheck(dir,row,leftOfCol);
-				//Debug.Log("Found a match with west neighbor AnimuHead");
+				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in the direction
+				Debug.Log("Combo Count after checking continuous west: " + comboCnt);
 			}
 			if(fpIdentifier == identifier[row,rightOfCol])
 			{
@@ -110,15 +117,59 @@ public class GameBoundary : MonoBehaviour
 				ContDirCheck(dir,row,rightOfCol);
 				//Debug.Log("Found a match with east neighbor AnimuHead");
 			}
+			comboCnt++; //always need to include focal point in the combo count
+			Debug.Log("Total Combo Count is " + comboCnt);
 		}
 		if(checkWest == true && checkEast == true) //instant combo 1st condition, w/o continual dirCheck
 		{
 			if(checkNorthWest != true && checkNorth != true && checkNorthEast != true) //northern neighbors don't match, then can break 3-5 in a row HORZ
 			{
-				if(comboCnt>3){ // must be 4 or 5 combo as a result of the above
-					//break the combo'd heads with original focal point somewhere in the middle
+				if(comboCnt>3) // must be 4 or 5 combo as a result of the above
+				{
+					if(checkContE == false) // X combo west with no CONTINUOUS combo on the east e.g. Match Match FP Match Fail
+					{
+						int contMatchWest = comboCnt - 3; // excludes initial west-matched AnimuHead, focalpoint AnimuHead, and initial east-matched AnimuHead
+						Debug.Log("Focal Point combo'd with " + contMatchWest + " AnimuHeads in the west direction");
+						switch(contMatchWest)  
+						{
+							// we have to minus one extra column over << because we work with row 0 and col 0, (thus the +1 after contMatchWest as initial)
+							case 1:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								break;
+							case 2:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
+								break;
+							case 3:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-1)],fallDownDelay);
+								break;
+							case 4:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-1)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-2)],fallDownDelay);
+								break;
+							case 5:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-1)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-2)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-3)],fallDownDelay);
+								break;
+						}
+						Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases
+						Destroy(gameGrid[row,col],fallDownDelay); // done for all cases
+						Destroy(gameGrid[row,rightOfCol],fallDownDelay); // done for all cases
+					}
+					else if(checkContW == false)
+					{
+						//west direction has no CONTINUOUS combo
+					}
 				}
-				else{ // must be a 3 combo with focal point directly in the middl
+				else // must be a 3 combo with focal point directly in the middle
+				{
 					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
 					Destroy(gameGrid[row,col],fallDownDelay);
 					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
@@ -131,71 +182,78 @@ public class GameBoundary : MonoBehaviour
 		return comboCnt;
 	}
 
-	private void ContDirCheck(directions d, int fpRow, int fpCol) //continue direction check w/ UPDATED focal point
+	private int ContDirCheck(directions d, int fpRow, int fpCol) //continue direction check w/ UPDATED focal point
 	{
 		switch(d)
 		{
-			case directions.NORTH: ContNorthCheck(fpRow,fpCol); break;
-			case directions.SOUTH: ContSouthCheck(fpRow,fpCol); break;
-			case directions.WEST: ContWestCheck(fpRow,fpCol); break;
-			case directions.EAST: ContEastCheck(fpRow,fpCol); break;
-			case directions.NORTHWEST: ContNWCheck(fpRow,fpCol); break;
-			case directions.NORTHEAST: ContNECheck(fpRow,fpCol); break;
-			case directions.SOUTHWEST: ContSWCheck(fpRow,fpCol); break;
-			case directions.SOUTHEAST: ContSECheck(fpRow,fpCol); break;
-			case directions.UNSET: break; //does nothing
+			case directions.NORTH: return ContNorthCheck(fpRow,fpCol);
+			case directions.SOUTH: return ContSouthCheck(fpRow,fpCol);
+			case directions.WEST: return ContWestCheck(fpRow,fpCol);
+			case directions.EAST: return ContEastCheck(fpRow,fpCol);
+			case directions.NORTHWEST: return ContNWCheck(fpRow,fpCol);
+			case directions.NORTHEAST: return ContNECheck(fpRow,fpCol);
+			case directions.SOUTHWEST: return ContSWCheck(fpRow,fpCol);
+			case directions.SOUTHEAST: return ContSECheck(fpRow,fpCol);
+			case directions.UNSET: return 0; //does nothing, direction unaltered
+			default: return 0; //just incase for function to work
 		}
 	}
 
-	private void ContNorthCheck(int fpRow, int fpCol)
+	private int ContNorthCheck(int fpRow, int fpCol)
 	{
-		//continue your northern combo check;
+		return 0; //continue your northern combo check, placeholder return
 	}
 
-	private void ContSouthCheck(int fpRow, int fpCol)
+	private int ContSouthCheck(int fpRow, int fpCol)
 	{
-		//continue your southern combo check;
+		return 0; //continue your southern combo check, placeholder return
 	}
 
-	private void ContWestCheck(int fpRow, int fpCol)
+	private int ContWestCheck(int fpRow, int fpCol)
 	{
-		//continue your western combo check;
-		if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol-1])
+		if(fpCol!=0) // as long as fpCol is not zero...
 		{
-			comboCnt++;
-			dir = directions.WEST;
-			ContDirCheck(dir,fpRow,fpCol-1); // send in an updated focal point
-			Debug.Log("Found continuous match with west neighbor AnimuHead");
+			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol-1] && fpCol!=0)
+			{
+				dir = directions.WEST;
+				checkContW = true;
+				Debug.Log("Found continuous match with west neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow,fpCol-1); // send in an updated focal point
+			}
+			else
+			{
+				return 0;
+			}
 		}
 		else
 		{
-			//combo has ended in this direction, return if is 3 or more
+			return 0;
 		}
 	}
 
-	private void ContEastCheck(int fpRow, int fpCol)
+	private int ContEastCheck(int fpRow, int fpCol)
 	{
-		//continue your eastern combo check;
+		return 0; //continue your eastern combo check, placeholder return
 	}
 
-	private void ContNWCheck(int fpRow, int fpCol)
+	private int ContNWCheck(int fpRow, int fpCol)
 	{
-		//continue your northwest combo check;
+		return 0; //continue your northwest combo check, placeholder return
 	}
 
-	private void ContNECheck(int fpRow, int fpCol)
+	private int ContNECheck(int fpRow, int fpCol)
 	{
-		//continue your northeast combo check;
+		return 0; //continue your northeast combo check, placeholder return
 	}
 
-	private void ContSWCheck(int fpRow, int fpCol)
+	private int ContSWCheck(int fpRow, int fpCol)
 	{
-		//continue your southwest combo check;
+		return 0; //continue your southwest combo check, placeholder return
 	}
 
-	private void ContSECheck(int fpRow, int fpCol)
+	private int ContSECheck(int fpRow, int fpCol)
 	{
-		//continue your southeast combo check;
+		return 0; //continue your southeast combo check, placeholder return
 	}
 
 	public void idUpdate(int r, int c, int hNum)
