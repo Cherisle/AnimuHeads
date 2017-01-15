@@ -231,7 +231,9 @@ public class GameBoundary : MonoBehaviour
 					}
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
-						//
+						// maximum continuous on each side: (M FP M) does not count as CONTINUOUS direction check
+						// maxContW == 4  <--> maxContE == 3 e.g.  M M M M (M FP M) M M M
+						// maxContW == 3  <--> maxContE == 4 e.g.  M M M (M FP M) M M M M
 					}
 					else // both continuous west and east are false, would never occur if comboCnt > 3
 					{
