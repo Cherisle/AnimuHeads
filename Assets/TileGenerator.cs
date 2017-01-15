@@ -13,6 +13,8 @@ public class TileGenerator : MonoBehaviour
 	private bool nameMatch;
 	private int colNum;
 	private int fallCounter;
+    public float keyDelay = 0f;  //used for continuous key press in a single direction
+    private float timePassed = 0f;  //used for continuous key press in a single direction
 	//-----------------------------------------------
 	private GameObject genLocation;
 	private GameObject go;
@@ -204,27 +206,35 @@ public class TileGenerator : MonoBehaviour
 
 	void Update()
 	{
-		if (Input.GetKeyDown (KeyCode.LeftArrow) && colNum > 0 && fallCounter < 9)
+        timePassed += Time.deltaTime;
+
+		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < 9 && timePassed >= keyDelay)
 		{
             //prevents overlapping
-			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum - 1].GetComponent<AnimuHead>() == null)
-			{
-				if (rowZeroClone != null)
-				{
-					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
-				}
-				Destroy(goBelow);
-				goBelow = Resources.Load ("Default/DefaultTile") as GameObject;
-				colNum -= 1;
-				goHorz = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject; // make left/right GameObject
-				goBelow = goHorz; // make current Gameobject now left/right GameObject
-			}
+            //if (Input.GetKey(KeyCode.LeftArrow))
+            //{
+                if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter, colNum - 1].GetComponent<AnimuHead>() == null)
+                {
+                    if (rowZeroClone != null)
+                    {
+                        Destroy(rowZeroClone); //specific for only the first generated of each random AnimuHead
+                    }
+                    Destroy(goBelow);
+                    goBelow = Resources.Load("Default/DefaultTile") as GameObject;
+                    colNum -= 1;
+                    goHorz = Instantiate(go, new Vector2(colNum * 2 - 9, fallCounter * -2 + 9), Quaternion.identity) as GameObject; // make left/right GameObject
+                    goBelow = goHorz; // make current Gameobject now left/right GameObject
+                }
+            //}
             else
-			{
+            {
                 Debug.Log("You hit an animu head on the left D:");  //debugging purposes
-			}
+            }
+
+            timePassed = 0f;
         }
-		if (Input.GetKeyDown (KeyCode.RightArrow) && colNum < 9 && fallCounter < 9)
+
+		if (Input.GetKey (KeyCode.RightArrow) && colNum < 9 && fallCounter < 9 && timePassed >= keyDelay)
 		{
             //prevents overlapping
 			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum + 1].GetComponent<AnimuHead>() == null)
@@ -243,6 +253,8 @@ public class TileGenerator : MonoBehaviour
 			{
                 Debug.Log("You hit an animu head on the right!!!");  //debugging purposes
 			}
+
+            timePassed = 0f;
         }
 	}		
 }
