@@ -106,15 +106,14 @@ public class GameBoundary : MonoBehaviour
 				comboCnt++; // indentifiers match, comboCnt increments by 1
 				dir = directions.WEST;
 				checkWest = true;
-				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in the direction
-				Debug.Log("Combo Count after checking continuous west: " + comboCnt);
+				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in the direction (WEST)
 			}
 			if(fpIdentifier == identifier[row,rightOfCol])
 			{
 				comboCnt++;
 				dir = directions.EAST;
 				checkEast = true;
-				ContDirCheck(dir,row,rightOfCol);
+				comboCnt += ContDirCheck(dir,row,rightOfCol); //comboCnt adds however many more combos in the direction (EAST)
 				//Debug.Log("Found a match with east neighbor AnimuHead");
 			}
 			comboCnt++; //always need to include focal point in the combo count
@@ -126,13 +125,13 @@ public class GameBoundary : MonoBehaviour
 			{
 				if(comboCnt>3) // must be 4 or 5 combo as a result of the above
 				{
-					if(checkContE == false) // X combo west with no CONTINUOUS combo on the east e.g. Match Match FP Match Fail
+					if(checkContE == false && checkContW == true) // X-number combo west with no CONTINUOUS combo on the east e.g. Match Match FP Match Fail
 					{
 						int contMatchWest = comboCnt - 3; // excludes initial west-matched AnimuHead, focalpoint AnimuHead, and initial east-matched AnimuHead
 						Debug.Log("Focal Point combo'd with " + contMatchWest + " AnimuHeads in the west direction");
 						switch(contMatchWest)  
 						{
-							// we have to minus one extra column over << because we work with row 0 and col 0, (thus the +1 after contMatchWest as initial)
+							// maximum possible combo (VERY RARELY) is 10 e.g. M M M M M M M M FP M where taking max, contMatchWest = (10) - 3 = 7, thus 7 cases
 							case 1:
 								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
 								break;
@@ -158,17 +157,91 @@ public class GameBoundary : MonoBehaviour
 								Destroy(gameGrid[row,col-(contMatchWest-2)],fallDownDelay);
 								Destroy(gameGrid[row,col-(contMatchWest-3)],fallDownDelay);
 								break;
+							case 6:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-1)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-2)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-3)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-4)],fallDownDelay);
+								break;
+							case 7:
+								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
+								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-1)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-2)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-3)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-4)],fallDownDelay);
+								Destroy(gameGrid[row,col-(contMatchWest-5)],fallDownDelay);
+								break;
 						}
-						Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases
+					}
+					else if(checkContW == false && checkContE == true) // X-number combo east with no CONTINUOUS combo on the west e.g. Fail Match FP Match Match
+					{
+						int contMatchEast = comboCnt - 3; // excludes initial west-matched AnimuHead, focalpoint AnimuHead, and initial east-matched AnimuHead
+						Debug.Log("Focal Point combo'd with " + contMatchEast + " AnimuHeads in the east direction");
+						switch(contMatchEast)
+						{
+							case 1:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								break;
+							case 2:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								Destroy(gameGrid[row,col+contMatchEast],fallDownDelay);
+								break;
+							case 3:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								Destroy(gameGrid[row,col+contMatchEast],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-1)],fallDownDelay);
+								break;
+							case 4:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								Destroy(gameGrid[row,col+contMatchEast],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-1)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-2)],fallDownDelay);
+								break;
+							case 5:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								Destroy(gameGrid[row,col+contMatchEast],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-1)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-2)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-3)],fallDownDelay);
+								break;
+							case 6:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								Destroy(gameGrid[row,col+contMatchEast],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-1)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-2)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-3)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-4)],fallDownDelay);
+								break;
+							case 7:
+								Destroy(gameGrid[row,col+(contMatchEast+1)],fallDownDelay);
+								Destroy(gameGrid[row,col+contMatchEast],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-1)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-2)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-3)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-4)],fallDownDelay);
+								Destroy(gameGrid[row,col+(contMatchEast-5)],fallDownDelay);
+								break;
+						}
+						Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases REMEMBER TO RE-PLACE FOR ALL EVENTS
 						Destroy(gameGrid[row,col],fallDownDelay); // done for all cases
 						Destroy(gameGrid[row,rightOfCol],fallDownDelay); // done for all cases
 					}
-					else if(checkContW == false)
+					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
-						//west direction has no CONTINUOUS combo
+						//
 					}
+					else // both continuous west and east are false, would never occur if comboCnt > 3
+					{
+						// code never reaches here, would run the else below (comboCnt == 3) e.g. Fail Match FP Match Fail
+					}
+					Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases REMEMBER TO RE-PLACE FOR ALL EVENTS
+					Destroy(gameGrid[row,col],fallDownDelay); // done for all cases
+					Destroy(gameGrid[row,rightOfCol],fallDownDelay); // done for all cases
 				}
-				else // must be a 3 combo with focal point directly in the middle
+				else // MUST be a 3 combo with focal point directly in the middle (comboCnt ==3)
 				{
 					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
 					Destroy(gameGrid[row,col],fallDownDelay);
@@ -230,7 +303,24 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContEastCheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your eastern combo check, placeholder return
+		if(fpCol!=0) // as long as fpCol is not zero...
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol+1] && fpCol!=9)
+			{
+				dir = directions.EAST;
+				checkContE = true;
+				Debug.Log("Found continuous match with east neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow,fpCol+1); // send in an updated focal point
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private int ContNWCheck(int fpRow, int fpCol)
