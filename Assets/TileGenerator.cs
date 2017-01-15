@@ -151,6 +151,10 @@ public class TileGenerator : MonoBehaviour
 			else
 			{
 				goCurrent = goBelow; //goBelow was previous below, now's current
+				if (rowZeroClone != null)
+				{
+					Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
+				}
 				if (fallCounter == 8) // final iteration of THIS else loop
 				{
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
@@ -166,6 +170,10 @@ public class TileGenerator : MonoBehaviour
 						//row here is guaranteed to be 9 so...
 						numMatches = transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
 					}
+				}
+				else
+				{
+					goBelow = Instantiate (go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
 				}
 				Destroy(goCurrent);
 				goCurrent = Resources.Load("Default/DefaultTile") as GameObject;
