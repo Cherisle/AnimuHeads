@@ -13,7 +13,7 @@ public class TileGenerator : MonoBehaviour
 	private bool nameMatch;
 	private int colNum;
 	private int fallCounter;
-    public float keyDelay = 1f;  //used for continuous key press in a single direction
+    public float keyDelay = 0.4f;  //used for continuous key press in a single direction
     private float timePassed = 0f;  //used for continuous key press in a single direction
 	//-----------------------------------------------
 	private GameObject genLocation;
