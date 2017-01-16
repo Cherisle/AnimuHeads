@@ -4,9 +4,10 @@ using System.Linq;
 
 public class GameBoundary : MonoBehaviour
 {
-	public const int rows = 10;
-	public const int columns = 10;
-	private const float fallDownDelay = 0.5f;
+	private const int rows = 10;
+	private const int columns = 10;
+	private const int headMax = 8;
+	private const float fallDownDelay = 0.4f;
 	public GameObject[,] gameGrid;
 	public GameObject myObject;
 	//--------------------------------------------------------
@@ -70,7 +71,7 @@ public class GameBoundary : MonoBehaviour
 		int rowAbove = row-1; // this one too
 		int fpIdentifier = identifier[row,col]; // this one too
 		//------------------------------------------------------------------------------------
-		if(col == 0 || col == 9)
+		if(col == 0 || col == columns-1)
 		{
 			return 100; //should check something though
 		}
@@ -123,8 +124,9 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(checkNorthWest != true && checkNorth != true && checkNorthEast != true) //northern neighbors don't match, then can break 3-5 in a row HORZ
 			{
-				if(comboCnt>3) // must be 4 or 5 combo as a result of the above
+				if(comboCnt>3) // must be >=4 combo as a result of the above
 				{
+
 					if(checkContE == false && checkContW == true) // X-number combo west with no CONTINUOUS combo on the east e.g. Match Match FP Match Fail
 					{
 						int contMatchWest = comboCnt - 3; // excludes initial west-matched AnimuHead, focalpoint AnimuHead, and initial east-matched AnimuHead
@@ -136,6 +138,7 @@ public class GameBoundary : MonoBehaviour
 								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
 								break;
 							case 2:
+								Debug.Log("check");	
 								Destroy(gameGrid[row,col-(contMatchWest+1)],fallDownDelay);
 								Destroy(gameGrid[row,col-contMatchWest],fallDownDelay);
 								break;
@@ -225,9 +228,12 @@ public class GameBoundary : MonoBehaviour
 								Destroy(gameGrid[row,col+(contMatchEast-5)],fallDownDelay);
 								break;
 						}
-						Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases REMEMBER TO RE-PLACE FOR ALL EVENTS
-						Destroy(gameGrid[row,col],fallDownDelay); // done for all cases
-						Destroy(gameGrid[row,rightOfCol],fallDownDelay); // done for all cases
+						for(int ii=1; ii>(1-contMatchEast);ii--)
+						{
+							Debug.Log("Reset gameGrid and identifier to default by amt of times displayed");
+							gameGrid[row,col+(contMatchEast+ii)] = myObject;
+							identifier[row,col+(contMatchEast+ii)] = headMax;
+						}
 					}
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
@@ -239,15 +245,21 @@ public class GameBoundary : MonoBehaviour
 					{
 						// code never reaches here, would run the else below (comboCnt == 3) e.g. Fail Match FP Match Fail
 					}
-					Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases REMEMBER TO RE-PLACE FOR ALL EVENTS
+					Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases
 					Destroy(gameGrid[row,col],fallDownDelay); // done for all cases
 					Destroy(gameGrid[row,rightOfCol],fallDownDelay); // done for all cases
+					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
+					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = headMax;
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
-				else // MUST be a 3 combo with focal point directly in the middle (comboCnt ==3)
+				else // MUST be 3 combo w/ focal point in middle (comboCnt == 3) e.g. M FP M , THIS IS A FINAL STEP before GRIDALLCHECK 
 				{
 					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
 					Destroy(gameGrid[row,col],fallDownDelay);
 					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
+					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = headMax;
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
 		}
@@ -285,7 +297,7 @@ public class GameBoundary : MonoBehaviour
 	{
 		if(fpCol!=0) // as long as fpCol is not zero...
 		{
-			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol-1] && fpCol!=0)
+			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol-1])
 			{
 				dir = directions.WEST;
 				checkContW = true;
@@ -305,9 +317,9 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContEastCheck(int fpRow, int fpCol)
 	{
-		if(fpCol!=0) // as long as fpCol is not zero...
+		if(fpCol!=columns-1) // as long as fpCol is not the furthest east column...
 		{
-			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol+1] && fpCol!=9)
+			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol+1])
 			{
 				dir = directions.EAST;
 				checkContE = true;

@@ -7,8 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class TileGenerator : MonoBehaviour
 {
+	private const int rows = 10;
+	private const int columns = 10;
 	private const int headMax = 8;
-	private const float fallDownDelay = 0.5f;
+	private const float fallDownDelay = 0.4f;
 	public Object[] myPrefabs;
 	private bool nameMatch;
 	private int colNum;
@@ -78,9 +80,9 @@ public class TileGenerator : MonoBehaviour
 	}
 	void Falling()
 	{
-		if (fallCounter < 9)
+		if (fallCounter<rows-1)
 		{	
-			if(transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists
+			if(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists
 			{
 				if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists?
 				{
@@ -195,6 +197,12 @@ public class TileGenerator : MonoBehaviour
 	{
 		//this method should be in GameBoundary
 	}*/
+
+
+	public void SubtractGrid(int n)
+	{
+		goGridCnt -= n;
+	}
 
 	int RandomNumber()
 	{
