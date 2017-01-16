@@ -62,9 +62,9 @@ public class GameBoundary : MonoBehaviour
 
 	public int CheckPillar(int row, int col)
 	{
-		comboCnt = 0; //reset
-		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset
-		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // reset
+		comboCnt = 0; //reset, WORKING FINE
+		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset, WORKING FINE
+		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // reset, WORKING FINE
 		//------------------------------------------------------------------------------------
 		int leftOfCol = col-1; // these lines between the comments are used to simplify meaning
 		int rightOfCol = col+1; // this one too
@@ -178,6 +178,11 @@ public class GameBoundary : MonoBehaviour
 								Destroy(gameGrid[row,col-(contMatchWest-5)],fallDownDelay);
 								break;
 						}
+						for(int ii=1; ii>(1-contMatchWest);ii--)
+						{
+							gameGrid[row,col-(contMatchWest+ii)] = myObject;
+							identifier[row,col-(contMatchWest+ii)] = headMax;
+						}
 					}
 					else if(checkContW == false && checkContE == true) // X-number combo east with no CONTINUOUS combo on the west e.g. Fail Match FP Match Match
 					{
@@ -230,7 +235,6 @@ public class GameBoundary : MonoBehaviour
 						}
 						for(int ii=1; ii>(1-contMatchEast);ii--)
 						{
-							Debug.Log("Reset gameGrid and identifier to default by amt of times displayed");
 							gameGrid[row,col+(contMatchEast+ii)] = myObject;
 							identifier[row,col+(contMatchEast+ii)] = headMax;
 						}
