@@ -30,7 +30,6 @@ public class TileGenerator : MonoBehaviour
 	private int fpCol; //focal point col value
 	private int goGridCnt; // gameObject grid count
 	private int goHeadNum; // gameObject head number -- used to represent character name
-	private int numMatches; // number of matches detected for AnimuHead
 
 	// Use this for initialization
 	void Start ()
@@ -134,7 +133,7 @@ public class TileGenerator : MonoBehaviour
 							fpCol = colNum;
 							//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
 							//row here is guaranteed to be 9 so...
-							numMatches = transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+							transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
 						}
 						//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 					}
@@ -172,7 +171,7 @@ public class TileGenerator : MonoBehaviour
 						fpCol = colNum;
 						//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
 						//row here is guaranteed to be 9 so...
-						numMatches = transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+						transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
 					}
 				}
 				else

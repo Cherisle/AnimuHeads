@@ -60,7 +60,7 @@ public class GameBoundary : MonoBehaviour
 		}
 	}
 
-	public int CheckPillar(int row, int col)
+	public void CheckPillar(int row, int col)
 	{
 		comboCnt = 0; //reset, WORKING FINE
 		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset, WORKING FINE
@@ -73,7 +73,7 @@ public class GameBoundary : MonoBehaviour
 		//------------------------------------------------------------------------------------
 		if(col == 0 || col == columns-1)
 		{
-			return 100; //should check something though
+			return; //should check something though
 		}
 		else
 		{
@@ -267,7 +267,6 @@ public class GameBoundary : MonoBehaviour
 				}
 			}
 		}
-		return comboCnt;
 	}
 
 	private int ContDirCheck(directions d, int fpRow, int fpCol) //continue direction check w/ UPDATED focal point
