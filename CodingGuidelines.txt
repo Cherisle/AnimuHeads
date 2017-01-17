@@ -26,3 +26,9 @@ Coding Guidelines
 2.  For all if-else condition statements, use curly braces, even if the body is only one line. No exceptions.
 
 3.  When you add your own variables to a script, make sure to organize them and not toss them somewhere random. [Readability]
+
+4.  When you decide to comment on the code, make sure you include your initials at the beginning of the comment. Comments 
+    which do not include initials at the beginning are mine (MT) and are there to help you catch up on understanding the code.
+    
+5.  If deciding on whether a variable or method should be public or private, always make it initially private. Make it public 
+    only if you expect to call it from another script.
