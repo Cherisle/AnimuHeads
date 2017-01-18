@@ -16,8 +16,10 @@ public class GameBoundary : MonoBehaviour
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
 	//--------------------------------------------------------
 	private directions dir;
-	private bool checkWest, checkNorthWest, checkNorth, checkNorthEast, checkEast; //detected initial AH match in this direction
-	private bool checkContW, checkContNW, checkContN, checkContNE, checkContE; //detected continuous AH match in this direction (more than 1)
+	private bool checkWest, checkNorthWest, checkNorth, checkNorthEast, checkEast, checkSouthEast, checkSouth, checkSouthWest; 
+	// ^(above) detected initial AH match in this direction
+	private bool checkContW, checkContNW, checkContN, checkContNE, checkContE, checkContSE, checkContS, checkContSW; 
+	// ^(above) detected continuous AH match in this direction (more than 1)
 	private int comboCnt;
     public int[,] identifier;
 
@@ -36,8 +38,8 @@ public class GameBoundary : MonoBehaviour
 	{
 		comboCnt = 0; // initialize
 		dir = directions.UNSET; // initialize
-		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // initialize
-		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // initialize
+		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = checkSouthEast = checkSouth = checkSouthWest = false; // initialize
+		checkContW = checkContNW = checkContN = checkContNE = checkContE = checkContSE = checkContS = checkContSW = false; // initialize
 		//--------------------------------------------------------------------------------
 		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
@@ -62,9 +64,9 @@ public class GameBoundary : MonoBehaviour
 
 	public void CheckPillar(int row, int col)
 	{
-		comboCnt = 0; //reset, WORKING FINE
-		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset, WORKING FINE
-		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // reset, WORKING FINE
+		comboCnt = 0; //reset
+		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset
+		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // reset
 		//------------------------------------------------------------------------------------
 		int leftOfCol = col-1; // these lines between the comments are used to simplify meaning
 		int rightOfCol = col+1; // this one too
@@ -107,15 +109,14 @@ public class GameBoundary : MonoBehaviour
 				comboCnt++; // indentifiers match, comboCnt increments by 1
 				dir = directions.WEST;
 				checkWest = true;
-				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in the direction (WEST)
+				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in direction (WEST)
 			}
 			if(fpIdentifier == identifier[row,rightOfCol])
 			{
 				comboCnt++;
 				dir = directions.EAST;
 				checkEast = true;
-				comboCnt += ContDirCheck(dir,row,rightOfCol); //comboCnt adds however many more combos in the direction (EAST)
-				//Debug.Log("Found a match with east neighbor AnimuHead");
+				comboCnt += ContDirCheck(dir,row,rightOfCol); //comboCnt adds however many more combos in direction (EAST)
 			}
 			comboCnt++; //always need to include focal point in the combo count
 			Debug.Log("Total Combo Count is " + comboCnt);
@@ -288,24 +289,58 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContNorthCheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your northern combo check, placeholder return
+		if(fpRow!=0) // as long as fpRow is not the furthest northern row...
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow-1,fpCol])
+			{
+				dir = directions.NORTH;
+				checkContN = true;
+				Debug.Log("Found continuous match with north neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow-1,fpCol);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private int ContSouthCheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your southern combo check, placeholder return
+		if(fpRow!=rows-1) // as long as fpRow is not the furthest southern row...
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow+1,fpCol])
+			{
+				dir = directions.SOUTH;
+				checkContS = true;
+				Debug.Log("Found continuous match with south neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow+1,fpCol);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private int ContWestCheck(int fpRow, int fpCol)
 	{
-		if(fpCol!=0) // as long as fpCol is not zero...
+		if(fpCol!=0) // as long as fpCol is not the furthest west column...
 		{
 			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol-1])
 			{
 				dir = directions.WEST;
 				checkContW = true;
 				Debug.Log("Found continuous match with west neighbor AnimuHead");
-				return 1 + ContDirCheck(dir,fpRow,fpCol-1); // send in an updated focal point
+				return 1 + ContDirCheck(dir,fpRow,fpCol-1);
 			}
 			else
 			{
@@ -327,7 +362,7 @@ public class GameBoundary : MonoBehaviour
 				dir = directions.EAST;
 				checkContE = true;
 				Debug.Log("Found continuous match with east neighbor AnimuHead");
-				return 1 + ContDirCheck(dir,fpRow,fpCol+1); // send in an updated focal point
+				return 1 + ContDirCheck(dir,fpRow,fpCol+1);
 			}
 			else
 			{
@@ -342,22 +377,90 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContNWCheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your northwest combo check, placeholder return
+		if(fpRow!=0 && fpCol!=0) // as long as fpRow not furthest N row and fpCol not furthest W col
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow-1,fpCol-1])
+			{
+				dir = directions.NORTHWEST;
+				checkContNW = true;
+				Debug.Log("Found continuous match with northwest neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow-1,fpCol-1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private int ContNECheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your northeast combo check, placeholder return
+		if(fpRow!=0 && fpCol!=columns-1) // as long as fpRow not furthest N row and fpCol not furthest E col
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow-1,fpCol+1])
+			{
+				dir = directions.NORTHEAST;
+				checkContNE = true;
+				Debug.Log("Found continuous match with northeast neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow-1,fpCol+1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private int ContSWCheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your southwest combo check, placeholder return
+		if(fpRow!=rows-1 && fpCol!=0) // as long as fpRow not furthest S row and fpCol not furthest W col
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow+1,fpCol-1])
+			{
+				dir = directions.SOUTHWEST;
+				checkContSW = true;
+				Debug.Log("Found continuous match with southwest neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow+1,fpCol-1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	private int ContSECheck(int fpRow, int fpCol)
 	{
-		return 0; //continue your southeast combo check, placeholder return
+		if(fpRow!=rows-1 && fpCol!=columns-1) // as long as fpRow not furthest S row and fpCol not furthest E col
+		{
+			if(identifier[fpRow,fpCol] == identifier[fpRow+1,fpCol+1])
+			{
+				dir = directions.SOUTHEAST;
+				checkContSE = true;
+				Debug.Log("Found continuous match with southeast neighbor AnimuHead");
+				return 1 + ContDirCheck(dir,fpRow+1,fpCol+1);
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
 	public void idUpdate(int r, int c, int hNum)
