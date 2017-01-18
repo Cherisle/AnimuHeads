@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class MisakaMikoto : AnimuHead {
 
-    new AudioSource audio;
+    new AudioSource audio;  // initialize variable to hold audio clip
 
     // Use this for initialization
     void Start () {
-        audio = GetComponent<AudioSource>();
+        audio = GetComponent<AudioSource>();  //gets the audio clip attached to the Prefab that has this script
 	}
 	
 	// Update is called once per frame
@@ -19,6 +19,6 @@ public class MisakaMikoto : AnimuHead {
 
     public override void PlaySound()
     {
-        audio.Play();
+        audio.Play();  //plays whatever audio clip is attached to the Prefab that has this script
     }
 }

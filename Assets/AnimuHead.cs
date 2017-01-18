@@ -15,5 +15,5 @@ public abstract class AnimuHead : MonoBehaviour
 	    
 	}
 
-    public abstract void PlaySound();
+    public abstract void PlaySound();  // abstract method to be overridden within characters' respective scripts
 }
