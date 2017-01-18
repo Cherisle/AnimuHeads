@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class AnimuHead : MonoBehaviour
+public abstract class AnimuHead : MonoBehaviour
 {
 	// Use this for initialization
 	void Start ()
@@ -10,7 +10,10 @@ public class AnimuHead : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () {
-	
+	void Update ()
+    {
+	    
 	}
+
+    public abstract void PlaySound();
 }
