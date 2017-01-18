@@ -72,6 +72,8 @@ public class GameBoundary : MonoBehaviour
 		int rightOfCol = col+1; // this one too
 		int rowAbove = row-1; // this one too
 		int fpIdentifier = identifier[row,col]; // this one too
+		int storeCont1 = 0; // store continuous combo amts of same axis
+		int storeCont2 = 0; // same as above , 180 degree different (or opposite direction)
 		//------------------------------------------------------------------------------------
 		if(col == 0 || col == columns-1)
 		{
@@ -104,19 +106,23 @@ public class GameBoundary : MonoBehaviour
 					}
 				}
 			}
-			if(fpIdentifier == identifier[row,leftOfCol])
+			if(fpIdentifier == identifier[row,leftOfCol]) // WEST
 			{
 				comboCnt++; // indentifiers match, comboCnt increments by 1
 				dir = directions.WEST;
 				checkWest = true;
 				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in direction (WEST)
+				storeCont1 = ContDirCheck(dir,row,leftOfCol);
+				Debug.Log(storeCont1);
 			}
-			if(fpIdentifier == identifier[row,rightOfCol])
+			if(fpIdentifier == identifier[row,rightOfCol]) // EAST
 			{
 				comboCnt++;
 				dir = directions.EAST;
 				checkEast = true;
 				comboCnt += ContDirCheck(dir,row,rightOfCol); //comboCnt adds however many more combos in direction (EAST)
+				storeCont2 = ContDirCheck(dir,row,rightOfCol);
+				Debug.Log(storeCont2);
 			}
 			comboCnt++; //always need to include focal point in the combo count
 			Debug.Log("Total Combo Count is " + comboCnt);
@@ -242,6 +248,25 @@ public class GameBoundary : MonoBehaviour
 					}
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
+						checkContW = checkContE = false;
+						for(int ii=1; ii<=storeCont1; ii++) //made this west
+						{
+							Destroy(gameGrid[row,col-1-ii],fallDownDelay);
+						}
+						for(int ii=1; ii<=storeCont2; ii++) //made this east
+						{
+							Destroy(gameGrid[row,col+1+ii],fallDownDelay);
+						}
+						for(int ii=1; ii<=storeCont1; ii++)
+						{
+							gameGrid[row,leftOfCol-ii] = myObject;
+							identifier[row,leftOfCol-ii] = headMax;
+						}
+						for(int ii=1; ii<=storeCont2; ii++)
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii] = headMax;
+						}
 						// maximum continuous on each side: (M FP M) does not count as CONTINUOUS direction check
 						// maxContW == 4  <--> maxContE == 3 e.g.  M M M M (M FP M) M M M
 						// maxContW == 3  <--> maxContE == 4 e.g.  M M M (M FP M) M M M M
@@ -250,9 +275,9 @@ public class GameBoundary : MonoBehaviour
 					{
 						// code never reaches here, would run the else below (comboCnt == 3) e.g. Fail Match FP Match Fail
 					}
-					Destroy(gameGrid[row,leftOfCol],fallDownDelay); // done for all cases
-					Destroy(gameGrid[row,col],fallDownDelay); // done for all cases
-					Destroy(gameGrid[row,rightOfCol],fallDownDelay); // done for all cases
+					Destroy(gameGrid[row,leftOfCol],fallDownDelay); // FROM HERE DOWN, done for all cases
+					Destroy(gameGrid[row,col],fallDownDelay);
+					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = headMax;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
