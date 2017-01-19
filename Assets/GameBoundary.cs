@@ -72,8 +72,8 @@ public class GameBoundary : MonoBehaviour
 		int rightOfCol = col+1; // this one too
 		int rowAbove = row-1; // this one too
 		int fpIdentifier = identifier[row,col]; // this one too
-		int storeCont1 = 0; // store continuous combo amts of same axis
-		int storeCont2 = 0; // same as above , 180 degree different (or opposite direction)
+		int storeContW, storeContNW, storeContN, storeContNE, storeContE; // store continuous combo amts of a direction
+		storeContW = storeContNW = storeContN = storeContNE = storeContE = 0; // initialize from within
 		//------------------------------------------------------------------------------------
 		if(col == 0 || col == columns-1)
 		{
@@ -112,8 +112,8 @@ public class GameBoundary : MonoBehaviour
 				dir = directions.WEST;
 				checkWest = true;
 				comboCnt += ContDirCheck(dir,row,leftOfCol); //comboCnt adds however many more combos in direction (WEST)
-				storeCont1 = ContDirCheck(dir,row,leftOfCol);
-				Debug.Log(storeCont1);
+				storeContW = ContDirCheck(dir,row,leftOfCol);
+				Debug.Log(storeContW);
 			}
 			if(fpIdentifier == identifier[row,rightOfCol]) // EAST
 			{
@@ -121,8 +121,8 @@ public class GameBoundary : MonoBehaviour
 				dir = directions.EAST;
 				checkEast = true;
 				comboCnt += ContDirCheck(dir,row,rightOfCol); //comboCnt adds however many more combos in direction (EAST)
-				storeCont2 = ContDirCheck(dir,row,rightOfCol);
-				Debug.Log(storeCont2);
+				storeContE = ContDirCheck(dir,row,rightOfCol);
+				Debug.Log(storeContE);
 			}
 			comboCnt++; //always need to include focal point in the combo count
 			Debug.Log("Total Combo Count is " + comboCnt);
@@ -249,20 +249,20 @@ public class GameBoundary : MonoBehaviour
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
 						checkContW = checkContE = false;
-						for(int ii=1; ii<=storeCont1; ii++) //made this west
+						for(int ii=1; ii<=storeContW; ii++) //made this west
 						{
 							Destroy(gameGrid[row,col-1-ii],fallDownDelay);
 						}
-						for(int ii=1; ii<=storeCont2; ii++) //made this east
+						for(int ii=1; ii<=storeContE; ii++) //made this east
 						{
 							Destroy(gameGrid[row,col+1+ii],fallDownDelay);
 						}
-						for(int ii=1; ii<=storeCont1; ii++)
+						for(int ii=1; ii<=storeContW; ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
 							identifier[row,leftOfCol-ii] = headMax;
 						}
-						for(int ii=1; ii<=storeCont2; ii++)
+						for(int ii=1; ii<=storeContE; ii++)
 						{
 							gameGrid[row,rightOfCol+ii] = myObject;
 							identifier[row,rightOfCol+ii] = headMax;
