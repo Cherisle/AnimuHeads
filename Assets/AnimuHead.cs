@@ -16,7 +16,7 @@ public class AnimuHead : MonoBehaviour, SoundClip
 
     void Awake()
     {
-        audio = GetComponent<AudioSource>();
+        //audio = GetComponent<AudioSource>();
     }
 	
 	// Update is called once per frame
