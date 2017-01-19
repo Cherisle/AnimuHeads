@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 212000013719932070}
   - component: {fileID: 114000010715327036}
   - component: {fileID: 114000010466503810}
-  - component: {fileID: 61000013360564646}
   m_Layer: 0
   m_Name: KanadeTachibana
   m_TagString: Untagged
@@ -43,20 +42,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61000013360564646
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000014203571870}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2}
 --- !u!114 &114000010466503810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,6 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa0294a6b617da943ab397844fed3bf5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audio: {fileID: 0}
+  audioPos: {x: 0, y: 0, z: 0}
 --- !u!114 &114000010715327036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,6 +66,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da782e4d31bc6d04abbfb45c375b264a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audio: {fileID: 0}
+  audioPos: {x: 0, y: 0, z: 0}
 --- !u!212 &212000013719932070
 SpriteRenderer:
   m_ObjectHideFlags: 1

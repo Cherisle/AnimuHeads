@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 212000011463648900}
   - component: {fileID: 114000010174647852}
   - component: {fileID: 114000012813563046}
-  - component: {fileID: 61000012601953594}
   - component: {fileID: 82027048191394498}
   m_Layer: 0
   m_Name: Megumin
@@ -44,20 +43,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61000012601953594
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000012530630900}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2}
 --- !u!82 &82027048191394498
 AudioSource:
   m_ObjectHideFlags: 1

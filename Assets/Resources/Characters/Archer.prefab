@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 212000010494256526}
   - component: {fileID: 114000010579043072}
   - component: {fileID: 114000011744318070}
-  - component: {fileID: 61000013669181412}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -43,20 +42,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61000013669181412
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1000013704378696}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Size: {x: 2, y: 2}
 --- !u!114 &114000010579043072
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -68,6 +53,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da782e4d31bc6d04abbfb45c375b264a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audio: {fileID: 0}
+  audioPos: {x: 0, y: 0, z: 0}
 --- !u!114 &114000011744318070
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -79,6 +66,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a57b81ccd6dc036448a03295743b583c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audio: {fileID: 0}
+  audioPos: {x: 0, y: 0, z: 0}
 --- !u!212 &212000010494256526
 SpriteRenderer:
   m_ObjectHideFlags: 1
