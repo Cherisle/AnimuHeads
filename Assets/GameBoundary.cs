@@ -284,8 +284,10 @@ public class GameBoundary : MonoBehaviour
 				}
 				else // MUST be 3 combo w/ focal point in middle (comboCnt == 3) e.g. M FP M , THIS IS A FINAL STEP before GRIDALLCHECK 
 				{
+                    //plays sound from the position of the middle head in the 3 combo before all 3 get destroyed
                     gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                     gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+
                     Destroy(gameGrid[row,leftOfCol], fallDownDelay);
 					Destroy(gameGrid[row,col], fallDownDelay);
 					Destroy(gameGrid[row,rightOfCol], fallDownDelay);
