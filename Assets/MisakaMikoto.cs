@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class MisakaMikoto : AnimuHead
 {
     new AudioSource audio;  // initialize variable to hold audio clip

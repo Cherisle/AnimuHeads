@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Megumin : MonoBehaviour {
+public class Megumin : AnimuHead {
 
 	// Use this for initialization
 	void Start () {

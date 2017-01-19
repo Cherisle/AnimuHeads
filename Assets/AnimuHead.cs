@@ -1,19 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
-public class AnimuHead : MonoBehaviour
+public class AnimuHead : MonoBehaviour, SoundClip
 {
-	// Use this for initialization
-	void Start ()
-	{
+    public new AudioSource audio;  // stores audio clip of gameobject that has this script attached to it
+    public Vector3 audioPos;  // used for playing clip at wherever this location is
 
-	}
-	
-	// Update is called once per frame
-	void Update ()
+	  // Use this for initialization
+	  void Start ()
+	  {
+      
+	  }
+
+    void Awake()
     {
-	    
-	}
+        audio = GetComponent<AudioSource>();  // gets the audio source from the gameobject that has this script
+    }
 
-    //public abstract void PlaySound();  // abstract method to be overridden within characters' respective scripts
+    // Update is called once per frame
+    void Update ()
+    {
+
+    }
+    public void PlaySound()
+    {
+        AudioSource.PlayClipAtPoint(audio.clip, audioPos);  // plays audio clip
+    }
 }

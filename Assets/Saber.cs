@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Saber : MonoBehaviour {
+public class Saber : AnimuHead {
 
 	// Use this for initialization
 	void Start ()

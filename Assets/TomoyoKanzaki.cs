@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TomoyoKanzaki : MonoBehaviour {
+public class TomoyoKanzaki : AnimuHead {
 
 	// Use this for initialization
 	void Start () {
