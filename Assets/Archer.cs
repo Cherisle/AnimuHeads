@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Archer : MonoBehaviour {
+public class Archer : AnimuHead {
 
 	// Use this for initialization
 	void Start () {
