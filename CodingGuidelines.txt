@@ -32,3 +32,5 @@ Coding Guidelines
     
 5.  If deciding on whether a variable or method should be public or private, always make it initially private. Make it public 
     only if you expect to call it from another script.
+    
+6.  NEVER put Destroy(GameObject go) calls inside a loop (e.g. for loop, for each loop)
