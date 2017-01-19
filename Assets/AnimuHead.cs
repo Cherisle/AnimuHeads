@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public abstract class AnimuHead : MonoBehaviour
+public class AnimuHead : MonoBehaviour
 {
 	// Use this for initialization
 	void Start ()
@@ -15,5 +15,5 @@ public abstract class AnimuHead : MonoBehaviour
 	    
 	}
 
-    public abstract void PlaySound();  // abstract method to be overridden within characters' respective scripts
+    //public abstract void PlaySound();  // abstract method to be overridden within characters' respective scripts
 }
