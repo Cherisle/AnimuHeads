@@ -131,11 +131,15 @@ public class TileGenerator : MonoBehaviour
 						{
 							fpRow = fallCounter+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 							fpCol = colNum;
-							//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
-							//row here is guaranteed to be 9 so...
-							transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+							if(fpCol == 0 || fpCol == columns-1)
+							{
+								//should check bottom corners, not pillar
+							}
+							else
+							{
+								transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+							}
 						}
-						//Debug.Log ("AnimuHead Grid Count: " + goGridCnt);
 					}
 					else
 					{
