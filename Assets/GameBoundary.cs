@@ -23,7 +23,6 @@ public class GameBoundary : MonoBehaviour
 	private int comboCnt;
     public int[,] identifier;
 
-    //use this to do anything with directions
     public enum directions { UNSET, NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
 
     void FixedUpdate()
@@ -88,7 +87,7 @@ public class GameBoundary : MonoBehaviour
 					comboCnt += storeContNW;
 					//Debug.Log("Found a match with northwest neighbor AnimuHead");
 				}
-				if (ii == col) // matched w/ north AnimuHead
+				else if (ii == col) // matched w/ north AnimuHead
 				{
 					dir = directions.NORTH;
 					checkNorth = true;
@@ -96,7 +95,7 @@ public class GameBoundary : MonoBehaviour
 					comboCnt += storeContN;
 					//Debug.Log("Found a match with north neighbor AnimuHead");
 				}
-				if (ii == rightOfCol) // matched w/ northeast AnimuHead
+				else if (ii == rightOfCol) // matched w/ northeast AnimuHead
 				{	
 					dir = directions.NORTHEAST;
 					checkNorthEast = true;
@@ -496,8 +495,7 @@ public class GameBoundary : MonoBehaviour
 			case directions.NORTHEAST: return ContNECheck(fpRow,fpCol);
 			case directions.SOUTHWEST: return ContSWCheck(fpRow,fpCol);
 			case directions.SOUTHEAST: return ContSECheck(fpRow,fpCol);
-			case directions.UNSET: return 0; //does nothing, direction unaltered
-			default: return 0; //just incase for function to work
+			default: return 0; //does nothing, direction unaltered
 		}
 	}
 
