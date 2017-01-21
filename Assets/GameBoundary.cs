@@ -126,11 +126,10 @@ public class GameBoundary : MonoBehaviour
 		Debug.Log ("Total Combo Count is " + comboCnt);
 		if(checkWest == true && checkEast == true) //instant combo 1st condition, w/o continual dirCheck
 		{
-			if(checkNorthWest != true && checkNorth != true && checkNorthEast != true) //northern neighbors don't match, then can break 3-5 in a row HORZ
+			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match, then can break 3-5 in a row HORZ
 			{
 				if(comboCnt>3) // must be >=4 combo as a result of the above
 				{
-
 					if(checkContE == false && checkContW == true) // X-number combo west with no CONTINUOUS combo on the east e.g. Match Match FP Match Fail
 					{
 						int contMatchWest = comboCnt - 3; // excludes initial west-matched AnimuHead, focalpoint AnimuHead, and initial east-matched AnimuHead
@@ -316,9 +315,17 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false) // west and northwest are true
+			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false)
 			{
-				//
+				// west and northwest are true
+			}
+			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true)
+			{
+				// west and northeast are true
+			}
+			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
+			{
+				// west, northwest, northeast are true
 			}
 		}
 		else if(checkWest == false && checkEast == true)
@@ -342,6 +349,18 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,rightOfCol] = identifier[row,col] = headMax;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
+			}
+			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false)
+			{
+				// east and northwest are true
+			}
+			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true)
+			{
+				// east and northeast are true
+			}
+			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
+			{
+				// east, northwest, northeast are true
 			}
 		}
 		else if(checkWest == false && checkEast == false) // both horz initial checks fail
@@ -430,7 +449,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == false && checkNorth == true && checkNorthEast == false) // N only match
+			else if(checkNorthWest == false && checkNorth == true && checkNorthEast == false) // N only match (gridAllCheck)
 			{
 				if(storeContN >=1) // at least one continuous on N dir matching
 				{
@@ -449,6 +468,18 @@ public class GameBoundary : MonoBehaviour
 					identifier[rowAbove,col] = identifier[row,col] = headMax;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
+			}
+			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == true)
+			{
+				// all true
+			}
+			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == false)
+			{
+				// NW and N true, NE false
+			}
+			else if(checkNorthWest == false && checkNorth == true && checkNorthEast == true)
+			{
+				//NE and N are true, NW false
 			}
 		}
 	}
@@ -481,15 +512,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with north neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow-1,fpCol);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContSouthCheck(int fpRow, int fpCol)
@@ -503,15 +528,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with south neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow+1,fpCol);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContWestCheck(int fpRow, int fpCol)
@@ -525,15 +544,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with west neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow,fpCol-1);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContEastCheck(int fpRow, int fpCol)
@@ -547,15 +560,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with east neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow,fpCol+1);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContNWCheck(int fpRow, int fpCol)
@@ -569,15 +576,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with northwest neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow-1,fpCol-1);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContNECheck(int fpRow, int fpCol)
@@ -591,15 +592,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with northeast neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow-1,fpCol+1);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContSWCheck(int fpRow, int fpCol)
@@ -613,15 +608,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with southwest neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow+1,fpCol-1);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	private int ContSECheck(int fpRow, int fpCol)
@@ -635,15 +624,9 @@ public class GameBoundary : MonoBehaviour
 				Debug.Log("Found continuous match with southeast neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow+1,fpCol+1);
 			}
-			else
-			{
-				return 0;
-			}
+			else {return 0;}
 		}
-		else
-		{
-			return 0;
-		}
+		else {return 0;}
 	}
 
 	public void idUpdate(int r, int c, int hNum)
