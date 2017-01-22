@@ -392,7 +392,53 @@ public class GameBoundary : MonoBehaviour
 			}
 			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
 			{
-				// west, northwest, northeast are true
+				if(storeContW >=1) // if continuous match is on east dir
+				{
+					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+					for(int ii=1;ii<=storeContW;ii++)
+					{
+						Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+					}
+					for(int ii=1;ii<=storeContW;ii++)
+					{
+						gameGrid[row,leftOfCol-ii] = myObject;
+						identifier[row,leftOfCol-ii]= headMax;
+					}
+					gameGrid[row,leftOfCol] = myObject;
+					identifier[row,leftOfCol] = headMax;
+				}
+				if(storeContNW >=1) // if continuous match is on NW dir
+				{
+					Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+					for(int ii=1;ii<=storeContNW;ii++)
+					{
+						Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+					}
+					for(int ii=1;ii<=storeContNW;ii++)
+					{
+						gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
+						identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+					}
+					gameGrid[rowAbove,leftOfCol] = myObject;
+					identifier[rowAbove,leftOfCol] = headMax;
+				}
+				if(storeContNE >=1) // if continuous match is on NE dir
+				{
+					Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+					for(int ii=1;ii<=storeContNE;ii++)
+					{
+						Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+					}
+					for(int ii=1;ii<=storeContNE;ii++)
+					{
+						gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
+						identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+					}
+					gameGrid[rowAbove,rightOfCol] = myObject;
+					identifier[rowAbove,rightOfCol] = headMax;
+				}
+				resetGridFP(row,col);
+				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 			}
 		}
 		else if(checkWest == false && checkEast == true) // EAST neighbor matches, WEST neighbor fails
@@ -549,7 +595,7 @@ public class GameBoundary : MonoBehaviour
 		}
 		else if(checkWest == false && checkEast == false) // both horz initial checks fail
 		{
-			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match
+			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false)
 			{
 				// no combo
 			}
