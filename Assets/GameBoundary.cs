@@ -485,8 +485,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[row,rightOfCol+ii] = myObject;
 							identifier[row,rightOfCol+ii]= headMax;
 						}
-						gameGrid[row,rightOfCol] = myObject;
-						identifier[row,rightOfCol] = headMax;
+						resetGridInfo(row,rightOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
@@ -501,8 +500,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
 							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
 						}
-						gameGrid[rowAbove,leftOfCol] = myObject;
-						identifier[rowAbove,leftOfCol] = headMax;
+						resetGridInfo(rowAbove,leftOfCol);
 					}
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
@@ -526,8 +524,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[row,rightOfCol+ii] = myObject;
 							identifier[row,rightOfCol+ii]= headMax;
 						}
-						gameGrid[row,rightOfCol] = myObject;
-						identifier[row,rightOfCol] = headMax;
+						resetGridInfo(row,rightOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
@@ -542,8 +539,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
 							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
 						}
-						gameGrid[rowAbove,rightOfCol] = myObject;
-						identifier[rowAbove,rightOfCol] = headMax;
+						resetGridInfo(rowAbove,rightOfCol);
 					}
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
@@ -567,8 +563,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[row,rightOfCol+ii] = myObject;
 							identifier[row,rightOfCol+ii]= headMax;
 						}
-						gameGrid[row,rightOfCol] = myObject;
-						identifier[row,rightOfCol] = headMax;
+						resetGridInfo(row,rightOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
@@ -583,8 +578,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
 							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
 						}
-						gameGrid[rowAbove,leftOfCol] = myObject;
-						identifier[rowAbove,leftOfCol] = headMax;
+						resetGridInfo(rowAbove,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
@@ -599,8 +593,7 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
 							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
 						}
-						gameGrid[rowAbove,rightOfCol] = myObject;
-						identifier[rowAbove,rightOfCol] = headMax;
+						resetGridInfo(rowAbove,rightOfCol);
 					}
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
