@@ -122,7 +122,7 @@ public class GameBoundary : MonoBehaviour
 			comboCnt += storeContE; //comboCnt adds however many more combos in direction (EAST)
 		}
 		comboCnt++; //always need to include focal point in the combo count
-		Debug.Log ("Total Combo Count is " + comboCnt);
+		Debug.Log ("INITIAL Total Combo Count is " + comboCnt);
 		if(checkWest == true && checkEast == true) //instant combo 1st condition, w/o continual dirCheck
 		{
 			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match, then can break 3-5 in a row HORZ
@@ -333,6 +333,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[row,leftOfCol] = myObject;
 						identifier[row,leftOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
 						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
@@ -348,6 +349,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,leftOfCol] = myObject;
 						identifier[rowAbove,leftOfCol] = headMax;
 					}
+					else {comboCnt--;}
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
@@ -371,6 +374,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[row,leftOfCol] = myObject;
 						identifier[row,leftOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
 						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
@@ -386,6 +390,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
@@ -407,6 +413,7 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,leftOfCol] = myObject;
 					identifier[row,leftOfCol] = headMax;
 				}
+				else {comboCnt--;}
 				if(storeContNW >=1) // if continuous match is on NW dir
 				{
 					Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
@@ -422,6 +429,7 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove,leftOfCol] = myObject;
 					identifier[rowAbove,leftOfCol] = headMax;
 				}
+				else {comboCnt--;}
 				if(storeContNE >=1) // if continuous match is on NE dir
 				{
 					Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
@@ -437,6 +445,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove,rightOfCol] = myObject;
 					identifier[rowAbove,rightOfCol] = headMax;
 				}
+				else {comboCnt--;}
+				Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 				resetGridFP(row,col);
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 			}
@@ -482,6 +492,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[row,rightOfCol] = myObject;
 						identifier[row,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
 						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
@@ -497,6 +508,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,leftOfCol] = myObject;
 						identifier[rowAbove,leftOfCol] = headMax;
 					}
+					else {comboCnt--;}
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
@@ -520,6 +533,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[row,rightOfCol] = myObject;
 						identifier[row,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
 						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
@@ -535,6 +549,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
@@ -558,6 +574,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[row,rightOfCol] = myObject;
 						identifier[row,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
 						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
@@ -573,6 +590,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,leftOfCol] = myObject;
 						identifier[rowAbove,leftOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
 						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
@@ -588,6 +606,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
@@ -658,6 +678,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,leftOfCol] = myObject;
 						identifier[rowAbove,leftOfCol] = headMax;
 					}
+					else {comboCnt--;}
 					if(storeContNE >=1) // if the continuous match is on NE dir
 					{
 						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
@@ -673,6 +694,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = headMax;
 					}
+					else {comboCnt--;}
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
