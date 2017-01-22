@@ -754,10 +754,8 @@ public class GameBoundary : MonoBehaviour
 				checkContN = true;
 				Debug.Log("Found continuous match with north neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow-1,fpCol);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContSouthCheck(int fpRow, int fpCol)
@@ -770,10 +768,8 @@ public class GameBoundary : MonoBehaviour
 				checkContS = true;
 				Debug.Log("Found continuous match with south neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow+1,fpCol);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContWestCheck(int fpRow, int fpCol)
@@ -786,10 +782,8 @@ public class GameBoundary : MonoBehaviour
 				checkContW = true;
 				Debug.Log("Found continuous match with west neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow,fpCol-1);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContEastCheck(int fpRow, int fpCol)
@@ -802,10 +796,8 @@ public class GameBoundary : MonoBehaviour
 				checkContE = true;
 				Debug.Log("Found continuous match with east neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow,fpCol+1);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContNWCheck(int fpRow, int fpCol)
@@ -818,10 +810,8 @@ public class GameBoundary : MonoBehaviour
 				checkContNW = true;
 				Debug.Log("Found continuous match with northwest neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow-1,fpCol-1);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContNECheck(int fpRow, int fpCol)
@@ -834,10 +824,8 @@ public class GameBoundary : MonoBehaviour
 				checkContNE = true;
 				Debug.Log("Found continuous match with northeast neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow-1,fpCol+1);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContSWCheck(int fpRow, int fpCol)
@@ -850,10 +838,8 @@ public class GameBoundary : MonoBehaviour
 				checkContSW = true;
 				Debug.Log("Found continuous match with southwest neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow+1,fpCol-1);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private int ContSECheck(int fpRow, int fpCol)
@@ -866,10 +852,8 @@ public class GameBoundary : MonoBehaviour
 				checkContSE = true;
 				Debug.Log("Found continuous match with southeast neighbor AnimuHead");
 				return 1 + ContDirCheck(dir,fpRow+1,fpCol+1);
-			}
-			else {return 0;}
-		}
-		else {return 0;}
+			} else {return 0;}
+		} else {return 0;}
 	}
 
 	private void resetGridInfo(int r, int c)
