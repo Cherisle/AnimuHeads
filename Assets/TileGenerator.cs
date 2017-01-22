@@ -90,7 +90,7 @@ public class TileGenerator : MonoBehaviour
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
 					Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
-					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter,colNum,goHeadNum);  
+					transform.parent.GetComponent<GameBoundary>().setID(fallCounter,colNum,goHeadNum);  
 					goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
 					if(goGridCnt >=3)
 					{
@@ -125,7 +125,7 @@ public class TileGenerator : MonoBehaviour
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
 						Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
-						transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
+						transform.parent.GetComponent<GameBoundary>().setID(fallCounter+1,colNum,goHeadNum); 
 						goGridCnt++;
 						if(goGridCnt >=3)
 						{
@@ -167,7 +167,7 @@ public class TileGenerator : MonoBehaviour
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
 					Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
-					transform.parent.GetComponent<GameBoundary>().idUpdate(fallCounter+1,colNum,goHeadNum); 
+					transform.parent.GetComponent<GameBoundary>().setID(fallCounter+1,colNum,goHeadNum); 
 					goGridCnt++;
 					if(goGridCnt >=3)
 					{
