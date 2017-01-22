@@ -244,11 +244,11 @@ public class GameBoundary : MonoBehaviour
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
 						checkContW = checkContE = false;
-						for(int ii=1; ii<=storeContW; ii++) //made this west
+						for(int ii=1; ii<=storeContW; ii++)
 						{
 							Destroy(gameGrid[row,col-1-ii],fallDownDelay);
 						}
-						for(int ii=1; ii<=storeContE; ii++) //made this east
+						for(int ii=1; ii<=storeContE; ii++)
 						{
 							Destroy(gameGrid[row,col+1+ii],fallDownDelay);
 						}
@@ -292,7 +292,7 @@ public class GameBoundary : MonoBehaviour
 				}
 			}
 		}
-		else if(checkWest == true && checkEast == false)
+		else if(checkWest == true && checkEast == false) // WEST neighbor matches, EAST neighbor fails
 		{
 			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match
 			{
@@ -316,18 +316,86 @@ public class GameBoundary : MonoBehaviour
 			}
 			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false)
 			{
-				// west and northwest are true
+				if(storeContW >=1 || storeContNW >=1) // if either one contains a continuous match
+				{
+					if(storeContW >=1) // if continuous match is on east dir
+					{
+						Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContW;ii++)
+						{
+							Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContW;ii++)
+						{
+							gameGrid[row,leftOfCol-ii] = myObject;
+							identifier[row,leftOfCol-ii]= headMax;
+						}
+						gameGrid[row,leftOfCol] = myObject;
+						identifier[row,leftOfCol] = headMax;
+					}
+					if(storeContNW >=1) // if continuous match is on NW dir
+					{
+						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContNW;ii++)
+						{
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContNW;ii++)
+						{
+							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
+							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+						}
+						gameGrid[rowAbove,leftOfCol] = myObject;
+						identifier[rowAbove,leftOfCol] = headMax;
+					}
+					resetGridFP(row,col);
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				}
 			}
 			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true)
 			{
-				// west and northeast are true
+				if(storeContW >=1 || storeContNE >=1) // if either one contains a continuous match
+				{
+					if(storeContW >=1) // if continuous match is on east dir
+					{
+						Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContW;ii++)
+						{
+							Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContW;ii++)
+						{
+							gameGrid[row,leftOfCol-ii] = myObject;
+							identifier[row,leftOfCol-ii]= headMax;
+						}
+						gameGrid[row,leftOfCol] = myObject;
+						identifier[row,leftOfCol] = headMax;
+					}
+					if(storeContNE >=1) // if continuous match is on NE dir
+					{
+						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContNE;ii++)
+						{
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContNE;ii++)
+						{
+							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
+							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+						}
+						gameGrid[rowAbove,rightOfCol] = myObject;
+						identifier[rowAbove,rightOfCol] = headMax;
+					}
+					resetGridFP(row,col);
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				}
 			}
 			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
 			{
 				// west, northwest, northeast are true
 			}
 		}
-		else if(checkWest == false && checkEast == true)
+		else if(checkWest == false && checkEast == true) // EAST neighbor matches, WEST neighbor fails
 		{
 			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match
 			{
@@ -349,17 +417,134 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false)
+			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false) // EAST AND NORTHWEST MATCH, REST FAIL
 			{
-				// east and northwest are true
+				if(storeContE >=1 || storeContNW >=1) // if either one contains a continuous match
+				{
+					if(storeContE >=1) // if continuous match is on east dir
+					{
+						Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContE;ii++)
+						{
+							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContE;ii++)
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii]= headMax;
+						}
+						gameGrid[row,rightOfCol] = myObject;
+						identifier[row,rightOfCol] = headMax;
+					}
+					if(storeContNW >=1) // if continuous match is on NW dir
+					{
+						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContNW;ii++)
+						{
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContNW;ii++)
+						{
+							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
+							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+						}
+						gameGrid[rowAbove,leftOfCol] = myObject;
+						identifier[rowAbove,leftOfCol] = headMax;
+					}
+					resetGridFP(row,col);
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				}
 			}
-			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true)
+			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true) // EAST AND NORTHEAST MATCH, REST FAIL
 			{
-				// east and northeast are true
+				if(storeContE >=1 || storeContNE >=1)
+				{
+					if(storeContE >=1) // if continuous match is on east dir
+					{
+						Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContE;ii++)
+						{
+							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContE;ii++)
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii]= headMax;
+						}
+						gameGrid[row,rightOfCol] = myObject;
+						identifier[row,rightOfCol] = headMax;
+					}
+					if(storeContNE >=1) // if continuous match is on NE dir
+					{
+						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContNE;ii++)
+						{
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContNE;ii++)
+						{
+							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
+							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+						}
+						gameGrid[rowAbove,rightOfCol] = myObject;
+						identifier[rowAbove,rightOfCol] = headMax;
+					}
+					resetGridFP(row,col);
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				}
 			}
 			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
 			{
-				// east, northwest, northeast are true
+				if(storeContE >=1 || storeContNW >=1 || storeContNE >=1) // if either one contains a continuous match
+				{
+					if(storeContE >=1) // if continuous match is on east dir
+					{
+						Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContE;ii++)
+						{
+							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContE;ii++)
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii]= headMax;
+						}
+						gameGrid[row,rightOfCol] = myObject;
+						identifier[row,rightOfCol] = headMax;
+					}
+					if(storeContNW >=1) // if continuous match is on NW dir
+					{
+						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContNW;ii++)
+						{
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContNW;ii++)
+						{
+							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
+							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+						}
+						gameGrid[rowAbove,leftOfCol] = myObject;
+						identifier[rowAbove,leftOfCol] = headMax;
+					}
+					if(storeContNE >=1) // if continuous match is on NE dir
+					{
+						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						for(int ii=1;ii<=storeContNE;ii++)
+						{
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+						}
+						for(int ii=1;ii<=storeContNE;ii++)
+						{
+							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
+							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+						}
+						gameGrid[rowAbove,rightOfCol] = myObject;
+						identifier[rowAbove,rightOfCol] = headMax;
+					}
+					resetGridFP(row,col);
+					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				}
 			}
 		}
 		else if(checkWest == false && checkEast == false) // both horz initial checks fail
@@ -442,9 +627,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = headMax;
 					}
-					Destroy(gameGrid[row,col],fallDownDelay);
-					gameGrid[row,col] = myObject;
-					identifier[row,col] = headMax;
+					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
@@ -468,10 +651,6 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == true)
-			{
-				// all true
-			}
 			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == false)
 			{
 				// NW and N true, NE false
@@ -479,6 +658,10 @@ public class GameBoundary : MonoBehaviour
 			else if(checkNorthWest == false && checkNorth == true && checkNorthEast == true)
 			{
 				//NE and N are true, NW false
+			}
+			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == true)
+			{
+				// all true
 			}
 		}
 	}
@@ -625,6 +808,13 @@ public class GameBoundary : MonoBehaviour
 			else {return 0;}
 		}
 		else {return 0;}
+	}
+
+	private void resetGridFP(int r, int c)
+	{
+		Destroy(gameGrid[r,c],fallDownDelay);
+		gameGrid[r,c] = myObject;
+		identifier[r,c] = headMax;
 	}
 
 	public void idUpdate(int r, int c, int hNum)
