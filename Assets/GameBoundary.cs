@@ -16,14 +16,14 @@ public class GameBoundary : MonoBehaviour
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
 	//--------------------------------------------------------
 	private directions dir;
-	private bool checkWest, checkNorthWest, checkNorth, checkNorthEast, checkEast, checkSouthEast, checkSouth, checkSouthWest; 
+	private bool checkWest, checkNorthWest, checkNorthEast, checkEast, checkSouthEast, checkSouth, checkSouthWest; 
 	// ^(above) detected initial AH match in this direction
-	private bool checkContW, checkContNW, checkContN, checkContNE, checkContE, checkContSE, checkContS, checkContSW; 
+	private bool checkContW, checkContNW, checkContNE, checkContE, checkContSE, checkContS, checkContSW; 
 	// ^(above) detected continuous AH match in this direction (more than 1)
 	private int comboCnt;
     public int[,] identifier;
 
-    public enum directions { UNSET, NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
+    public enum directions { UNSET, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
 
     void FixedUpdate()
 	{
@@ -37,8 +37,8 @@ public class GameBoundary : MonoBehaviour
 	{
 		comboCnt = 0; // initialize
 		dir = directions.UNSET; // initialize
-		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = checkSouthEast = checkSouth = checkSouthWest = false; // initialize
-		checkContW = checkContNW = checkContN = checkContNE = checkContE = checkContSE = checkContS = checkContSW = false; // initialize
+		checkWest = checkNorthWest  = checkNorthEast = checkEast = checkSouthEast = checkSouth = checkSouthWest = false; // initialize
+		checkContW = checkContNW = checkContNE = checkContE = checkContSE = checkContS = checkContSW = false; // initialize
 		//--------------------------------------------------------------------------------
 		maxRayDistX = GetComponent<RectTransform>().sizeDelta.x; // stretches the width
 		maxRayDistY = GetComponent<RectTransform>().sizeDelta.y; // stretches the height
@@ -64,44 +64,32 @@ public class GameBoundary : MonoBehaviour
 	public void CheckPillar(int row, int col)
 	{
 		comboCnt = 0; //reset
-		checkWest = checkNorthWest = checkNorth = checkNorthEast = checkEast = false; // reset
-		checkContW = checkContNW = checkContN = checkContNE = checkContE = false; // reset
+		checkWest = checkNorthWest  = checkNorthEast = checkEast = false; // reset
+		checkContW = checkContNW  = checkContNE = checkContE = false; // reset
 		//------------------------------------------------------------------------------------
 		int leftOfCol = col-1; // these lines between the comments are used to simplify meaning
 		int rightOfCol = col+1; // this one too
 		int rowAbove = row-1; // this one too
 		int fpIdentifier = identifier[row,col]; // this one too
-		int storeContW, storeContNW, storeContN, storeContNE, storeContE; // store continuous combo amts of a direction
-		storeContW = storeContNW = storeContN = storeContNE = storeContE = 0; // initialize from within
+		int storeContW, storeContNW, storeContNE, storeContE; // store continuous combo amts of a direction
+		storeContW = storeContNW = storeContNE = storeContE = 0; // initialize from within
 		//------------------------------------------------------------------------------------
 		for (int ii = leftOfCol; ii <= rightOfCol; ii++)
 		{
 			if (fpIdentifier == identifier [rowAbove, ii])
 			{
 				comboCnt++;
-				if (ii == leftOfCol) // matched w/ northwest AnimuHead
-				{ 
+				if (ii == leftOfCol){ // matched w/ northwest AnimuHead 
 					dir = directions.NORTHWEST;
 					checkNorthWest = true;
 					storeContNW = ContDirCheck (dir, rowAbove, leftOfCol);
 					comboCnt += storeContNW;
-					//Debug.Log("Found a match with northwest neighbor AnimuHead");
 				}
-				else if (ii == col) // matched w/ north AnimuHead
-				{
-					dir = directions.NORTH;
-					checkNorth = true;
-					storeContN = ContDirCheck (dir, rowAbove, col);
-					comboCnt += storeContN;
-					//Debug.Log("Found a match with north neighbor AnimuHead");
-				}
-				else if (ii == rightOfCol) // matched w/ northeast AnimuHead
-				{	
+				else if (ii == rightOfCol){ // matched w/ northeast AnimuHead	
 					dir = directions.NORTHEAST;
 					checkNorthEast = true;
 					storeContNE = ContDirCheck (dir, rowAbove, rightOfCol);
 					comboCnt += storeContNE;
-					//Debug.Log("Found a match with northeast neighbor AnimuHead");
 				}
 			}
 		}
@@ -125,7 +113,7 @@ public class GameBoundary : MonoBehaviour
 		Debug.Log ("INITIAL Total Combo Count is " + comboCnt);
 		if(checkWest == true && checkEast == true) //instant combo 1st condition, w/o continual dirCheck
 		{
-			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match, then can break 3-5 in a row HORZ
+			if(checkNorthWest == false && checkNorthEast == false) //northern neighbors don't match, then can break 3-5 in a row HORZ
 			{
 				if(comboCnt>3) // must be >=4 combo as a result of the above
 				{
@@ -294,7 +282,7 @@ public class GameBoundary : MonoBehaviour
 		}
 		else if(checkWest == true && checkEast == false) // WEST neighbor matches, EAST neighbor fails
 		{
-			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match
+			if(checkNorthWest == false && checkNorthEast == false) //northern neighbors don't match
 			{
 				if(storeContW >= 1) // at least one continuous on the west matching
 				{
@@ -314,7 +302,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false)
+			else if(checkNorthWest == true && checkNorthEast == false)
 			{
 				if(storeContW >=1 || storeContNW >=1) // if either one contains a continuous match
 				{
@@ -353,7 +341,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true)
+			else if(checkNorthWest == false && checkNorthEast == true)
 			{
 				if(storeContW >=1 || storeContNE >=1) // if either one contains a continuous match
 				{
@@ -392,7 +380,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
+			else if(checkNorthWest == true && checkNorthEast == true)
 			{
 				if(storeContW >=1 || storeContNW >=1 || storeContNE >=1)
 				{
@@ -449,7 +437,7 @@ public class GameBoundary : MonoBehaviour
 		}
 		else if(checkWest == false && checkEast == true) // EAST neighbor matches, WEST neighbor fails
 		{
-			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false) //northern neighbors don't match
+			if(checkNorthWest == false && checkNorthEast == false) //northern neighbors don't match
 			{
 				if(storeContE >= 1) // at least one continuous on the east matching
 				{
@@ -469,7 +457,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			} //--------------------------------------------------------------------------------------------------------------------
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false) // EAST AND NORTHWEST MATCH, REST FAIL
+			else if(checkNorthWest == true && checkNorthEast == false) // EAST AND NORTHWEST MATCH, REST FAIL
 			{
 				if(storeContE >=1 || storeContNW >=1) // if either one contains a continuous match
 				{
@@ -508,7 +496,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			} //--------------------------------------------------------------------------------------------------------------------
-			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true) // EAST AND NORTHEAST MATCH, REST FAIL
+			else if(checkNorthWest == false && checkNorthEast == true) // EAST AND NORTHEAST MATCH, REST FAIL
 			{
 				if(storeContE >=1 || storeContNE >=1)
 				{
@@ -547,7 +535,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			} //----------------------------------------------------------------------------------------------------
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true)
+			else if(checkNorthWest == true && checkNorthEast == true)
 			{
 				if(storeContE >=1 || storeContNW >=1 || storeContNE >=1) // if either one contains a continuous match
 				{
@@ -604,11 +592,7 @@ public class GameBoundary : MonoBehaviour
 		}
 		else if(checkWest == false && checkEast == false) // both horz initial checks fail
 		{
-			if(checkNorthWest == false && checkNorth == false && checkNorthEast == false)
-			{
-				return; //exits CheckPillar
-			}
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == false) // NW only match
+			if(checkNorthWest == true && checkNorthEast == false) // NW only match
 			{
 				if(storeContNW >=1) // at least one continuous on NW dir matching
 				{
@@ -628,7 +612,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			} //-----------------------------------------------------------------------------------------------
-			else if(checkNorthWest == false && checkNorth == false && checkNorthEast == true) // NE only match
+			else if(checkNorthWest == false && checkNorthEast == true) // NE only match
 			{
 				if(storeContNE >=1) // at least one continuous on NE dir matching
 				{
@@ -648,7 +632,7 @@ public class GameBoundary : MonoBehaviour
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			} //-----------------------------------------------------------------------------------------------
-			else if(checkNorthWest == true && checkNorth == false && checkNorthEast == true) // NW & NE match
+			else if(checkNorthWest == true && checkNorthEast == true) // NW & NE match
 			{
 				if(storeContNW >=1 || storeContNE >=1) //if either one contains a continuous match
 				{
@@ -686,37 +670,6 @@ public class GameBoundary : MonoBehaviour
 					resetGridFP(row,col);
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
-			} //-----------------------------------------------------------------------------------------------------------
-			else if(checkNorthWest == false && checkNorth == true && checkNorthEast == false) // N only match (gridAllCheck)
-			{
-				if(storeContN >=1) // at least one continuous on N dir matching
-				{
-					Destroy(gameGrid[rowAbove,col],fallDownDelay);
-					Destroy(gameGrid[row,col],fallDownDelay);
-					for(int ii=1;ii<=storeContN;ii++)
-					{
-						Destroy(gameGrid[rowAbove-ii,col],fallDownDelay);
-					}
-					for(int ii=1;ii<=storeContN;ii++)
-					{
-						gameGrid[rowAbove-ii,col] = myObject;
-						identifier[rowAbove-ii,col]= headMax;
-					}
-					resetGridInfo(rowAbove,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
-				}
-			} //-----------------------------------------------------------------------------------------------------------
-			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == false)
-			{
-				// NW and N true, NE false
-			}
-			else if(checkNorthWest == false && checkNorth == true && checkNorthEast == true)
-			{
-				//NE and N are true, NW false
-			}
-			else if(checkNorthWest == true && checkNorth == true && checkNorthEast == true)
-			{
-				// all true
 			}
 		}
 	}
@@ -725,7 +678,6 @@ public class GameBoundary : MonoBehaviour
 	{
 		switch(d)
 		{
-			case directions.NORTH: return ContNorthCheck(fpRow,fpCol);
 			case directions.SOUTH: return ContSouthCheck(fpRow,fpCol);
 			case directions.WEST: return ContWestCheck(fpRow,fpCol);
 			case directions.EAST: return ContEastCheck(fpRow,fpCol);
@@ -735,20 +687,6 @@ public class GameBoundary : MonoBehaviour
 			case directions.SOUTHEAST: return ContSECheck(fpRow,fpCol);
 			default: return 0; //does nothing, direction unaltered
 		}
-	}
-
-	private int ContNorthCheck(int fpRow, int fpCol)
-	{
-		if(fpRow!=0) // as long as fpRow is not the furthest northern row...
-		{
-			if(identifier[fpRow,fpCol] == identifier[fpRow-1,fpCol])
-			{
-				dir = directions.NORTH;
-				checkContN = true;
-				Debug.Log("Found continuous match with north neighbor AnimuHead");
-				return 1 + ContDirCheck(dir,fpRow-1,fpCol);
-			} else {return 0;}
-		} else {return 0;}
 	}
 
 	private int ContSouthCheck(int fpRow, int fpCol)
