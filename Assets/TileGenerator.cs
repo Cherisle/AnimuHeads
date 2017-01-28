@@ -112,13 +112,16 @@ public class TileGenerator : MonoBehaviour
 		{	
 			if(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists
 			{
-				if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists?
+                if (fallCounter<8 && transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+2, colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists 2 spots below?
+                {
+                    Destroy(dropSpot);
+                }
+                if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists?
 				{
-					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+                    transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
 					Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
 					transform.parent.GetComponent<GameBoundary>().setID(fallCounter,colNum,goHeadNum);
-                    Destroy(dropSpot); 
 					goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
 					if(goGridCnt >=3)
 					{
