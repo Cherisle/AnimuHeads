@@ -48,18 +48,22 @@ public class GameBoundary : MonoBehaviour
 		rectNECorner = new Vector2 (ctrXLoc + maxRayDistX / 2, ctrYLoc + maxRayDistY / 2);
 		rectSWCorner = new Vector2 (ctrXLoc - maxRayDistX / 2, ctrYLoc - maxRayDistY / 2);
 		//--------------------------------------------------------------------------------
-		myObject = Resources.Load("Default/DefaultTile") as GameObject;
-		gameGrid = new GameObject[rows,columns];
-        identifier = new int[rows,columns];
-		for(int ii=0;ii<rows;ii++)
-		{
-			for(int jj=0;jj<columns;jj++)
-			{
-				gameGrid[ii,jj] = myObject;
-				identifier[ii,jj] = 8; //default identifier, we use 0-7 as index
-			}
-		}
 	}
+
+    void Awake()
+    {
+        myObject = Resources.Load("Default/DefaultTile") as GameObject;
+        gameGrid = new GameObject[rows, columns];
+        identifier = new int[rows, columns];
+        for (int ii = 0; ii < rows; ii++)
+        {
+            for (int jj = 0; jj < columns; jj++)
+            {
+                gameGrid[ii, jj] = myObject;
+                identifier[ii, jj] = 8; //default identifier, we use 0-7 as index
+            }
+        }
+    }
 
 	public void CheckPillar(int row, int col)
 	{
