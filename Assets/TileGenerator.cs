@@ -108,9 +108,9 @@ public class TileGenerator : MonoBehaviour
 	}
 	void Falling()
 	{
-		if (fallCounter<rows-1)
+		if (fallCounter<rows-1) //checks for inbounds
 		{	
-			if(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists
+			if(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists, also checks for inbounds
 			{
                 if (fallCounter<8 && transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+2, colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists 2 spots below?
                 {
@@ -320,5 +320,68 @@ public class TileGenerator : MonoBehaviour
 			}
             timePassed = 0f;
         }
+
+		if (Input.GetKeyDown (KeyCode.DownArrow))
+		{
+			Destroy(goBelow);
+			Destroy(rowZeroClone);
+			for (int dropRow = fallCounter; dropRow <= 8; dropRow++)
+			{
+				if(transform.parent.GetComponent<GameBoundary> ().gameGrid[dropRow+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists? (meaning, AH below is TRUE)
+				{
+					transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow,colNum] = Instantiate(go,new Vector2(colNum*2-9,dropRow*-2+9), Quaternion.identity) as GameObject;
+					transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow,colNum].name = go.name; //display proper AnimuHead name
+					//Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
+					transform.parent.GetComponent<GameBoundary>().setID(dropRow,colNum,goHeadNum);
+					goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
+					if(goGridCnt >=3)
+					{
+						fpRow = dropRow;
+						fpCol = colNum;
+						//Debug.Log("Focal Point R,C is " + fpRow + "," + fpCol);
+					}
+					if (dropRow == 0)
+					{
+						Destroy(rowZeroClone);
+						Debug.Log("Game should be over");
+						//reload game over scene right here, once we have created the scene itself
+						SceneManager.LoadScene("GameOverScene");
+					}
+					dropRow = 9;
+					CancelInvoke("Falling");
+					CreatePrefab();
+				}
+				else // tile below is NOT an AnimuHead, then is DEFAULT (BUT STILL INSIDE THE GRID, not on the boundaries)
+				{	
+					//need to remember to still destroy: Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead; also destroy goCurrent and goBelow
+					if (dropRow == 8) // final iteration of THIS else loop
+					{
+						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(dropRow+1)*-2+9), Quaternion.identity) as GameObject;  
+						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum].name = go.name;
+						//Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
+						transform.parent.GetComponent<GameBoundary>().setID(dropRow+1,colNum,goHeadNum);
+						Destroy(dropSpot); 
+						goGridCnt++;
+						if(goGridCnt >=3)
+						{
+							fpRow = dropRow+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
+							fpCol = colNum;
+							if(fpCol == 0 || fpCol == columns-1)
+							{
+								//should check bottom corners, not pillar
+							}
+							else
+							{
+								transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+							}
+						}
+						dropRow = 9;
+						CancelInvoke("Falling");
+						CreatePrefab();
+					}						
+				}
+				Destroy(dropSpot);
+			}
+		} 
 	}		
 }
