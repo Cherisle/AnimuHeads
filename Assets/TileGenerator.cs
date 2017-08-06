@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class TileGenerator : MonoBehaviour
 {
-	private const int rows = 10;
-	private const int columns = 10;
+	private const int rows = 11;
+	private const int columns = 11;
 	private const int headMax = 8;
 	private const float fallDownDelay = 0.4f;
 	public Object[] myPrefabs;
@@ -112,7 +112,7 @@ public class TileGenerator : MonoBehaviour
 		{	
 			if(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists, also checks for inbounds
 			{
-                if (fallCounter<8 && transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+2, colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists 2 spots below?
+                if (fallCounter<9 && transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+2, colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists 2 spots below?
                 {
                     Destroy(dropSpot);
                 }
@@ -152,7 +152,7 @@ public class TileGenerator : MonoBehaviour
 					{
 						Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 					}
-					if (fallCounter == 8) // final iteration of THIS else loop
+					if (fallCounter == rows-2) // final iteration of THIS else loop, fallCounter set == second to last row (because stamping occurs one down) 
 					{
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
@@ -194,7 +194,7 @@ public class TileGenerator : MonoBehaviour
 				}
 			}
 		} 
-		else //fallCounter >= 9
+		else // fallCounter >= 10, signals to create new AnimuHead character tile
 		{
 			// destroys all illusion tiles to prepare for new instantiation
 			//Destroy(goCurrent);
@@ -203,12 +203,6 @@ public class TileGenerator : MonoBehaviour
 			CreatePrefab();
 		}
 	}
-
-	/*void CheckBox(int row, int col)
-	{
-		//this method should be in GameBoundary
-	}*/
-
 
 	public void SubtractGrid(int n)
 	{
@@ -224,8 +218,7 @@ public class TileGenerator : MonoBehaviour
 	void Update()
 	{
         timePassed += Time.deltaTime;
-
-		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < 9 && timePassed >= keyDelay)
+		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < (rows-1) && timePassed >= keyDelay)
 		{
             //prevents overlapping
             //if (Input.GetKey(KeyCode.LeftArrow))
@@ -277,7 +270,7 @@ public class TileGenerator : MonoBehaviour
             timePassed = 0f;
         }
 
-		if (Input.GetKey (KeyCode.RightArrow) && colNum < 9 && fallCounter < 9 && timePassed >= keyDelay)
+		if (Input.GetKey (KeyCode.RightArrow) && colNum < (columns-1) && fallCounter < (rows-1) && timePassed >= keyDelay)
 		{
             //prevents overlapping
 			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum + 1].GetComponent<AnimuHead>() == null)
@@ -330,7 +323,7 @@ public class TileGenerator : MonoBehaviour
 		{
 			Destroy(goBelow);
 			Destroy(rowZeroClone);
-			for (int dropRow = fallCounter; dropRow <= 8; dropRow++)
+			for (int dropRow = fallCounter; dropRow <= 9; dropRow++)
 			{
 				if(transform.parent.GetComponent<GameBoundary> ().gameGrid[dropRow+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists? (meaning, AH below is TRUE)
 				{
@@ -358,7 +351,7 @@ public class TileGenerator : MonoBehaviour
 				}
 				else // tile below is NOT an AnimuHead, then is DEFAULT (BUT STILL INSIDE THE GRID, not on the boundaries)
 				{	
-					if (dropRow == 8) // final iteration of THIS else loop
+					if (dropRow == 9) // final iteration of THIS else loop
 					{
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(dropRow+1)*-2+9), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum].name = go.name;
@@ -375,7 +368,7 @@ public class TileGenerator : MonoBehaviour
 								{
 									transform.parent.GetComponent<GameBoundary>().CheckLBCorner(fpRow,fpCol);
 								}
-								if(fpCol == 9) // bottom right corner
+								if(fpCol == 10) // bottom right corner
 								{
 									transform.parent.GetComponent<GameBoundary>().CheckRBCorner(fpRow,fpCol);
 								}

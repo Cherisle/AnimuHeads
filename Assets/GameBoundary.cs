@@ -4,8 +4,8 @@ using System.Linq;
 
 public class GameBoundary : MonoBehaviour
 {
-	private const int rows = 10;
-	private const int columns = 10;
+	private const int rows = 11;
+	private const int columns = 11;
 	private const int headMax = 8;
 	private const float fallDownDelay = 0.4f;
 	public GameObject[,] gameGrid;
