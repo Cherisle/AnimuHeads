@@ -4,17 +4,10 @@ using System.Linq;
 
 public class GameBoundary : MonoBehaviour
 {
-<<<<<<< HEAD
-	private const int rows = 11;
-	private const int columns = 11;
-	private const int headMax = 8;
-	private const float fallDownDelay = 0.4f;
-=======
-	private const int ROWS = 10;
-	private const int COLUMNS = 10;
+	private const int ROWS = 11;
+	private const int COLUMNS = 11;
 	private const int HEAD_MAX = 8;
 	private const float FALL_DOWN_DELAY = 0.4f;
->>>>>>> origin/master
 	public GameObject[,] gameGrid;
 	public GameObject myObject;
 	//--------------------------------------------------------
