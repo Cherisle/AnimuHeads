@@ -221,8 +221,6 @@ public class TileGenerator : MonoBehaviour
 		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < (ROWS-1) && timePassed >= keyDelay)
 		{
             //prevents overlapping
-            //if (Input.GetKey(KeyCode.LeftArrow))
-            //{
             if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter, colNum - 1].GetComponent<AnimuHead>() == null)
             {
                 if (rowZeroClone != null)
@@ -351,7 +349,7 @@ public class TileGenerator : MonoBehaviour
 				}
 				else // tile below is NOT an AnimuHead, then is DEFAULT (BUT STILL INSIDE THE GRID, not on the boundaries)
 				{	
-					if (dropRow == 9) // final iteration of THIS else loop
+					if (dropRow == 9) // final iteration of THIS else loop ; stamps always occur +1 down, that's why this is 9
 					{
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(dropRow+1)*-2+9), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum].name = go.name;
@@ -368,7 +366,7 @@ public class TileGenerator : MonoBehaviour
 								{
 									transform.parent.GetComponent<GameBoundary>().CheckLBCorner(fpRow,fpCol);
 								}
-								if(fpCol == 10) // bottom right corner
+								if(fpCol == COLUMNS-1) // bottom right corner
 								{
 									transform.parent.GetComponent<GameBoundary>().CheckRBCorner(fpRow,fpCol);
 								}
