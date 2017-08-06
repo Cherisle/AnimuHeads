@@ -167,6 +167,11 @@ public class TileGenerator : MonoBehaviour
 							if(fpCol == 0 || fpCol == columns-1)
 							{
 								//should check bottom corners, not pillar
+								if(fpCol == 0) // bottom left corner
+								{
+									transform.parent.GetComponent<GameBoundary>().CheckLBCorner(fpRow,fpCol);
+									Debug.Log("successfully entered here message");
+								}
 							}
 							else
 							{
@@ -347,18 +352,16 @@ public class TileGenerator : MonoBehaviour
 						//reload game over scene right here, once we have created the scene itself
 						SceneManager.LoadScene("GameOverScene");
 					}
-					dropRow = 9;
+					dropRow = 100;
 					CancelInvoke("Falling");
 					CreatePrefab();
 				}
 				else // tile below is NOT an AnimuHead, then is DEFAULT (BUT STILL INSIDE THE GRID, not on the boundaries)
 				{	
-					//need to remember to still destroy: Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead; also destroy goCurrent and goBelow
 					if (dropRow == 8) // final iteration of THIS else loop
 					{
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(dropRow+1)*-2+9), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum].name = go.name;
-						//Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
 						transform.parent.GetComponent<GameBoundary>().setID(dropRow+1,colNum,goHeadNum);
 						Destroy(dropSpot); 
 						goGridCnt++;
@@ -368,14 +371,21 @@ public class TileGenerator : MonoBehaviour
 							fpCol = colNum;
 							if(fpCol == 0 || fpCol == columns-1)
 							{
-								//should check bottom corners, not pillar
+								if(fpCol == 0) // bottom left corner
+								{
+									transform.parent.GetComponent<GameBoundary>().CheckLBCorner(fpRow,fpCol);
+								}
+								if(fpCol == 9) // bottom right corner
+								{
+									transform.parent.GetComponent<GameBoundary>().CheckRBCorner(fpRow,fpCol);
+								}
 							}
 							else
 							{
 								transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
 							}
 						}
-						dropRow = 9;
+						dropRow = 100;
 						CancelInvoke("Falling");
 						CreatePrefab();
 					}						
