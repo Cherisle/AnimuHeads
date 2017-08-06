@@ -152,7 +152,7 @@ public class TileGenerator : MonoBehaviour
 					{
 						Destroy (rowZeroClone); //specific for only the first generated of each random AnimuHead
 					}
-					if (fallCounter == rows-2) // final iteration of THIS else loop, fallCounter set == second to last row (because stamping occurs one down) 
+					if (fallCounter == ROWS-2) // final iteration of THIS else loop, fallCounter set == second to last row (because stamping occurs one down) 
 					{
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
@@ -218,7 +218,7 @@ public class TileGenerator : MonoBehaviour
 	void Update()
 	{
         timePassed += Time.deltaTime;
-		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < (rows-1) && timePassed >= keyDelay)
+		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < (ROWS-1) && timePassed >= keyDelay)
 		{
             //prevents overlapping
             //if (Input.GetKey(KeyCode.LeftArrow))
@@ -270,7 +270,7 @@ public class TileGenerator : MonoBehaviour
             timePassed = 0f;
         }
 
-		if (Input.GetKey (KeyCode.RightArrow) && colNum < (columns-1) && fallCounter < (rows-1) && timePassed >= keyDelay)
+		if (Input.GetKey (KeyCode.RightArrow) && colNum < (COLUMNS-1) && fallCounter < (ROWS-1) && timePassed >= keyDelay)
 		{
             //prevents overlapping
 			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum + 1].GetComponent<AnimuHead>() == null)
