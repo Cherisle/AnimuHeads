@@ -33,4 +33,8 @@ Coding Guidelines
 5.  If deciding on whether a variable or method should be public or private, always make it initially private. Make it public 
     only if you expect to call it from another script.
     
-6.  Make sure all Destroy() calls are run prior to resetting the grid information (gameGrid,identifier) calls
+6.  Make sure all Destroy() calls are run prior to resetting the grid information (gameGrid,identifier) calls.
+
+7. No magic numbers! For numbers that are not 0, 1, or 2. Add a meaningful variable so that the variable will be readable andeasier to modify.
+
+8. Constant values should have const in their name and have all letters capitalized with words separated by underscore if possible.

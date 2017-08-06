@@ -4,10 +4,17 @@ using System.Linq;
 
 public class GameBoundary : MonoBehaviour
 {
+<<<<<<< HEAD
 	private const int rows = 11;
 	private const int columns = 11;
 	private const int headMax = 8;
 	private const float fallDownDelay = 0.4f;
+=======
+	private const int ROWS = 10;
+	private const int COLUMNS = 10;
+	private const int HEAD_MAX = 8;
+	private const float FALL_DOWN_DELAY = 0.4f;
+>>>>>>> origin/master
 	public GameObject[,] gameGrid;
 	public GameObject myObject;
 	//--------------------------------------------------------
@@ -53,11 +60,11 @@ public class GameBoundary : MonoBehaviour
     void Awake()
     {
         myObject = Resources.Load("Default/DefaultTile") as GameObject;
-        gameGrid = new GameObject[rows, columns];
-        identifier = new int[rows, columns];
-        for (int ii = 0; ii < rows; ii++)
+        gameGrid = new GameObject[ROWS, COLUMNS];
+        identifier = new int[ROWS, COLUMNS];
+        for (int ii = 0; ii < ROWS; ii++)
         {
-            for (int jj = 0; jj < columns; jj++)
+            for (int jj = 0; jj < COLUMNS; jj++)
             {
                 gameGrid[ii, jj] = myObject;
                 identifier[ii, jj] = 8; //default identifier, we use 0-7 as index
@@ -100,20 +107,20 @@ public class GameBoundary : MonoBehaviour
 			if(storeContE >=1) // 1 continuous means at least 3 combo (FP AnimuHead, Matching East AnimuHead, 1st ContinuousE AnimuHead...)
 			{
 				//-----Destroy Proper Tiles via Combo------------------
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContE;ii++) // continuous East
 				{
-					Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+					Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 				}
 				//-----------------------------------------------------
 				//-----Reset Proper Tiles after Combo------------------
 				gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
-				identifier[row,col] = identifier[row,rightOfCol] = headMax;
+                identifier[row, col] = identifier[row, rightOfCol] = HEAD_MAX;
 				for(int ii=1;ii<=storeContE;ii++)
 				{
 					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = headMax;
+					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
 				//-----------------------------------------------------
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
@@ -124,20 +131,20 @@ public class GameBoundary : MonoBehaviour
 			if(storeContNE >=1)
 			{
 				//-----Destroy Proper Tiles via Combo--------------------------
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
 				{
-					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 				}
 				//-------------------------------------------------------------
 				//-----Reset Proper Tiles after Combo--------------------------
 				gameGrid[row,col] = gameGrid[rowAbove,rightOfCol] = myObject;
-				identifier[row,col] = identifier[rowAbove,rightOfCol] = headMax;
+				identifier[row,col] = identifier[rowAbove,rightOfCol] = HEAD_MAX;
 				for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
 				{
 					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-					identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
 				//-------------------------------------------------------------
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
@@ -147,39 +154,39 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContE >=1 || storeContNE >=1)
 			{
-				Destroy(gameGrid[row,col],fallDownDelay);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				if(storeContE >=1)
 				{	
-					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+					Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContE;ii++) // continuous East
 					{
-						Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+						Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 					}
 					//-----------------------------------------------------
 					//-----Reset Proper Tiles after Combo------------------
 					gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
-					identifier[row,col] = identifier[row,rightOfCol] = headMax;
+					identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 					for(int ii=1;ii<=storeContE;ii++)
 					{
 						gameGrid[row,rightOfCol+ii] = myObject;
-						identifier[row,rightOfCol+ii] = headMax;
+						identifier[row,rightOfCol+ii] = HEAD_MAX;
 					}
 				}
 				if(storeContNE >=1)
 				{
-					Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+					Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContNE;ii++) // continuous NorthEast
 					{
-						Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+						Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 					}
 					//-------------------------------------------------------------
 					//-----Reset Proper Tiles after Combo--------------------------
 					gameGrid[row,col] = gameGrid[rowAbove,rightOfCol] = myObject;
-					identifier[row,col] = identifier[rowAbove,rightOfCol] = headMax;
+					identifier[row,col] = identifier[rowAbove,rightOfCol] = HEAD_MAX;
 					for(int ii=1;ii<=storeContNE;ii++) // reset continuous NorthEast
 					{
 						gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-						identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+						identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 					}
 				}
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
@@ -222,20 +229,20 @@ public class GameBoundary : MonoBehaviour
 			if(storeContW >=1) // 1 continuous means at least 3 combo obtained
 			{
 				//-----Destroy Proper Tiles via Combo------------------
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContW;ii++)
 				{
-					Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+					Destroy(gameGrid[row,leftOfCol-ii],FALL_DOWN_DELAY);
 				}
 				//-----------------------------------------------------
 				//-----Reset Proper Tiles after Combo------------------
 				gameGrid[row,col] = gameGrid[row,leftOfCol] = myObject;
-				identifier[row,col] = identifier[row,leftOfCol] = headMax;
+				identifier[row,col] = identifier[row,leftOfCol] = HEAD_MAX;
 				for(int ii=1;ii<=storeContW;ii++)
 				{
 					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = headMax;
+					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
 				//-----------------------------------------------------
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
@@ -246,20 +253,20 @@ public class GameBoundary : MonoBehaviour
 			if(storeContNW >=1)
 			{
 				//-----Destroy Proper Tiles via Combo--------------------------
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContNW;ii++)
 				{
-					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 				}
 				//-------------------------------------------------------------
 				//-----Reset Proper Tiles after Combo--------------------------
 				gameGrid[row,col] = gameGrid[rowAbove,leftOfCol] = myObject;
-				identifier[row,col] = identifier[rowAbove,leftOfCol] = headMax;
+				identifier[row,col] = identifier[rowAbove,leftOfCol] = HEAD_MAX;
 				for(int ii=1;ii<=storeContNW;ii++)
 				{
 					gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-					identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 				}
 				//-------------------------------------------------------------
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
@@ -269,35 +276,35 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContW >=1 || storeContNW >=1)
 			{
-				Destroy(gameGrid[row,col],fallDownDelay);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				if(storeContW >=1)
 				{
-					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+					Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContW;ii++)
 					{
-						Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+						Destroy(gameGrid[row,leftOfCol-ii],FALL_DOWN_DELAY);
 					}
 					gameGrid[row,col] = gameGrid[row,leftOfCol] = myObject;
-					identifier[row,col] = identifier[row,leftOfCol] = headMax;
+					identifier[row,col] = identifier[row,leftOfCol] = HEAD_MAX;
 					for(int ii=1;ii<=storeContW;ii++)
 					{
 						gameGrid[row,leftOfCol-ii] = myObject;
-						identifier[row,leftOfCol-ii] = headMax;
+						identifier[row,leftOfCol-ii] = HEAD_MAX;
 					}
 				}
 				if(storeContNW >=1)
 				{
-					Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+					Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContNW;ii++)
 					{
-						Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+						Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 					}
 					gameGrid[row,col] = gameGrid[rowAbove,leftOfCol] = myObject;
-					identifier[row,col] = identifier[rowAbove,leftOfCol] = headMax;
+					identifier[row,col] = identifier[rowAbove,leftOfCol] = HEAD_MAX;
 					for(int ii=1;ii<=storeContNW;ii++)
 					{
 						gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-						identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+						identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 					}
 				}
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
@@ -366,12 +373,12 @@ public class GameBoundary : MonoBehaviour
 						Debug.Log("Focal Point combo'd with " + storeContW + " AnimuHeads in the west direction");
 						for(int ii=1; ii<=storeContW; ii++)
 						{
-							Destroy(gameGrid[row,col-1-ii],fallDownDelay);
+							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1; ii<=storeContW; ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
-							identifier[row,leftOfCol-ii] = headMax;
+							identifier[row,leftOfCol-ii] = HEAD_MAX;
 						}
 					}
 					else if(checkContW == false && checkContE == true) // X-number combo east with no CONTINUOUS combo on the west e.g. Fail Match FP Match Match
@@ -379,33 +386,33 @@ public class GameBoundary : MonoBehaviour
 						Debug.Log("Focal Point combo'd with " + storeContE + " AnimuHeads in the east direction");
 						for(int ii=1;ii<=storeContE;ii++) // continuous East
 						{
-							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1; ii<=storeContE; ii++)
 						{
 							gameGrid[row,rightOfCol+ii] = myObject;
-							identifier[row,rightOfCol+ii] = headMax;
+							identifier[row,rightOfCol+ii] = HEAD_MAX;
 						}
 					}
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
 						for(int ii=1; ii<=storeContW; ii++)
 						{
-							Destroy(gameGrid[row,col-1-ii],fallDownDelay);
+							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1; ii<=storeContE; ii++)
 						{
-							Destroy(gameGrid[row,col+1+ii],fallDownDelay);
+							Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1; ii<=storeContW; ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
-							identifier[row,leftOfCol-ii] = headMax;
+							identifier[row,leftOfCol-ii] = HEAD_MAX;
 						}
 						for(int ii=1; ii<=storeContE; ii++)
 						{
 							gameGrid[row,rightOfCol+ii] = myObject;
-							identifier[row,rightOfCol+ii] = headMax;
+							identifier[row,rightOfCol+ii] = HEAD_MAX;
 						}
 						// maximum continuous on each side: (M FP M) does not count as CONTINUOUS direction check
 						// maxContW == 4  <--> maxContE == 3 e.g.  M M M M (M FP M) M M M
@@ -415,11 +422,11 @@ public class GameBoundary : MonoBehaviour
 					{
 						// code never reaches here, would run the else below (comboCnt == 3) e.g. Fail Match FP Match Fail
 					}
-					Destroy(gameGrid[row,leftOfCol],fallDownDelay); // FROM HERE DOWN, done for all cases
-					Destroy(gameGrid[row,col],fallDownDelay);
-					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+					Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY); // FROM HERE DOWN, done for all cases
+					Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
-					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = headMax;
+					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
 				}
 				else // MUST be 3 combo w/ focal point in middle (comboCnt == 3) e.g. M FP M , THIS IS A FINAL STEP before GRIDALLCHECK 
@@ -428,11 +435,11 @@ public class GameBoundary : MonoBehaviour
                     gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                     gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
 
-                    Destroy(gameGrid[row,leftOfCol], fallDownDelay);
-					Destroy(gameGrid[row,col], fallDownDelay);
-					Destroy(gameGrid[row,rightOfCol], fallDownDelay);
+                    Destroy(gameGrid[row,leftOfCol], FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,col], FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,rightOfCol], FALL_DOWN_DELAY);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
-					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = headMax;
+					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts the 3 destroyed objects from goGridCnt
 				}
 			}
@@ -440,121 +447,121 @@ public class GameBoundary : MonoBehaviour
 			{
 				for(int ii=1;ii<=storeContNW;ii++) // continuous Northwest
 				{
-					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1; ii<=storeContW; ii++) // continuous West
 				{
-					Destroy(gameGrid[row,col-1-ii],fallDownDelay);
+					Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
 				{
-					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1; ii<=storeContE; ii++) // continuous East
 				{
-					Destroy(gameGrid[row,col+1+ii],fallDownDelay);
+					Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1;ii<=storeContNW;ii++) // reset continuous Northwest
 				{
 					gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-					identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 				}
 				for(int ii=1; ii<=storeContW; ii++) // reset continuous West
 				{
 					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = headMax;
+					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
 				for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
 				{
 					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-					identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
 				for(int ii=1; ii<=storeContE; ii++) // reset continuous East
 				{
 					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = headMax;
+					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
-				Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
-				Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
-				Destroy(gameGrid[row,leftOfCol],fallDownDelay);
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = gameGrid[rowAbove,leftOfCol] = gameGrid[rowAbove,rightOfCol] = myObject;
-				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,leftOfCol] = identifier[rowAbove,rightOfCol] = headMax;
+				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,leftOfCol] = identifier[rowAbove,rightOfCol] = HEAD_MAX;
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // NW initial matches, NE initial fails
 			{
 				for(int ii=1;ii<=storeContNW;ii++) // continuous Northwest
 				{
-					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1; ii<=storeContW; ii++) // continuous West
 				{
-					Destroy(gameGrid[row,col-1-ii],fallDownDelay);
+					Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1; ii<=storeContE; ii++) // continuous East
 				{
-					Destroy(gameGrid[row,col+1+ii],fallDownDelay);
+					Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1;ii<=storeContNW;ii++) // reset continuous Northwest
 				{
 					gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-					identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 				}
 				for(int ii=1; ii<=storeContW; ii++) // reset continuous West
 				{
 					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = headMax;
+					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
 				for(int ii=1; ii<=storeContE; ii++) // reset continuous East
 				{
 					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = headMax;
+					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
-				Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
-				Destroy(gameGrid[row,leftOfCol],fallDownDelay);
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = gameGrid[rowAbove,leftOfCol] = myObject;
-				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,leftOfCol] = headMax;
+				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,leftOfCol] = HEAD_MAX;
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // NW initial fails, NE initial matches
 			{
 				for(int ii=1; ii<=storeContW; ii++) // continuous West
 				{
-					Destroy(gameGrid[row,col-1-ii],fallDownDelay);
+					Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
 				{
-					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1; ii<=storeContE; ii++) // continuous East
 				{
-					Destroy(gameGrid[row,col+1+ii],fallDownDelay);
+					Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
 				}
 				for(int ii=1; ii<=storeContW; ii++) // reset continuous West
 				{
 					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = headMax;
+					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
 				for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
 				{
 					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-					identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
 				for(int ii=1; ii<=storeContE; ii++) // reset continuous East
 				{
 					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = headMax;
+					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
-				Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
-				Destroy(gameGrid[row,leftOfCol],fallDownDelay);
-				Destroy(gameGrid[row,col],fallDownDelay);
-				Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = gameGrid[rowAbove,rightOfCol] = myObject;
-				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,rightOfCol] = headMax;
+				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,rightOfCol] = HEAD_MAX;
 				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
 			}
 		} // end checkWest == TRUE && checkEast == TRUE INITIAL(ENTRY) condition
@@ -565,19 +572,19 @@ public class GameBoundary : MonoBehaviour
 			{
 				if(storeContW >= 1) // at least one continuous on the west matching required for combo
 				{
-					Destroy(gameGrid[row,leftOfCol],fallDownDelay);
-					Destroy(gameGrid[row,col],fallDownDelay);
+					Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContW;ii++)
 					{
-						Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+						Destroy(gameGrid[row,leftOfCol-ii],FALL_DOWN_DELAY);
 					}
 					for(int ii=1;ii<=storeContW;ii++)
 					{
 						gameGrid[row,leftOfCol-ii] = myObject;
-						identifier[row,leftOfCol-ii] = headMax;
+						identifier[row,leftOfCol-ii] = HEAD_MAX;
 					}
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = myObject;
-					identifier[row,leftOfCol] = identifier[row,col] = headMax;
+					identifier[row,leftOfCol] = identifier[row,col] = HEAD_MAX;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
@@ -587,45 +594,45 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContW >=1) // if continuous match is on east dir
 					{
-						Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContW;ii++)
 						{
-							Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[row,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContW;ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
-							identifier[row,leftOfCol-ii]= headMax;
+							identifier[row,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(row,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
-						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
-						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,rightOfCol);
 					}
@@ -641,30 +648,30 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContW >=1) // if continuous match is on east dir
 					{
-						Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContW;ii++)
 						{
-							Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[row,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContW;ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
-							identifier[row,leftOfCol-ii]= headMax;
+							identifier[row,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(row,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
-						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,leftOfCol);
 					}
@@ -680,30 +687,30 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContW >=1) // if continuous match is on east dir
 					{
-						Destroy(gameGrid[row,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContW;ii++)
 						{
-							Destroy(gameGrid[row,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[row,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContW;ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
-							identifier[row,leftOfCol-ii]= headMax;
+							identifier[row,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(row,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
-						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,rightOfCol);
 					}
@@ -721,19 +728,19 @@ public class GameBoundary : MonoBehaviour
 			{
 				if(storeContE >= 1) // at least one continuous on the east matching required for combo
 				{
-					Destroy(gameGrid[row,rightOfCol],fallDownDelay);
-					Destroy(gameGrid[row,col],fallDownDelay);
+					Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContE;ii++)
 					{
-						Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+						Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 					}
 					for(int ii=1;ii<=storeContE;ii++)
 					{
 						gameGrid[row,rightOfCol+ii] = myObject;
-						identifier[row,rightOfCol+ii] = headMax;
+						identifier[row,rightOfCol+ii] = HEAD_MAX;
 					}
 					gameGrid[row,rightOfCol] = gameGrid[row,col] = myObject;
-					identifier[row,rightOfCol] = identifier[row,col] = headMax;
+					identifier[row,rightOfCol] = identifier[row,col] = HEAD_MAX;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
@@ -743,45 +750,45 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContE >=1) // if continuous match is on east dir
 					{
-						Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContE;ii++)
 						{
-							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContE;ii++)
 						{
 							gameGrid[row,rightOfCol+ii] = myObject;
-							identifier[row,rightOfCol+ii]= headMax;
+							identifier[row,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(row,rightOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
-						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
-						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,rightOfCol);
 					}
@@ -797,30 +804,30 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContE >=1) // if continuous match is on east dir
 					{
-						Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContE;ii++)
 						{
-							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContE;ii++)
 						{
 							gameGrid[row,rightOfCol+ii] = myObject;
-							identifier[row,rightOfCol+ii]= headMax;
+							identifier[row,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(row,rightOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
 					{
-						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,leftOfCol);
 					}
@@ -836,30 +843,30 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContE >=1) // if continuous match is on east dir
 					{
-						Destroy(gameGrid[row,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContE;ii++)
 						{
-							Destroy(gameGrid[row,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContE;ii++)
 						{
 							gameGrid[row,rightOfCol+ii] = myObject;
-							identifier[row,rightOfCol+ii]= headMax;
+							identifier[row,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(row,rightOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
 					{
-						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,rightOfCol);
 					}
@@ -877,19 +884,19 @@ public class GameBoundary : MonoBehaviour
 			{
 				if(storeContNW >=1) // at least one continuous on NW dir matching
 				{
-					Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
-					Destroy(gameGrid[row,col],fallDownDelay);
+					Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContNW;ii++)
 					{
-						Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+						Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 					}
 					for(int ii=1;ii<=storeContNW;ii++)
 					{
 						gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-						identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+						identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 					}
 					gameGrid[rowAbove,leftOfCol] = gameGrid[row,col] = myObject;
-					identifier[rowAbove,leftOfCol] = identifier[row,col] = headMax;
+					identifier[rowAbove,leftOfCol] = identifier[row,col] = HEAD_MAX;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
@@ -897,19 +904,19 @@ public class GameBoundary : MonoBehaviour
 			{
 				if(storeContNE >=1) // at least one continuous on NE dir matching
 				{
-					Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
-					Destroy(gameGrid[row,col],fallDownDelay);
+					Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
+					Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContNE;ii++)
 					{
-						Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+						Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 					}
 					for(int ii=1;ii<=storeContNE;ii++)
 					{
 						gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-						identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+						identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 					}
 					gameGrid[rowAbove,rightOfCol] = gameGrid[row,col] = myObject;
-					identifier[rowAbove,rightOfCol] = identifier[row,col] = headMax;
+					identifier[rowAbove,rightOfCol] = identifier[row,col] = HEAD_MAX;
 					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
 				}
 			}
@@ -919,30 +926,30 @@ public class GameBoundary : MonoBehaviour
 				{
 					if(storeContNW >=1) // if the continuous match is on NW dir
 					{
-						Destroy(gameGrid[rowAbove,leftOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNW;ii++)
 						{
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-							identifier[rowAbove-ii,leftOfCol-ii]= headMax;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,leftOfCol);
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if the continuous match is on NE dir
 					{
-						Destroy(gameGrid[rowAbove,rightOfCol],fallDownDelay);
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
-							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],fallDownDelay);
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
 						for(int ii=1;ii<=storeContNE;ii++)
 						{
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-							identifier[rowAbove-ii,rightOfCol+ii]= headMax;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 						}
 						resetGridInfo(rowAbove,rightOfCol);
 					}
@@ -973,7 +980,7 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContSouthCheck(int fpRow, int fpCol)
 	{
-		if(fpRow!=rows-1) // as long as fpRow is not the furthest southern row...
+		if(fpRow!=ROWS-1) // as long as fpRow is not the furthest southern row...
 		{
 			if(identifier[fpRow,fpCol] == identifier[fpRow+1,fpCol])
 			{
@@ -1001,7 +1008,7 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContEastCheck(int fpRow, int fpCol)
 	{
-		if(fpCol!=columns-1) // as long as fpCol is not the furthest east column...
+		if(fpCol!=COLUMNS-1) // as long as fpCol is not the furthest east column...
 		{
 			if(identifier[fpRow,fpCol] == identifier[fpRow,fpCol+1])
 			{
@@ -1029,7 +1036,7 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContNECheck(int fpRow, int fpCol)
 	{
-		if(fpRow!=0 && fpCol!=columns-1) // as long as fpRow not furthest N row and fpCol not furthest E col
+		if(fpRow!=0 && fpCol!=COLUMNS-1) // as long as fpRow not furthest N row and fpCol not furthest E col
 		{
 			if(identifier[fpRow,fpCol] == identifier[fpRow-1,fpCol+1])
 			{
@@ -1043,7 +1050,7 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContSWCheck(int fpRow, int fpCol)
 	{
-		if(fpRow!=rows-1 && fpCol!=0) // as long as fpRow not furthest S row and fpCol not furthest W col
+		if(fpRow!=ROWS-1 && fpCol!=0) // as long as fpRow not furthest S row and fpCol not furthest W col
 		{
 			if(identifier[fpRow,fpCol] == identifier[fpRow+1,fpCol-1])
 			{
@@ -1057,7 +1064,7 @@ public class GameBoundary : MonoBehaviour
 
 	private int ContSECheck(int fpRow, int fpCol)
 	{
-		if(fpRow!=rows-1 && fpCol!=columns-1) // as long as fpRow not furthest S row and fpCol not furthest E col
+		if(fpRow!=ROWS-1 && fpCol!=COLUMNS-1) // as long as fpRow not furthest S row and fpCol not furthest E col
 		{
 			if(identifier[fpRow,fpCol] == identifier[fpRow+1,fpCol+1])
 			{
@@ -1072,14 +1079,14 @@ public class GameBoundary : MonoBehaviour
 	private void resetGridInfo(int r, int c)
 	{
 		gameGrid[r,c] = myObject;
-		identifier[r,c] = headMax;
+		identifier[r,c] = HEAD_MAX;
 	}
 
 	private void resetGridFP(int r, int c)
 	{
-		Destroy(gameGrid[r,c],fallDownDelay);
+		Destroy(gameGrid[r,c],FALL_DOWN_DELAY);
 		gameGrid[r,c] = myObject;
-		identifier[r,c] = headMax;
+		identifier[r,c] = HEAD_MAX;
 	}
 
 	public void setID(int r, int c, int hNum)

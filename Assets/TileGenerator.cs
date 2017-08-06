@@ -7,10 +7,17 @@ using UnityEngine.SceneManagement;
 
 public class TileGenerator : MonoBehaviour
 {
+<<<<<<< HEAD
 	private const int rows = 11;
 	private const int columns = 11;
 	private const int headMax = 8;
 	private const float fallDownDelay = 0.4f;
+=======
+	private const int ROWS = 10;
+	private const int COLUMNS = 10;
+	private const int HEAD_MAX = 8;
+	private const float FALL_DOWN_DELAY = 0.4f;
+>>>>>>> origin/master
 	public Object[] myPrefabs;
 	private bool nameMatch;
 	private int colNum;
@@ -35,7 +42,7 @@ public class TileGenerator : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-		createdHeads = new string[headMax];
+		createdHeads = new string[HEAD_MAX];
 		fpRow = 0;
 		fpCol = 0;
 		goGridCnt = 0;
@@ -77,7 +84,7 @@ public class TileGenerator : MonoBehaviour
 		}
         //Debug.Log("["+(colNum*2-9)+","+(fallCounter*-2+9)+"]");
         bool properSpot = false;
-        for (int dropRow = rows - 1; dropRow >= 0; dropRow--)
+        for (int dropRow = ROWS - 1; dropRow >= 0; dropRow--)
         {
             if (transform.parent.gameObject.GetComponent<GameBoundary>().identifier[dropRow, colNum] == 8)
             {
@@ -104,11 +111,11 @@ public class TileGenerator : MonoBehaviour
         }
         rowZeroClone = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
 		rowZeroClone.name = go.name;
-		InvokeRepeating ("Falling", fallDownDelay, fallDownDelay);
+		InvokeRepeating ("Falling", FALL_DOWN_DELAY, FALL_DOWN_DELAY);
 	}
 	void Falling()
 	{
-		if (fallCounter<rows-1) //checks for inbounds
+		if (fallCounter < ROWS - 1) //checks for inbounds
 		{	
 			if(transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] != null) // gameGrid location below exists, also checks for inbounds
 			{
@@ -164,7 +171,7 @@ public class TileGenerator : MonoBehaviour
 						{
 							fpRow = fallCounter+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 							fpCol = colNum;
-							if(fpCol == 0 || fpCol == columns-1)
+							if(fpCol == 0 || fpCol == COLUMNS - 1)
 							{
 								//should check bottom corners, not pillar
 								if(fpCol == 0) // bottom left corner
@@ -236,7 +243,7 @@ public class TileGenerator : MonoBehaviour
                 goBelow = goHorz; // make current Gameobject now left/right GameObject
                 Destroy(dropSpot);
                 bool properSpot = false;
-                for (int dropRow = rows - 1; dropRow >= 0; dropRow--)
+                for (int dropRow = ROWS - 1; dropRow >= 0; dropRow--)
                 {
                     if (transform.parent.gameObject.GetComponent<GameBoundary>().identifier[dropRow, colNum] == 8)
                     {
@@ -286,7 +293,7 @@ public class TileGenerator : MonoBehaviour
 				goBelow = goHorz;
                 Destroy(dropSpot);
                 bool properSpot = false;
-                for (int dropRow = rows - 1; dropRow >= 0; dropRow--)
+                for (int dropRow = ROWS - 1; dropRow >= 0; dropRow--)
                 {
                     if (transform.parent.gameObject.GetComponent<GameBoundary>().identifier[dropRow, colNum] == 8)
                     {
@@ -362,7 +369,7 @@ public class TileGenerator : MonoBehaviour
 						{
 							fpRow = dropRow+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 							fpCol = colNum;
-							if(fpCol == 0 || fpCol == columns-1)
+							if(fpCol == 0 || fpCol == COLUMNS - 1)
 							{
 								if(fpCol == 0) // bottom left corner
 								{
