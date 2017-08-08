@@ -20,7 +20,8 @@ public class GameBoundary : MonoBehaviour
 	// ^(above) detected initial AH match in this direction
 	private bool checkContW, checkContNW, checkContNE, checkContE, checkContSE, checkContS, checkContSW; 
 	// ^(above) detected continuous AH match in this direction (more than 1)
-	private int comboCnt;
+	private int comboCnt; // combo counter
+	public int goGridCnt {get;set;} // GameObject grid count property
     public int[,] identifier;
 
     public enum directions { UNSET, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST };
@@ -36,6 +37,7 @@ public class GameBoundary : MonoBehaviour
 	void Start ()
 	{
 		comboCnt = 0; // initialize
+		goGridCnt = 0; // initialize
 		dir = directions.UNSET; // initialize
 		checkWest = checkNorthWest  = checkNorthEast = checkEast = checkSouthEast = checkSouth = checkSouthWest = false; // initialize
 		checkContW = checkContNW = checkContNE = checkContE = checkContSE = checkContS = checkContSW = false; // initialize
@@ -116,7 +118,7 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
 				//-----------------------------------------------------
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+				SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
 			}
 		} // END Possibility 1 ---------------------------------------------------------------------------
 		if(checkEast == false && checkNorthEast == true) // Possibility 2: east fails, northeast matches
@@ -140,7 +142,7 @@ public class GameBoundary : MonoBehaviour
 					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
 				//-------------------------------------------------------------
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
+				SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
 			}
 		} // END Possibility 2 ---------------------------------------------------------------------------
 		if(checkEast == true && checkNorthEast == true) // Possibility 3: both east and northeast match
@@ -182,7 +184,7 @@ public class GameBoundary : MonoBehaviour
 						identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 					}
 				}
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				SubtractGrid(comboCnt);
 			}
 		}
 	} // end CheckLBCorner Method ---------------------------------------------------------
@@ -238,7 +240,7 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
 				//-----------------------------------------------------
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				SubtractGrid(comboCnt);
 			}
 		} // END Possibility 1 ---------------------------------------------------------------------------
 		if(checkWest == false && checkNorthWest == true) // Possibility 2: west fails, northwest matches
@@ -262,7 +264,7 @@ public class GameBoundary : MonoBehaviour
 					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 				}
 				//-------------------------------------------------------------
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				SubtractGrid(comboCnt);
 			}
 		} // END Possibility 2 ---------------------------------------------------------------------------
 		if(checkWest == true && checkNorthWest == true) // Possibility 3: both west and northwest match
@@ -300,7 +302,7 @@ public class GameBoundary : MonoBehaviour
 						identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 					}
 				}
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				SubtractGrid(comboCnt);
 			}
 		}
 	} // end CheckRBCorner Method ---------------------------------------------------------
@@ -310,7 +312,9 @@ public class GameBoundary : MonoBehaviour
 		comboCnt = 0; //reset
 		checkWest = checkNorthWest  = checkNorthEast = checkEast = false; // reset
 		checkContW = checkContNW  = checkContNE = checkContE = false; // reset
+		bool comboOccurred = false; // checks if a combo occurred during this check method
 		//------------------------------------------------------------------------------------
+		int initialGridCount = goGridCnt; // stores goGridCount prior to possible change
 		int leftOfCol = col-1; // these lines between the comments are used to simplify meaning
 		int rightOfCol = col+1; // this one too
 		int rowAbove = row-1; // this one too
@@ -420,7 +424,7 @@ public class GameBoundary : MonoBehaviour
 					Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+					SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
 				}
 				else // MUST be 3 combo w/ focal point in middle (comboCnt == 3) e.g. M FP M , THIS IS A FINAL STEP before GRIDALLCHECK 
 				{
@@ -433,129 +437,177 @@ public class GameBoundary : MonoBehaviour
 					Destroy(gameGrid[row,rightOfCol], FALL_DOWN_DELAY);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts the 3 destroyed objects from goGridCnt
+					SubtractGrid(comboCnt); // subtracts the 3 destroyed objects from goGridCnt
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == true) //northern neighbors both match
 			{
-				for(int ii=1;ii<=storeContNW;ii++) // continuous Northwest
+				if(storeContW >=1 || storeContE >=1 || storeContNW >=1 || storeContNE >=1)
 				{
-					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
+					if(storeContW >=1)
+					{
+						for(int ii=1; ii<=storeContW; ii++) // continuous West
+						{
+							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1; ii<=storeContW; ii++) // reset continuous West
+						{
+							gameGrid[row,leftOfCol-ii] = myObject;
+							identifier[row,leftOfCol-ii] = HEAD_MAX;
+						}
+					}
+					if(storeContE >=1)
+					{
+						for(int ii=1; ii<=storeContE; ii++) // continuous East
+						{
+							Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1; ii<=storeContE; ii++) // reset continuous East
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii] = HEAD_MAX;
+						}
+					}
+					if(storeContNW >=1)
+					{
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
+						for(int ii=1;ii<=storeContNW;ii++) // continuous Northwest
+						{
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1;ii<=storeContNW;ii++) // reset continuous Northwest
+						{
+							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
+						}
+						gameGrid[rowAbove,leftOfCol] = myObject;
+						identifier[rowAbove,leftOfCol] = HEAD_MAX;
+					}
+					if(storeContNE >=1)
+					{
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
+						for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
+						{
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
+						{
+							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
+						}
+						gameGrid[rowAbove,rightOfCol] = myObject;
+						identifier[rowAbove,rightOfCol] = HEAD_MAX;
+					}
 				}
-				for(int ii=1; ii<=storeContW; ii++) // continuous West
-				{
-					Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
-				{
-					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1; ii<=storeContE; ii++) // continuous East
-				{
-					Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1;ii<=storeContNW;ii++) // reset continuous Northwest
-				{
-					gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
-				}
-				for(int ii=1; ii<=storeContW; ii++) // reset continuous West
-				{
-					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = HEAD_MAX;
-				}
-				for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
-				{
-					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
-				}
-				for(int ii=1; ii<=storeContE; ii++) // reset continuous East
-				{
-					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = HEAD_MAX;
-				}
-				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
-				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
-				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = gameGrid[rowAbove,leftOfCol] = gameGrid[rowAbove,rightOfCol] = myObject;
-				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,leftOfCol] = identifier[rowAbove,rightOfCol] = HEAD_MAX;
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
+				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
+				SubtractGrid(comboCnt);
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // NW initial matches, NE initial fails
 			{
-				for(int ii=1;ii<=storeContNW;ii++) // continuous Northwest
+				if(storeContW >=1 || storeContE >=1 || storeContNW >=1)
 				{
-					Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
+					if(storeContW >=1)
+					{
+						for(int ii=1; ii<=storeContW; ii++) // continuous West
+						{
+							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1; ii<=storeContW; ii++) // reset continuous West
+						{
+							gameGrid[row,leftOfCol-ii] = myObject;
+							identifier[row,leftOfCol-ii] = HEAD_MAX;
+						}
+					}
+					if(storeContE >=1)
+					{
+						for(int ii=1; ii<=storeContE; ii++) // continuous East
+						{
+							Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1; ii<=storeContE; ii++) // reset continuous East
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii] = HEAD_MAX;
+						}
+					}
+					if(storeContNW >=1)
+					{
+						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
+						for(int ii=1;ii<=storeContNW;ii++) // continuous Northwest
+						{
+							Destroy(gameGrid[rowAbove-ii,leftOfCol-ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1;ii<=storeContNW;ii++) // reset continuous Northwest
+						{
+							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
+							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
+						}
+						gameGrid[rowAbove,leftOfCol] = myObject;
+						identifier[rowAbove,leftOfCol] = HEAD_MAX;
+					}
 				}
-				for(int ii=1; ii<=storeContW; ii++) // continuous West
-				{
-					Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1; ii<=storeContE; ii++) // continuous East
-				{
-					Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1;ii<=storeContNW;ii++) // reset continuous Northwest
-				{
-					gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
-					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
-				}
-				for(int ii=1; ii<=storeContW; ii++) // reset continuous West
-				{
-					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = HEAD_MAX;
-				}
-				for(int ii=1; ii<=storeContE; ii++) // reset continuous East
-				{
-					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = HEAD_MAX;
-				}
-				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
-				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = gameGrid[rowAbove,leftOfCol] = myObject;
-				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,leftOfCol] = HEAD_MAX;
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
+				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
+				SubtractGrid(comboCnt);
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // NW initial fails, NE initial matches
 			{
-				for(int ii=1; ii<=storeContW; ii++) // continuous West
+				if(storeContW >=1 || storeContE >=1 || storeContNE >=1)
 				{
-					Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
-				{
-					Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1; ii<=storeContE; ii++) // continuous East
-				{
-					Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
-				}
-				for(int ii=1; ii<=storeContW; ii++) // reset continuous West
-				{
-					gameGrid[row,leftOfCol-ii] = myObject;
-					identifier[row,leftOfCol-ii] = HEAD_MAX;
-				}
-				for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
-				{
-					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
-					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
-				}
-				for(int ii=1; ii<=storeContE; ii++) // reset continuous East
-				{
-					gameGrid[row,rightOfCol+ii] = myObject;
-					identifier[row,rightOfCol+ii] = HEAD_MAX;
-				}
-				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
-				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
-				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
-				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
-				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = gameGrid[rowAbove,rightOfCol] = myObject;
-				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = identifier[rowAbove,rightOfCol] = HEAD_MAX;
-				transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+					if(storeContW >=1)
+					{
+						for(int ii=1; ii<=storeContW; ii++) // continuous West
+						{
+							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1; ii<=storeContW; ii++) // reset continuous West
+						{
+							gameGrid[row,leftOfCol-ii] = myObject;
+							identifier[row,leftOfCol-ii] = HEAD_MAX;
+						}
+					}
+					if(storeContE >=1)
+					{
+						for(int ii=1; ii<=storeContE; ii++) // continuous East
+						{
+							Destroy(gameGrid[row,col+1+ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1; ii<=storeContE; ii++) // reset continuous East
+						{
+							gameGrid[row,rightOfCol+ii] = myObject;
+							identifier[row,rightOfCol+ii] = HEAD_MAX;
+						}
+					}
+					if(storeContNE >=1)
+					{
+						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
+						for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
+						{
+							Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
+						}
+						for(int ii=1;ii<=storeContNE;ii++) // reset continuous Northeast
+						{
+							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
+							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
+						}
+						gameGrid[rowAbove,rightOfCol] = myObject;
+						identifier[rowAbove,rightOfCol] = HEAD_MAX;
+					}
+				}				
+				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY); // due to instant combo
+				Destroy(gameGrid[row,col],FALL_DOWN_DELAY); // due to instant combo
+				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY); // due to instant combo
+				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
+				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
+				SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+				PostComboFall(); // checking to see if it works properly
 			}
 		} // end checkWest == TRUE && checkEast == TRUE INITIAL(ENTRY) condition
 		//-------------------------------------------------------------------------------------------------------------------------------------------
@@ -578,7 +630,7 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = HEAD_MAX;
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 2: both northern checks (NW,NE) pass
@@ -632,7 +684,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // Possibility 3: matches Northwest, fails Northeast
@@ -671,7 +723,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // Possibility 4: fails Northwest, matches Northeast
@@ -710,7 +762,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 		} // end checkWest == TRUE && checkEast == FALSE INITIAL(ENTRY) condition
@@ -734,7 +786,7 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[row,rightOfCol] = gameGrid[row,col] = myObject;
 					identifier[row,rightOfCol] = identifier[row,col] = HEAD_MAX;
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 2: both northern checks (NW,NE) pass
@@ -788,7 +840,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // Possibility 3: matches Northwest, fails Northeast
@@ -827,7 +879,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // Possibility 4: fails Northwest, matches Northeast
@@ -866,7 +918,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			} 
 		} // end checkWest == FALSE && checkEast == TRUE INITIAL(ENTRY) condition
@@ -890,7 +942,7 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[rowAbove,leftOfCol] = gameGrid[row,col] = myObject;
 					identifier[rowAbove,leftOfCol] = identifier[row,col] = HEAD_MAX;
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // Possibility 2: NE only match
@@ -910,7 +962,7 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[rowAbove,rightOfCol] = gameGrid[row,col] = myObject;
 					identifier[rowAbove,rightOfCol] = identifier[row,col] = HEAD_MAX;
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 3: both NW & NE match
@@ -949,7 +1001,7 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					transform.GetChild(0).GetComponent<TileGenerator>().SubtractGrid(comboCnt);
+					SubtractGrid(comboCnt);
 				}
 			}
 			// SKIPPED: checkNorthWest == false && checkNorthEast == false; REASON: unnecessary
@@ -1069,6 +1121,35 @@ public class GameBoundary : MonoBehaviour
 		} else {return 0;}
 	}
 
+	public void addHeadToGrid()
+	{
+		goGridCnt++;
+	}
+
+	public void PostComboFall()
+	{
+		Debug.Log("postcombofall method called");
+		for (int ii = ROWS-2; ii >= 0; ii--)
+		{
+			for (int jj = 0; jj < COLUMNS; jj++)
+			{
+				//Debug.Log("Identifier (" + ii + "," + jj + ") is " + identifier[ii,jj]);
+				//Debug.Log("Identifier (" + (ii+1) + "," + jj + ") is " + identifier[ii+1,jj]);
+				if(identifier[ii+1,jj] == HEAD_MAX && identifier[ii,jj] >= 0 && identifier[ii,jj] < HEAD_MAX) // tile below (sweep check) is a default tile (transparent) && current tile is an AH
+				{
+					Debug.Log("Detected Head (" + ii + "," + jj + ") exists above a default tile, proceed to shift entire column down by 1");
+					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftRow = ii;
+					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftColumn = jj;
+					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().isFalling = true;
+					//gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
+					//Debug.Log("Name is " + gameGrid[shiftRow,shiftColumn].name);
+					//Debug.Log("Tag is " + gameGrid[shiftRow,shiftColumn].tag);
+				}
+
+			}
+		}
+	}
+
 	private void resetGridInfo(int r, int c)
 	{
 		gameGrid[r,c] = myObject;
@@ -1086,6 +1167,11 @@ public class GameBoundary : MonoBehaviour
 	{
 		identifier[r,c] = hNum;
 		Debug.Log("Identifier [" + r + "," + c + "] = " + hNum);
+	}
+
+	private void SubtractGrid(int n)
+	{
+		goGridCnt -= n;
 	}
 		
 	void Update ()
