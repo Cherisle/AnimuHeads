@@ -559,6 +559,7 @@ public class GameBoundary : MonoBehaviour
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // NW initial fails, NE initial matches
 			{
+				Debug.Log(storeContNE);
 				if(storeContW >=1 || storeContE >=1 || storeContNE >=1)
 				{
 					if(storeContW >=1)
@@ -599,6 +600,10 @@ public class GameBoundary : MonoBehaviour
 						}
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = HEAD_MAX;
+					}
+					else
+					{
+						comboCnt--;
 					}
 				}				
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY); // due to instant combo
@@ -1128,7 +1133,6 @@ public class GameBoundary : MonoBehaviour
 
 	public void PostComboFall()
 	{
-		Debug.Log("postcombofall method called");
 		for (int ii = ROWS-2; ii >= 0; ii--)
 		{
 			for (int jj = 0; jj < COLUMNS; jj++)
@@ -1144,6 +1148,10 @@ public class GameBoundary : MonoBehaviour
 					//gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
 					//Debug.Log("Name is " + gameGrid[shiftRow,shiftColumn].name);
 					//Debug.Log("Tag is " + gameGrid[shiftRow,shiftColumn].tag);
+					gameGrid[ii+1,jj] = gameGrid[ii,jj]; //lower tile gets upper tile's GameObject
+					gameGrid[ii,jj] = myObject; //reset
+					identifier[ii,jj] = HEAD_MAX; //reset
+					//Debug.Log(gameGrid[ii+1,jj].name + " is now on (" + (ii+1) + "," + jj + ")");
 				}
 
 			}
