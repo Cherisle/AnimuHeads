@@ -87,7 +87,7 @@ public class TileGenerator : MonoBehaviour
                     {
                         if (transform.parent.gameObject.GetComponent<GameBoundary>().identifier[headsAbove - 1, colNum] == 8)
                         {
-                            dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 9, (headsAbove - 1) * -2 + 9), Quaternion.identity) as GameObject;
+                            dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 10, (headsAbove - 1) * -2 + 10), Quaternion.identity) as GameObject;
                             dropSpot.name = "Landing Spot";
                             properSpot = true;
                             break;
@@ -96,13 +96,13 @@ public class TileGenerator : MonoBehaviour
                 }
                 if (properSpot == false)
                 {
-                    dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 9, dropRow * -2 + 9), Quaternion.identity) as GameObject;
+                    dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 10, dropRow * -2 + 10), Quaternion.identity) as GameObject;
                     dropSpot.name = "Landing Spot";
                     break;
                 }
             }
         }
-        rowZeroClone = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+        rowZeroClone = Instantiate(go,new Vector2(colNum*2-10,fallCounter*-2+10),Quaternion.identity) as GameObject;
 		rowZeroClone.name = go.name;
 		InvokeRepeating ("Falling", FALL_DOWN_DELAY, FALL_DOWN_DELAY);
 	}
@@ -118,7 +118,7 @@ public class TileGenerator : MonoBehaviour
                 }
                 if (transform.parent.GetComponent<GameBoundary> ().gameGrid[fallCounter+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists?
 				{
-                    transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9), Quaternion.identity) as GameObject;
+                    transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum] = Instantiate(go,new Vector2(colNum*2-10,fallCounter*-2+10), Quaternion.identity) as GameObject;
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
 					Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
 					transform.parent.GetComponent<GameBoundary>().setID(fallCounter,colNum,goHeadNum);
@@ -154,7 +154,7 @@ public class TileGenerator : MonoBehaviour
 					}
 					if (fallCounter == ROWS-2) // final iteration of THIS else loop, fallCounter set == second to last row (because stamping occurs one down) 
 					{
-						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;  
+						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum] = Instantiate(go,new Vector2(colNum*2-10,(fallCounter+1)*-2+10), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name = go.name;
 						Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
 						transform.parent.GetComponent<GameBoundary>().setID(fallCounter+1,colNum,goHeadNum);
@@ -182,7 +182,7 @@ public class TileGenerator : MonoBehaviour
 					else
 					{
 						// instantiate GameObject tile below current tile
-						goBelow = Instantiate (go,new Vector2(colNum*2-9,(fallCounter+1)*-2+9), Quaternion.identity) as GameObject;
+						goBelow = Instantiate (go,new Vector2(colNum*2-10,(fallCounter+1)*-2+10), Quaternion.identity) as GameObject;
 					}
 					// destroys current tile to prepare for new instantiation
 					Destroy(goCurrent);
@@ -230,7 +230,7 @@ public class TileGenerator : MonoBehaviour
                 Destroy(goBelow);
                 goBelow = Resources.Load("Default/DefaultTile") as GameObject;
                 colNum -= 1;
-                goHorz = Instantiate(go, new Vector2(colNum * 2 - 9, fallCounter * -2 + 9), Quaternion.identity) as GameObject; // make left/right GameObject
+                goHorz = Instantiate(go, new Vector2(colNum * 2 - 10, fallCounter * -2 + 10), Quaternion.identity) as GameObject; // make left/right GameObject
                 goBelow = goHorz; // make current Gameobject now left/right GameObject
                 Destroy(dropSpot);
                 bool properSpot = false;
@@ -244,7 +244,7 @@ public class TileGenerator : MonoBehaviour
                             {
                                 if (transform.parent.gameObject.GetComponent<GameBoundary>().identifier[headsAbove - 1, colNum] == 8)
                                 {
-                                    dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 9, (headsAbove - 1) * -2 + 9), Quaternion.identity) as GameObject;
+                                    dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 10, (headsAbove - 1) * -2 + 10), Quaternion.identity) as GameObject;
                                     dropSpot.name = "Landing Spot";
                                     properSpot = true;
                                     break;
@@ -253,7 +253,7 @@ public class TileGenerator : MonoBehaviour
                         }
                         if (properSpot == false)
                         {
-                            dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 9, dropRow * -2 + 9), Quaternion.identity) as GameObject;
+                            dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 10, dropRow * -2 + 10), Quaternion.identity) as GameObject;
                             dropSpot.name = "Landing Spot";
                             break;
                         }
@@ -280,7 +280,7 @@ public class TileGenerator : MonoBehaviour
 				Destroy(goBelow);
 				goBelow = Resources.Load ("Default/DefaultTile") as GameObject;
 				colNum += 1;
-				goHorz = Instantiate(go,new Vector2(colNum*2-9,fallCounter*-2+9),Quaternion.identity) as GameObject;
+				goHorz = Instantiate(go,new Vector2(colNum*2-10,fallCounter*-2+10),Quaternion.identity) as GameObject;
 				goBelow = goHorz;
                 Destroy(dropSpot);
                 bool properSpot = false;
@@ -294,7 +294,7 @@ public class TileGenerator : MonoBehaviour
                             {
                                 if (transform.parent.gameObject.GetComponent<GameBoundary>().identifier[headsAbove - 1, colNum] == 8)
                                 {
-                                    dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 9, (headsAbove - 1) * -2 + 9), Quaternion.identity) as GameObject;
+                                    dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 10, (headsAbove - 1) * -2 + 10), Quaternion.identity) as GameObject;
                                     dropSpot.name = "Landing Spot";
                                     properSpot = true;
                                     break;
@@ -303,7 +303,7 @@ public class TileGenerator : MonoBehaviour
                         }
                         if (properSpot == false)
                         {
-                            dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 9, dropRow * -2 + 9), Quaternion.identity) as GameObject;
+                            dropSpot = Instantiate(Resources.Load("DropSpot/GreenCrossHair"), new Vector2(colNum * 2 - 10, dropRow * -2 + 10), Quaternion.identity) as GameObject;
                             dropSpot.name = "Landing Spot";
                             break;
                         }
@@ -325,7 +325,7 @@ public class TileGenerator : MonoBehaviour
 			{
 				if(transform.parent.GetComponent<GameBoundary> ().gameGrid[dropRow+1,colNum].GetComponent<AnimuHead>() != null) // AnimuHead below exists? (meaning, AH below is TRUE)
 				{
-					transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow,colNum] = Instantiate(go,new Vector2(colNum*2-9,dropRow*-2+9), Quaternion.identity) as GameObject;
+					transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow,colNum] = Instantiate(go,new Vector2(colNum*2-10,dropRow*-2+10), Quaternion.identity) as GameObject;
 					transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow,colNum].name = go.name; //display proper AnimuHead name
 					//Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
 					transform.parent.GetComponent<GameBoundary>().setID(dropRow,colNum,goHeadNum);
@@ -351,7 +351,7 @@ public class TileGenerator : MonoBehaviour
 				{	
 					if (dropRow == 9) // final iteration of THIS else loop ; stamps always occur +1 down, that's why this is 9
 					{
-						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum] = Instantiate(go,new Vector2(colNum*2-9,(dropRow+1)*-2+9), Quaternion.identity) as GameObject;  
+						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum] = Instantiate(go,new Vector2(colNum*2-10,(dropRow+1)*-2+10), Quaternion.identity) as GameObject;  
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum].name = go.name;
 						transform.parent.GetComponent<GameBoundary>().setID(dropRow+1,colNum,goHeadNum);
 						Destroy(dropSpot); 
