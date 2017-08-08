@@ -29,7 +29,6 @@ public class TileGenerator : MonoBehaviour
 	private string[] createdHeads;
 	private int fpRow; //focal point row value
 	private int fpCol; //focal point col value
-	private int goGridCnt; // gameObject grid count
 	private int goHeadNum; // gameObject head number -- used to represent character name
 
 	// Use this for initialization
@@ -38,7 +37,6 @@ public class TileGenerator : MonoBehaviour
 		createdHeads = new string[HEAD_MAX];
 		fpRow = 0;
 		fpCol = 0;
-		goGridCnt = 0;
 		goHeadNum = 8; // cannot be 0-7
 		fallCounter = 0; // default fall counter, 0 means at the very top row, e.g. row 0
 		nameMatch = false; // default value for boolean to check for matching gameObject names
@@ -122,8 +120,8 @@ public class TileGenerator : MonoBehaviour
 					transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name = go.name; //display proper AnimuHead name
 					Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
 					transform.parent.GetComponent<GameBoundary>().setID(fallCounter,colNum,goHeadNum);
-					goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
-					if(goGridCnt >=3)
+					transform.parent.GetComponent<GameBoundary>().addHeadToGrid(); // AnimuHead stamped on game grid, this line registers the AnimuHead count
+					if(transform.parent.GetComponent<GameBoundary>().goGridCnt >=3)
 					{
 						fpRow = fallCounter;
 						fpCol = colNum;
@@ -159,8 +157,8 @@ public class TileGenerator : MonoBehaviour
 						Debug.Log("GameGrid[" + (fallCounter+1) + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter+1,colNum].name);
 						transform.parent.GetComponent<GameBoundary>().setID(fallCounter+1,colNum,goHeadNum);
                         Destroy(dropSpot); 
-						goGridCnt++;
-						if(goGridCnt >=3)
+						transform.parent.GetComponent<GameBoundary>().addHeadToGrid();
+						if(transform.parent.GetComponent<GameBoundary>().goGridCnt >=3)
 						{
 							fpRow = fallCounter+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 							fpCol = colNum;
@@ -202,11 +200,6 @@ public class TileGenerator : MonoBehaviour
 			CancelInvoke ("Falling");
 			CreatePrefab();
 		}
-	}
-
-	public void SubtractGrid(int n)
-	{
-		goGridCnt -= n;
 	}
 
 	int RandomNumber()
@@ -329,8 +322,8 @@ public class TileGenerator : MonoBehaviour
 					transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow,colNum].name = go.name; //display proper AnimuHead name
 					//Debug.Log("GameGrid[" + fallCounter + "," + colNum + "] = " + transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum].name);
 					transform.parent.GetComponent<GameBoundary>().setID(dropRow,colNum,goHeadNum);
-					goGridCnt++; // AnimuHead stamped on game grid, this line registers the AnimuHead count
-					if(goGridCnt >=3)
+					transform.parent.GetComponent<GameBoundary>().addHeadToGrid();
+					if(transform.parent.GetComponent<GameBoundary>().goGridCnt >=3)
 					{
 						fpRow = dropRow;
 						fpCol = colNum;
@@ -355,8 +348,8 @@ public class TileGenerator : MonoBehaviour
 						transform.parent.GetComponent<GameBoundary>().gameGrid[dropRow+1,colNum].name = go.name;
 						transform.parent.GetComponent<GameBoundary>().setID(dropRow+1,colNum,goHeadNum);
 						Destroy(dropSpot); 
-						goGridCnt++;
-						if(goGridCnt >=3)
+						transform.parent.GetComponent<GameBoundary>().addHeadToGrid();
+						if(transform.parent.GetComponent<GameBoundary>().goGridCnt >=3)
 						{
 							fpRow = dropRow+1; // because we are at fallCounter == 8, but we stamped at fallcounter == 9 [above as fallCounter+1]
 							fpCol = colNum;
