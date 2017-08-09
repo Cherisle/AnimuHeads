@@ -101,8 +101,10 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContE >=1) // 1 continuous means at least 3 combo (FP AnimuHead, Matching East AnimuHead, 1st ContinuousE AnimuHead...)
 			{
-				//-----Destroy Proper Tiles via Combo------------------
-				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+                gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                //-----Destroy Proper Tiles via Combo------------------
+                Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContE;ii++) // continuous East
 				{
@@ -125,8 +127,10 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContNE >=1)
 			{
-				//-----Destroy Proper Tiles via Combo--------------------------
-				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+                gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                //-----Destroy Proper Tiles via Combo--------------------------
+                Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContNE;ii++) // continuous Northeast
 				{
@@ -223,8 +227,10 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContW >=1) // 1 continuous means at least 3 combo obtained
 			{
-				//-----Destroy Proper Tiles via Combo------------------
-				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+                gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                //-----Destroy Proper Tiles via Combo------------------
+                Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContW;ii++)
 				{
@@ -247,8 +253,10 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContNW >=1)
 			{
-				//-----Destroy Proper Tiles via Combo--------------------------
-				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+                gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                //-----Destroy Proper Tiles via Combo--------------------------
+                Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
 				for(int ii=1;ii<=storeContNW;ii++)
 				{
@@ -368,7 +376,11 @@ public class GameBoundary : MonoBehaviour
 					if(checkContE == false && checkContW == true) // X-number combo west with no CONTINUOUS combo on the east e.g. Match Match FP Match Fail
 					{
 						Debug.Log("Focal Point combo'd with " + storeContW + " AnimuHeads in the west direction");
-						for(int ii=1; ii<=storeContW; ii++)
+
+                        gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+
+                        for (int ii=1; ii<=storeContW; ii++)
 						{
 							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 						}
@@ -381,7 +393,11 @@ public class GameBoundary : MonoBehaviour
 					else if(checkContW == false && checkContE == true) // X-number combo east with no CONTINUOUS combo on the west e.g. Fail Match FP Match Match
 					{
 						Debug.Log("Focal Point combo'd with " + storeContE + " AnimuHeads in the east direction");
-						for(int ii=1;ii<=storeContE;ii++) // continuous East
+
+                        gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+
+                        for (int ii=1;ii<=storeContE;ii++) // continuous East
 						{
 							Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
 						}
@@ -393,7 +409,10 @@ public class GameBoundary : MonoBehaviour
 					}
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
-						for(int ii=1; ii<=storeContW; ii++)
+                        gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
+                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+
+                        for (int ii=1; ii<=storeContW; ii++)
 						{
 							Destroy(gameGrid[row,col-1-ii],FALL_DOWN_DELAY);
 						}
@@ -600,8 +619,8 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = HEAD_MAX;
 					}
-				}				
-				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY); // due to instant combo
+				}
+                Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY); // due to instant combo
 				Destroy(gameGrid[row,col],FALL_DOWN_DELAY); // due to instant combo
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY); // due to instant combo
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
