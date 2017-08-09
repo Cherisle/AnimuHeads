@@ -29,7 +29,7 @@ public class TileGenerator : MonoBehaviour
 	private string[] createdHeads;
 	private int fpRow; //focal point row value
 	private int fpCol; //focal point col value
-	private int goHeadNum; // gameObject head number -- used to represent character name
+	public int goHeadNum; // gameObject head number -- used to represent character name
 
 	// Use this for initialization
 	void Start ()
@@ -367,6 +367,7 @@ public class TileGenerator : MonoBehaviour
 							else
 							{
 								transform.parent.GetComponent<GameBoundary>().CheckPillar(fpRow,fpCol);
+
 							}
 						}
 						dropRow = 100;
