@@ -1146,12 +1146,9 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftColumn = jj;
 					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().isFalling = true;
 					//gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
-					//Debug.Log("Name is " + gameGrid[shiftRow,shiftColumn].name);
-					//Debug.Log("Tag is " + gameGrid[shiftRow,shiftColumn].tag);
 					gameGrid[ii+1,jj] = gameGrid[ii,jj]; //lower tile gets upper tile's GameObject
 					gameGrid[ii,jj] = myObject; //reset
 					identifier[ii,jj] = HEAD_MAX; //reset
-					//Debug.Log(gameGrid[ii+1,jj].name + " is now on (" + (ii+1) + "," + jj + ")");
 				}
 
 			}
