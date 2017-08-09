@@ -33,7 +33,7 @@ public class AnimuHead : MonoBehaviour, SoundClip
 		shiftRow = 100;
 		shiftColumn = 100;
 		boundary = GameObject.Find("Boundary");
-		tgObject = boundary.transform.GetChild(0);
+		tgObject = boundary.transform.GetChild(0).gameObject;
 		gb = (GameBoundary)boundary.GetComponent<GameBoundary>();
 		tg = (TileGenerator)tgObject.GetComponent<TileGenerator>();
 		destination = new Vector2(0,0);
@@ -70,12 +70,17 @@ public class AnimuHead : MonoBehaviour, SoundClip
 				Destroy(copyObject); // now destroy it
 				movingObject = Instantiate(movingObject,new Vector2(startPosition.x,startPosition.y), Quaternion.identity) as GameObject;
 				// ^ above creates the new "stamp" of the movingObject
+                //movingObject.name = movingObject.name.Trim
+                movingObject.name = movingObject.name.Substring(0, movingObject.name.Length - 7);
 			}
 			Debug.Log("if successful see this");
+
 			gb.gameGrid[shiftRow+1,shiftColumn] = Instantiate(movingObject,new Vector2(startPosition.x,startPosition.y), Quaternion.identity) as GameObject;
+            Debug.Log(this.gameObject.name);
 			gb.gameGrid[shiftRow+1,shiftColumn].name = movingObject.name;
-			gb.setID(shiftRow+1,shiftColumn,tg.goHeadNum);
-			Destroy(movingObject); // deletes the movement copy
+           
+            gb.setID(shiftRow+1,shiftColumn,tg.goHeadNum);
+			Destroy(this); // deletes the movement copy
 			isFalling = false;
 		}
 	}
