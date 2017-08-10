@@ -93,4 +93,9 @@ public class AnimuHead : MonoBehaviour, SoundClip
 			StartCoroutine(ComboFall(0.4f));
 		}
 	}
+
+    public void PlaySound()
+    {
+        throw new NotImplementedException();
+    }
 }
