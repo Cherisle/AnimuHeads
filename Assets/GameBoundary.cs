@@ -102,7 +102,7 @@ public class GameBoundary : MonoBehaviour
 			if(storeContE >=1) // 1 continuous means at least 3 combo (FP AnimuHead, Matching East AnimuHead, 1st ContinuousE AnimuHead...)
 			{
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(0);
                 //-----Destroy Proper Tiles via Combo------------------
                 Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
@@ -128,7 +128,7 @@ public class GameBoundary : MonoBehaviour
 			if(storeContNE >=1)
 			{
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
                 //-----Destroy Proper Tiles via Combo--------------------------
                 Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
@@ -228,7 +228,7 @@ public class GameBoundary : MonoBehaviour
 			if(storeContW >=1) // 1 continuous means at least 3 combo obtained
 			{
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(0);
                 //-----Destroy Proper Tiles via Combo------------------
                 Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
@@ -254,7 +254,7 @@ public class GameBoundary : MonoBehaviour
 			if(storeContNW >=1)
 			{
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
                 //-----Destroy Proper Tiles via Combo--------------------------
                 Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
@@ -378,7 +378,7 @@ public class GameBoundary : MonoBehaviour
 						Debug.Log("Focal Point combo'd with " + storeContW + " AnimuHeads in the west direction");
 
                         gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
 
                         for (int ii=1; ii<=storeContW; ii++)
 						{
@@ -395,7 +395,7 @@ public class GameBoundary : MonoBehaviour
 						Debug.Log("Focal Point combo'd with " + storeContE + " AnimuHeads in the east direction");
 
                         gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
 
                         for (int ii=1;ii<=storeContE;ii++) // continuous East
 						{
@@ -410,7 +410,7 @@ public class GameBoundary : MonoBehaviour
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
                         gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                        gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(2);
 
                         for (int ii=1; ii<=storeContW; ii++)
 						{
@@ -449,7 +449,7 @@ public class GameBoundary : MonoBehaviour
 				{
                     //plays sound from the position of the middle head in the 3 combo before all 3 get destroyed
                     gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
-                    gameGrid[row, col].GetComponent<AnimuHead>().PlaySound();
+                    gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(0);
 
                     Destroy(gameGrid[row,leftOfCol], FALL_DOWN_DELAY);
 					Destroy(gameGrid[row,col], FALL_DOWN_DELAY);
