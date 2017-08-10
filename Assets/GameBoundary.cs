@@ -153,10 +153,10 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContE >=1 || storeContNE >=1)
 			{
-				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+                Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
 				if(storeContE >=1)
-				{	
-					Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
+				{
+                    Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContE;ii++) // continuous East
 					{
 						Destroy(gameGrid[row,rightOfCol+ii],FALL_DOWN_DELAY);
@@ -173,7 +173,7 @@ public class GameBoundary : MonoBehaviour
 				}
 				if(storeContNE >=1)
 				{
-					Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
+                    Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
 					for(int ii=1;ii<=storeContNE;ii++) // continuous NorthEast
 					{
 						Destroy(gameGrid[rowAbove-ii,rightOfCol+ii],FALL_DOWN_DELAY);
