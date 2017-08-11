@@ -1143,32 +1143,46 @@ public class GameBoundary : MonoBehaviour
 		goGridCnt++;
 	}
 
-	public void PostComboFall()
-	{
-		for (int ii = ROWS-2; ii >= 0; ii--)
-		{
-			for (int jj = 0; jj < COLUMNS; jj++)
-			{
-				//Debug.Log("Identifier (" + ii + "," + jj + ") is " + identifier[ii,jj]);
-				//Debug.Log("Identifier (" + (ii+1) + "," + jj + ") is " + identifier[ii+1,jj]);
-				if(identifier[ii+1,jj] == HEAD_MAX && identifier[ii,jj] >= 0 && identifier[ii,jj] < HEAD_MAX) // tile below (sweep check) is a default tile (transparent) && current tile is an AH
-				{
-					Debug.Log("Detected Head (" + ii + "," + jj + ") exists above a default tile, proceed to shift entire column down by 1");
-					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftRow = ii;
-					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftColumn = jj;
-					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().headNum = identifier[ii,jj];
-					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().isFalling = true;
-					//gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
-					gameGrid[ii+1,jj] = gameGrid[ii,jj]; //lower tile gets upper tile's GameObject
-					gameGrid[ii,jj] = myObject; //reset
-					identifier[ii,jj] = HEAD_MAX; //reset
-				}
 
-			}
-		}
-	}
+    public void PostComboFall()
+    {
+        bool fallDone = false; // local variable
+        while (!fallDone)
+        {
+            bool detected = false;
+            for (int ii = ROWS - 2; ii >= 0; ii--)
+            {
+                for (int jj = 0; jj < COLUMNS; jj++)
+                {
+                    //Debug.Log("Identifier (" + ii + "," + jj + ") is " + identifier[ii,jj]);
+                    //Debug.Log("Identifier (" + (ii+1) + "," + jj + ") is " + identifier[ii+1,jj]);
+                    if (identifier[ii + 1, jj] == HEAD_MAX && identifier[ii, jj] >= 0 && identifier[ii, jj] < HEAD_MAX) // tile below (sweep check) is a default tile (transparent) && current tile is an AH
+                    {
+                        detected = true;
+                        Debug.Log("Detected Head (" + ii + "," + jj + ") exists above a default tile, proceed to shift entire column down by 1");
 
-	private void resetGridInfo(int r, int c)
+                        gameGrid[ii, jj].gameObject.GetComponent<AnimuHead>().shiftRow = ii;
+                        gameGrid[ii, jj].gameObject.GetComponent<AnimuHead>().shiftColumn = jj;
+                        gameGrid[ii, jj].gameObject.GetComponent<AnimuHead>().isFalling = true;
+                        //gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
+                        gameGrid[ii + 1, jj] = gameGrid[ii, jj]; //lower tile gets upper tile's GameObject
+                        gameGrid[ii, jj] = myObject; //reset
+                        identifier[ii, jj] = HEAD_MAX; //reset
+                    }
+                }
+            }
+            if (detected)
+            {
+                fallDone = false;
+            }
+            else
+            {
+                fallDone = true;
+            }
+        }
+    }
+
+    private void resetGridInfo(int r, int c)
 	{
 		gameGrid[r,c] = myObject;
 		identifier[r,c] = HEAD_MAX;
