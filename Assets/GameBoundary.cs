@@ -456,6 +456,7 @@ public class GameBoundary : MonoBehaviour
 							identifier[row,leftOfCol-ii] = HEAD_MAX;
 						}
 					}
+					else {comboCnt--;}
 					if(storeContE >=1)
 					{
 						for(int ii=1; ii<=storeContE; ii++) // continuous East
@@ -468,6 +469,7 @@ public class GameBoundary : MonoBehaviour
 							identifier[row,rightOfCol+ii] = HEAD_MAX;
 						}
 					}
+					else {comboCnt--;}
 					if(storeContNW >=1)
 					{
 						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
@@ -483,6 +485,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,leftOfCol] = myObject;
 						identifier[rowAbove,leftOfCol] = HEAD_MAX;
 					}
+					else {comboCnt--;}
 					if(storeContNE >=1)
 					{
 						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
@@ -498,6 +501,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = HEAD_MAX;
 					}
+					else {comboCnt--;}
 				}
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
@@ -522,6 +526,7 @@ public class GameBoundary : MonoBehaviour
 							identifier[row,leftOfCol-ii] = HEAD_MAX;
 						}
 					}
+					else {comboCnt--;}
 					if(storeContE >=1)
 					{
 						for(int ii=1; ii<=storeContE; ii++) // continuous East
@@ -534,6 +539,7 @@ public class GameBoundary : MonoBehaviour
 							identifier[row,rightOfCol+ii] = HEAD_MAX;
 						}
 					}
+					else {comboCnt--;}
 					if(storeContNW >=1)
 					{
 						Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
@@ -549,6 +555,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,leftOfCol] = myObject;
 						identifier[rowAbove,leftOfCol] = HEAD_MAX;
 					}
+					else {comboCnt--;}
 				}
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 				Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
@@ -574,6 +581,7 @@ public class GameBoundary : MonoBehaviour
 							identifier[row,leftOfCol-ii] = HEAD_MAX;
 						}
 					}
+					else {comboCnt--;}
 					if(storeContE >=1)
 					{
 						for(int ii=1; ii<=storeContE; ii++) // continuous East
@@ -586,6 +594,7 @@ public class GameBoundary : MonoBehaviour
 							identifier[row,rightOfCol+ii] = HEAD_MAX;
 						}
 					}
+					else {comboCnt--;}
 					if(storeContNE >=1)
 					{
 						Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
@@ -601,10 +610,7 @@ public class GameBoundary : MonoBehaviour
 						gameGrid[rowAbove,rightOfCol] = myObject;
 						identifier[rowAbove,rightOfCol] = HEAD_MAX;
 					}
-					else
-					{
-						comboCnt--;
-					}
+					else {comboCnt--;}
 				}				
 				Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY); // due to instant combo
 				Destroy(gameGrid[row,col],FALL_DOWN_DELAY); // due to instant combo
@@ -637,12 +643,14 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,leftOfCol] = identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
 				}
+				else {comboCnt--;}
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 2: both northern checks (NW,NE) pass
 			{
 				if(storeContW >=1 || storeContNW >=1 || storeContNE >=1)
 				{
-					if(storeContW >=1) // if continuous match is on east dir
+					Destroy(gameGrid[row,col],FALL_DOWN_DELAY);
+					if(storeContW >= 1) // at least one continuous on the west matching required for combo
 					{
 						Destroy(gameGrid[row,leftOfCol],FALL_DOWN_DELAY);
 						for(int ii=1;ii<=storeContW;ii++)
@@ -652,9 +660,10 @@ public class GameBoundary : MonoBehaviour
 						for(int ii=1;ii<=storeContW;ii++)
 						{
 							gameGrid[row,leftOfCol-ii] = myObject;
-							identifier[row,leftOfCol-ii]= HEAD_MAX;
+							identifier[row,leftOfCol-ii] = HEAD_MAX;
 						}
-						resetGridInfo(row,leftOfCol);
+						gameGrid[row,leftOfCol] = myObject;
+						identifier[row,leftOfCol] = HEAD_MAX;
 					}
 					else {comboCnt--;}
 					if(storeContNW >=1) // if continuous match is on NW dir
@@ -669,7 +678,8 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
 							identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 						}
-						resetGridInfo(rowAbove,leftOfCol);
+						gameGrid[rowAbove,leftOfCol] = myObject;
+						identifier[rowAbove,leftOfCol] = HEAD_MAX;
 					}
 					else {comboCnt--;}
 					if(storeContNE >=1) // if continuous match is on NE dir
@@ -684,12 +694,14 @@ public class GameBoundary : MonoBehaviour
 							gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
 							identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 						}
-						resetGridInfo(rowAbove,rightOfCol);
+						gameGrid[rowAbove,rightOfCol] = myObject;
+						identifier[rowAbove,rightOfCol] = HEAD_MAX;
 					}
 					else {comboCnt--;}
-					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
-					resetGridFP(row,col);
+					gameGrid[row,col] = myObject;
+					identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
+					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // Possibility 3: matches Northwest, fails Northeast
@@ -1144,6 +1156,7 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log("Detected Head (" + ii + "," + jj + ") exists above a default tile, proceed to shift entire column down by 1");
 					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftRow = ii;
 					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().shiftColumn = jj;
+					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().headNum = identifier[ii,jj];
 					gameGrid[ii,jj].gameObject.GetComponent<AnimuHead>().isFalling = true;
 					//gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
 					gameGrid[ii+1,jj] = gameGrid[ii,jj]; //lower tile gets upper tile's GameObject
