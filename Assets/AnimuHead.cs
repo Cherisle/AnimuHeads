@@ -13,6 +13,7 @@ public class AnimuHead : MonoBehaviour, SoundClip
 	private TileGenerator tg;
 	public GameBoundary gb;
 	public bool isFalling;
+	public int headNum;
 	public int shiftRow;
 	public int shiftColumn;
 	private Vector2 destination;
@@ -41,6 +42,7 @@ public class AnimuHead : MonoBehaviour, SoundClip
 		startPosition = new Vector2(0,0);
 		copyObject = null;
 		movingObject = null;
+		headNum = HEAD_MAX; // default
 	}
 
 	public void PlaySound(int clipSelector)
@@ -75,11 +77,8 @@ public class AnimuHead : MonoBehaviour, SoundClip
 			}
 			Debug.Log("if successful see this");
 
-			gb.gameGrid[shiftRow+1,shiftColumn] = Instantiate(movingObject,new Vector2(startPosition.x,startPosition.y), Quaternion.identity) as GameObject;
-            Debug.Log(this.gameObject.name);
-			gb.gameGrid[shiftRow+1,shiftColumn].name = movingObject.name;
-           
-            gb.setID(shiftRow+1,shiftColumn,tg.goHeadNum);
+			gb.gameGrid[shiftRow+1,shiftColumn] = Instantiate(movingObject,new Vector2(startPosition.x,startPosition.y), Quaternion.identity) as GameObject;         
+			Destroy(movingObject);
 			Destroy(this); // deletes the movement copy
 			isFalling = false;
 		}
