@@ -117,7 +117,6 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,rightOfCol+ii] = myObject;
 					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
-				//-----------------------------------------------------
 				SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
 			}
 		} // END Possibility 1 ---------------------------------------------------------------------------
@@ -141,7 +140,6 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
 					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
-				//-------------------------------------------------------------
 				SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
 			}
 		} // END Possibility 2 ---------------------------------------------------------------------------
@@ -167,6 +165,7 @@ public class GameBoundary : MonoBehaviour
 						identifier[row,rightOfCol+ii] = HEAD_MAX;
 					}
 				}
+				else {comboCnt--;}
 				if(storeContNE >=1)
 				{
 					Destroy(gameGrid[rowAbove,rightOfCol],FALL_DOWN_DELAY);
@@ -184,6 +183,7 @@ public class GameBoundary : MonoBehaviour
 						identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 					}
 				}
+				else {comboCnt--;}
 				SubtractGrid(comboCnt);
 			}
 		}
@@ -239,7 +239,6 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,leftOfCol-ii] = myObject;
 					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
-				//-----------------------------------------------------
 				SubtractGrid(comboCnt);
 			}
 		} // END Possibility 1 ---------------------------------------------------------------------------
@@ -287,6 +286,7 @@ public class GameBoundary : MonoBehaviour
 						identifier[row,leftOfCol-ii] = HEAD_MAX;
 					}
 				}
+				else {comboCnt--;}
 				if(storeContNW >=1)
 				{
 					Destroy(gameGrid[rowAbove,leftOfCol],FALL_DOWN_DELAY);
@@ -302,6 +302,7 @@ public class GameBoundary : MonoBehaviour
 						identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 					}
 				}
+				else {comboCnt--;}
 				SubtractGrid(comboCnt);
 			}
 		}
@@ -643,7 +644,6 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,leftOfCol] = identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
 				}
-				else {comboCnt--;}
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 2: both northern checks (NW,NE) pass
 			{
