@@ -16,6 +16,7 @@ public class GameBoundary : MonoBehaviour
 	private Vector2 rectNWCorner,rectNECorner,rectSWCorner;
 	//--------------------------------------------------------
 	private directions dir;
+	private bool inFallCoroutine;
 	private bool checkWest, checkNorthWest, checkNorthEast, checkEast, checkSouthEast, checkSouth, checkSouthWest; 
 	// ^(above) detected initial AH match in this direction
 	private bool checkContW, checkContNW, checkContNE, checkContE, checkContSE, checkContS, checkContSW; 
@@ -50,6 +51,7 @@ public class GameBoundary : MonoBehaviour
 		rectNECorner = new Vector2 (ctrXLoc + maxRayDistX / 2, ctrYLoc + maxRayDistY / 2);
 		rectSWCorner = new Vector2 (ctrXLoc - maxRayDistX / 2, ctrYLoc - maxRayDistY / 2);
 		//--------------------------------------------------------------------------------
+		inFallCoroutine = false;
 	}
 
     void Awake()
@@ -1160,25 +1162,25 @@ public class GameBoundary : MonoBehaviour
                     {
                         detected = true;
                         Debug.Log("Detected Head (" + ii + "," + jj + ") exists above a default tile, proceed to shift entire column down by 1");
-
                         gameGrid[ii, jj].gameObject.GetComponent<AnimuHead>().shiftRow = ii;
                         gameGrid[ii, jj].gameObject.GetComponent<AnimuHead>().shiftColumn = jj;
                         gameGrid[ii, jj].gameObject.GetComponent<AnimuHead>().isFalling = true;
-                        //gameGrid[shiftRow,shiftColumn].tag = gameGrid[shiftRow,shiftColumn].name + "Moving";
                         gameGrid[ii + 1, jj] = gameGrid[ii, jj]; //lower tile gets upper tile's GameObject
-                        gameGrid[ii, jj] = myObject; //reset
-                        identifier[ii, jj] = HEAD_MAX; //reset
+						gameGrid[ii + 1, jj].name = gameGrid[ii, jj].name; // lower tile gets upper tile's name
+						identifier[ii + 1, jj] = identifier[ii, jj]; // lower tile gets upper tile's identifier
+                        gameGrid[ii, jj] = myObject; //reset above tile
+                        identifier[ii, jj] = HEAD_MAX; //reset above tile
+						StartCoroutine("FallDelay", Time.deltaTime); // frame update
+						StartCoroutine("LastFall"); // waits for frame update
                     }
                 }
             }
+			// Debug.Log(Time.deltaTime); used to check my own computer's frame refresh
             if (detected)
-            {
-                fallDone = false;
-            }
-            else
-            {
-                fallDone = true;
-            }
+			{ 
+				fallDone = false; 
+			}
+            else {fallDone = true;}
         }
     }
 
@@ -1204,6 +1206,21 @@ public class GameBoundary : MonoBehaviour
 	private void SubtractGrid(int n)
 	{
 		goGridCnt -= n;
+	}
+
+	IEnumerator FallDelay(float seconds)
+	{
+		inFallCoroutine = true;
+		yield return new WaitForSeconds(seconds); //Count is the amount of time in seconds that you want to wait.
+		inFallCoroutine = false;
+	}
+
+	IEnumerator LastFall()
+	{
+		while(inFallCoroutine)
+		{
+			yield return new WaitForSeconds(0.1f); // from example, idk why tho 
+		}
 	}
 		
 	void Update ()

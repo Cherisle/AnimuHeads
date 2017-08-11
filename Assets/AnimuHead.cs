@@ -77,10 +77,7 @@ public class AnimuHead : MonoBehaviour, SoundClip
 			}
 			Debug.Log("if successful see this");
 
-			gb.gameGrid[shiftRow+1,shiftColumn] = Instantiate(movingObject,new Vector2(startPosition.x,startPosition.y), Quaternion.identity) as GameObject;
-            Debug.Log(this.gameObject.name);
-			gb.gameGrid[shiftRow+1,shiftColumn].name = movingObject.name;          
-			gb.setID(shiftRow+1,shiftColumn,headNum);
+			gb.gameGrid[shiftRow+1,shiftColumn] = Instantiate(movingObject,new Vector2(startPosition.x,startPosition.y), Quaternion.identity) as GameObject;         
 			Destroy(movingObject);
 			Destroy(this); // deletes the movement copy
 			isFalling = false;
