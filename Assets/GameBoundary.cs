@@ -120,7 +120,8 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
 				SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
-			}
+                PostComboFall();
+            }
 		} // END Possibility 1 ---------------------------------------------------------------------------
 		if(checkEast == false && checkNorthEast == true) // Possibility 2: east fails, northeast matches
 		{
@@ -143,7 +144,8 @@ public class GameBoundary : MonoBehaviour
 					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
 				SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
-			}
+                PostComboFall();
+            }
 		} // END Possibility 2 ---------------------------------------------------------------------------
 		if(checkEast == true && checkNorthEast == true) // Possibility 3: both east and northeast match
 		{
@@ -187,7 +189,8 @@ public class GameBoundary : MonoBehaviour
 				}
 				else {comboCnt--;}
 				SubtractGrid(comboCnt);
-			}
+                PostComboFall();
+            }
 		}
 	} // end CheckLBCorner Method ---------------------------------------------------------
 
@@ -242,7 +245,8 @@ public class GameBoundary : MonoBehaviour
 					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
 				SubtractGrid(comboCnt);
-			}
+                PostComboFall();
+            }
 		} // END Possibility 1 ---------------------------------------------------------------------------
 		if(checkWest == false && checkNorthWest == true) // Possibility 2: west fails, northwest matches
 		{
@@ -266,7 +270,8 @@ public class GameBoundary : MonoBehaviour
 				}
 				//-------------------------------------------------------------
 				SubtractGrid(comboCnt);
-			}
+                PostComboFall();
+            }
 		} // END Possibility 2 ---------------------------------------------------------------------------
 		if(checkWest == true && checkNorthWest == true) // Possibility 3: both west and northwest match
 		{
@@ -306,7 +311,8 @@ public class GameBoundary : MonoBehaviour
 				}
 				else {comboCnt--;}
 				SubtractGrid(comboCnt);
-			}
+                PostComboFall();
+            }
 		}
 	} // end CheckRBCorner Method ---------------------------------------------------------
 
@@ -428,7 +434,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 					SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
-				}
+                    PostComboFall();
+                }
 				else // MUST be 3 combo w/ focal point in middle (comboCnt == 3) e.g. M FP M , THIS IS A FINAL STEP before GRIDALLCHECK 
 				{
                     //plays sound from the position of the middle head in the 3 combo before all 3 get destroyed
@@ -441,7 +448,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 					SubtractGrid(comboCnt); // subtracts the 3 destroyed objects from goGridCnt
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == true && checkNorthEast == true) //northern neighbors both match
 			{
@@ -512,7 +520,8 @@ public class GameBoundary : MonoBehaviour
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 				SubtractGrid(comboCnt);
-			}
+                PostComboFall();
+            }
 			if(checkNorthWest == true && checkNorthEast == false) // NW initial matches, NE initial fails
 			{
 				if(storeContW >=1 || storeContE >=1 || storeContNW >=1)
@@ -566,7 +575,8 @@ public class GameBoundary : MonoBehaviour
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
 				SubtractGrid(comboCnt);
-			}
+                PostComboFall();
+            }
 			if(checkNorthWest == false && checkNorthEast == true) // NW initial fails, NE initial matches
 			{
 				Debug.Log(storeContNE);
@@ -645,7 +655,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 2: both northern checks (NW,NE) pass
 			{
@@ -703,7 +714,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,col] = myObject;
 					identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
-					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
+                    PostComboFall();
+                    Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 				}
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // Possibility 3: matches Northwest, fails Northeast
@@ -743,7 +755,8 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // Possibility 4: fails Northwest, matches Northeast
 			{
@@ -782,7 +795,8 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 		} // end checkWest == TRUE && checkEast == FALSE INITIAL(ENTRY) condition
 		//-------------------------------------------------------------------------------------------------------------------------------------------
@@ -806,7 +820,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,rightOfCol] = gameGrid[row,col] = myObject;
 					identifier[row,rightOfCol] = identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 2: both northern checks (NW,NE) pass
 			{
@@ -860,7 +875,8 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == true && checkNorthEast == false) // Possibility 3: matches Northwest, fails Northeast
 			{
@@ -899,7 +915,8 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // Possibility 4: fails Northwest, matches Northeast
 			{
@@ -938,7 +955,8 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			} 
 		} // end checkWest == FALSE && checkEast == TRUE INITIAL(ENTRY) condition
 		//-------------------------------------------------------------------------------------------------------------------------------------------
@@ -962,7 +980,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove,leftOfCol] = gameGrid[row,col] = myObject;
 					identifier[rowAbove,leftOfCol] = identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == false && checkNorthEast == true) // Possibility 2: NE only match
 			{
@@ -982,7 +1001,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove,rightOfCol] = gameGrid[row,col] = myObject;
 					identifier[rowAbove,rightOfCol] = identifier[row,col] = HEAD_MAX;
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			if(checkNorthWest == true && checkNorthEast == true) // Possibility 3: both NW & NE match
 			{
@@ -1021,7 +1041,8 @@ public class GameBoundary : MonoBehaviour
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
 					SubtractGrid(comboCnt);
-				}
+                    PostComboFall();
+                }
 			}
 			// SKIPPED: checkNorthWest == false && checkNorthEast == false; REASON: unnecessary
 		}
