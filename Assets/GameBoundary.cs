@@ -103,6 +103,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContE >=1) // 1 continuous means at least 3 combo (FP AnimuHead, Matching East AnimuHead, 1st ContinuousE AnimuHead...)
 			{
+                //Play audio when this combo is triggered
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                 gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(0);
                 //-----Destroy Proper Tiles via Combo------------------
@@ -129,6 +130,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContNE >=1)
 			{
+                //Play audio when this combo is triggered
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                 gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
                 //-----Destroy Proper Tiles via Combo--------------------------
@@ -232,6 +234,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContW >=1) // 1 continuous means at least 3 combo obtained
 			{
+                //Play audio when this combo is triggered
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                 gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(0);
                 //-----Destroy Proper Tiles via Combo------------------
@@ -258,6 +261,7 @@ public class GameBoundary : MonoBehaviour
 		{
 			if(storeContNW >=1)
 			{
+                //Play audio when this combo is triggered
                 gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                 gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
                 //-----Destroy Proper Tiles via Combo--------------------------
@@ -386,6 +390,7 @@ public class GameBoundary : MonoBehaviour
 					{
 						Debug.Log("Focal Point combo'd with " + storeContW + " AnimuHeads in the west direction");
 
+                        //Play audio for this combo
                         gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                         gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
 
@@ -403,6 +408,7 @@ public class GameBoundary : MonoBehaviour
 					{
 						Debug.Log("Focal Point combo'd with " + storeContE + " AnimuHeads in the east direction");
 
+                        //Play audio for this combo
                         gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                         gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(1);
 
@@ -418,6 +424,7 @@ public class GameBoundary : MonoBehaviour
 					}
 					else if(checkContW == true && checkContE == true) // X-number combo with CONTINUOUS combo on BOTH WEST AND EAST e.g. Match Match FP Match Match
 					{
+                        //Play audio for this combo
                         gameGrid[row, col].GetComponent<AnimuHead>().audioPos = gameGrid[row, col].transform.position;
                         gameGrid[row, col].GetComponent<AnimuHead>().PlaySound(2);
 
