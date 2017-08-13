@@ -31,7 +31,7 @@ public class TileGenerator : MonoBehaviour
 	private int fpRow; //focal point row value
 	private int fpCol; //focal point col value
 	private int goHeadNum; // gameObject head number -- used to represent character name
-    //---Main Menu ---
+    //---Pause Menu ---
     private GameObject[] pauseObjects;
     private PauseMenu m;
     // Use this for initialization
@@ -222,16 +222,16 @@ public class TileGenerator : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.P))
         {
             Debug.Log("I paused");
-            //Game is Paused
+            //Game is playing, but we want to pause it now.
             if (Time.timeScale == 1)
             {
                 Time.timeScale = 0;
                 foreach (GameObject g in pauseObjects)
                 {
-                    g.SetActive(true);
+                    g.SetActive(true); //Set every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause"); to show.
                 }
             }
-            //Game is resumed
+            //Game is paused, but we want to resume it now.
             else if (Time.timeScale == 0)
             {
                 Debug.Log("high");
@@ -239,7 +239,7 @@ public class TileGenerator : MonoBehaviour
                 
                 foreach (GameObject g in pauseObjects)
                 {
-                    g.SetActive(false);
+                    g.SetActive(false);// Hide every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
                 }
             }
         }
