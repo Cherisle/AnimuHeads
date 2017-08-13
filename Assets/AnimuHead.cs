@@ -19,13 +19,13 @@ public class AnimuHead : MonoBehaviour, SoundClip
 	private Vector2 destination;
 	private Vector2 downMovement;
 	private Vector2 startPosition;
-	public new AudioSource audio;  // stores audio clip of gameobject that has this script attached to it
+	public new AudioSource[] audio;  // stores audio clip of gameobject that has this script attached to it
     public Vector3 audioPos;  // used for playing clip at wherever this location is
 
 
 	void Awake()
 	{
-		audio = GetComponent<AudioSource>();  // gets the audio source from the gameobject that has this script
+		audio = GetComponents<AudioSource>();  // gets the audio source from the gameobject that has this script
 	}
 
 	void Start()
@@ -45,9 +45,9 @@ public class AnimuHead : MonoBehaviour, SoundClip
 		headNum = HEAD_MAX; // default
 	}
 
-	public void PlaySound()
+	public void PlaySound(int clipSelector)
 	{
-		AudioSource.PlayClipAtPoint(audio.clip, audioPos);  // plays audio clip
+		AudioSource.PlayClipAtPoint(audio[clipSelector].clip, audioPos);  // plays audio clip
 	}
 
 	public IEnumerator ComboFall(float time)
@@ -92,4 +92,9 @@ public class AnimuHead : MonoBehaviour, SoundClip
 			StartCoroutine(ComboFall(0.4f));
 		}
 	}
+
+    public void PlaySound()
+    {
+        throw new NotImplementedException();
+    }
 }
