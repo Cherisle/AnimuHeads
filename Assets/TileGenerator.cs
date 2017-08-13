@@ -33,7 +33,7 @@ public class TileGenerator : MonoBehaviour
 	private int goHeadNum; // gameObject head number -- used to represent character name
     //---Main Menu ---
     private GameObject[] pauseObjects;
-    private MainMenu m;
+    private PauseMenu m;
     // Use this for initialization
     void Start ()
 	{
