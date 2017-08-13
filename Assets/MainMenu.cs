@@ -1,6 +1,7 @@
 ﻿
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 
 //tutorial used: https://www.sitepoint.com/adding-pause-main-menu-and-game-over-screens-in-unity/
@@ -17,6 +18,10 @@ public class MainMenu : MonoBehaviour {
    
    public void Start()
     {
+        //changing the names for the buttons 
+        GameObject.Find("RestartButton").GetComponentInChildren<Text>().text = "Restart";
+        GameObject.Find("PlayButton").GetComponentInChildren<Text>().text = "Resume";
+        GameObject.Find("MainMenuButton").GetComponentInChildren<Text>().text = "Main Menu";
         Time.timeScale = 1; //time is passing in real time. 0 means paused
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         HidePaused();
