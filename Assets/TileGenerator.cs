@@ -38,7 +38,7 @@ public class TileGenerator : MonoBehaviour
     void Start ()
 	{
         Time.timeScale = 1;
-        pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
+		pauseObjects = GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseObjects;
         
         createdHeads = new string[HEAD_MAX];
 		fpRow = 0;
@@ -228,7 +228,7 @@ public class TileGenerator : MonoBehaviour
                 Time.timeScale = 0;
                 foreach (GameObject g in pauseObjects)
                 {
-                    g.SetActive(true); //Set every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause"); to show.
+					g.SetActive(true); //Set every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause"); to show.
                 }
             }
             //Game is paused, but we want to resume it now.
