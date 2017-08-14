@@ -228,6 +228,7 @@ public class TileGenerator : MonoBehaviour
                 Time.timeScale = 0;
                 foreach (GameObject g in pauseObjects)
                 {
+					Debug.Log("how many"); // returned 7 objects: PauseText,PlayButton,Resume,RestartButton,Restart,MainMenuButton,MainMenu
 					g.SetActive(true); //Set every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause"); to show.
                 }
             }
