@@ -46,11 +46,13 @@ public class PauseMenu : MonoBehaviour
 	public void playButtonOnClick()
 	{
 		Debug.Log("Resume Button Clicked");
+        PauseControl();
 	}
 
 	public void restartButtonOnClick()
 	{
 		Debug.Log("Restart Button Clicked");
+        Restart();
 	}
 
 	public void mainMenuButtonOnClick()
