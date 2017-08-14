@@ -6,7 +6,8 @@ using UnityEngine.UI;
 
 //tutorial used: https://www.sitepoint.com/adding-pause-main-menu-and-game-over-screens-in-unity/
 
-public class PauseMenu : MonoBehaviour {
+public class PauseMenu : MonoBehaviour
+{
     /// <summary>
     /// ////////////////
     /// </summary>
@@ -15,18 +16,47 @@ public class PauseMenu : MonoBehaviour {
     /// Pause Menu
     /// ////////////////////////////
     /// </summary>
+
+	private Button playButton;
+	private Button restartButton;
+	private Button mainMenuButton;
    
    public void Start()
     {
-        //changing the names for the buttons 
-        GameObject.Find("RestartButton").GetComponentInChildren<Text>().text = "Restart";
-        GameObject.Find("PlayButton").GetComponentInChildren<Text>().text = "Resume";
+        //changing the text names for the buttons 
+		GameObject.Find("PlayButton").GetComponentInChildren<Text>().text = "Resume";
+        GameObject.Find("RestartButton").GetComponentInChildren<Text>().text = "Restart";      
         GameObject.Find("MainMenuButton").GetComponentInChildren<Text>().text = "Main Menu";
+		//finished changing text names for buttons
+
+		//adding OnClick listeners to the buttons
+		playButton = GameObject.Find("PlayButton").GetComponent<Button>();
+		playButton.onClick.AddListener(playButtonOnClick);
+		restartButton = GameObject.Find("RestartButton").GetComponent<Button>();
+		restartButton.onClick.AddListener(restartButtonOnClick);
+		mainMenuButton = GameObject.Find("MainMenuButton").GetComponent<Button>();
+		mainMenuButton.onClick.AddListener(mainMenuButtonOnClick);
+		//------------------------------------------------------------------------
 
         Time.timeScale = 1; //time is passing in real time. 0 means paused
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
         HidePaused();
     }
+
+	public void playButtonOnClick()
+	{
+		Debug.Log("Resume Button Clicked");
+	}
+
+	public void restartButtonOnClick()
+	{
+		Debug.Log("Restart Button Clicked");
+	}
+
+	public void mainMenuButtonOnClick()
+	{
+		Debug.Log("Main Menu Button Clicked");
+	}
 
     // Update is called once per frame
     public void Update()
@@ -50,6 +80,7 @@ public class PauseMenu : MonoBehaviour {
             }
         }*/
     }
+
 
 
     //Restarts the game
