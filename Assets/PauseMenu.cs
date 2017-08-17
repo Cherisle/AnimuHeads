@@ -39,7 +39,12 @@ public class PauseMenu : MonoBehaviour
 		//------------------------------------------------------------------------
 
         Time.timeScale = 1; //time is passing in real time. 0 means paused
+		Debug.Log("start test");
         pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
+		foreach(GameObject g in pauseObjects)
+		{
+			Debug.Log("Count me");
+		}
         HidePaused();
     }
 

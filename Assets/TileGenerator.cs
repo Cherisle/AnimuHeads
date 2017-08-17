@@ -32,14 +32,11 @@ public class TileGenerator : MonoBehaviour
 	private int fpCol; //focal point col value
 	private int goHeadNum; // gameObject head number -- used to represent character name
     //---Pause Menu ---
-    private GameObject[] pauseObjects;
     private PauseMenu m;
     // Use this for initialization
     void Start ()
 	{
         Time.timeScale = 1;
-		pauseObjects = GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseObjects;
-        
         createdHeads = new string[HEAD_MAX];
 		fpRow = 0;
 		fpCol = 0;
@@ -221,12 +218,12 @@ public class TileGenerator : MonoBehaviour
         //start of pause block
         if (Input.GetKeyDown(KeyCode.P))
         {
-            Debug.Log("I paused");
+            //Debug.Log("I paused");
             //Game is playing, but we want to pause it now.
             if (Time.timeScale == 1)
             {
                 Time.timeScale = 0;
-                foreach (GameObject g in pauseObjects)
+				foreach (GameObject g in GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseObjects)
                 {
 					Debug.Log("how many"); // returned 7 objects: PauseText,PlayButton,Resume,RestartButton,Restart,MainMenuButton,MainMenu
 					g.SetActive(true); //Set every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause"); to show.
@@ -238,7 +235,7 @@ public class TileGenerator : MonoBehaviour
                 Debug.Log("high");
                 Time.timeScale = 1;
                 
-                foreach (GameObject g in pauseObjects)
+				foreach (GameObject g in GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseObjects)
                 {
                     g.SetActive(false);// Hide every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
                 }
