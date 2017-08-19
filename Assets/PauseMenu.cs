@@ -63,7 +63,8 @@ public class PauseMenu : MonoBehaviour
 	public void mainMenuButtonOnClick()
 	{
 		Debug.Log("Main Menu Button Clicked");
-	}
+        SceneManager.LoadScene("MainMenu");
+    }
 
     // Update is called once per frame
     public void Update()
