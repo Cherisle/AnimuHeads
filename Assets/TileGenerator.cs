@@ -5,6 +5,7 @@ using System.Collections;
 using System.Linq;
 using UnityEngine.SceneManagement;
 
+
 public class TileGenerator : MonoBehaviour
 {
 	private const int ROWS = 11;
@@ -30,11 +31,13 @@ public class TileGenerator : MonoBehaviour
 	private int fpRow; //focal point row value
 	private int fpCol; //focal point col value
 	private int goHeadNum; // gameObject head number -- used to represent character name
-
-	// Use this for initialization
-	void Start ()
+    //---Pause Menu ---
+    private PauseMenu m;
+    // Use this for initialization
+    void Start ()
 	{
-		createdHeads = new string[HEAD_MAX];
+        Time.timeScale = 1;
+        createdHeads = new string[HEAD_MAX];
 		fpRow = 0;
 		fpCol = 0;
 		goHeadNum = 8; // cannot be 0-7
@@ -44,6 +47,7 @@ public class TileGenerator : MonoBehaviour
 		myPrefabs = Resources.LoadAll ("Characters", typeof(GameObject)).Cast<GameObject> ().ToArray ();
 		CreatePrefab();
 	}
+
 	void CreatePrefab()
 	{
 		fallCounter = 0;
@@ -211,8 +215,36 @@ public class TileGenerator : MonoBehaviour
 	void Update()
 	{
         timePassed += Time.deltaTime;
-		if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < (ROWS-1) && timePassed >= keyDelay)
-		{
+        //start of pause block
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            //Debug.Log("I paused");
+            //Game is playing, but we want to pause it now.
+            if (Time.timeScale == 1)
+            {
+                Time.timeScale = 0;
+				foreach (GameObject g in GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseObjects)
+                {
+					
+					g.SetActive(true); //Set every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause"); to show.
+                }
+            }
+            //Game is paused, but we want to resume it now.
+            else if (Time.timeScale == 0)
+            {
+                Debug.Log("high");
+                Time.timeScale = 1;
+                
+				foreach (GameObject g in GameObject.Find("Canvas").GetComponent<PauseMenu>().pauseObjects)
+                {
+                    g.SetActive(false);// Hide every tag where  pauseObjects = GameObject.FindGameObjectsWithTag("ShowOnPause");
+                }
+            }
+        }
+        //end pause block
+
+        if (Input.GetKey(KeyCode.LeftArrow) && colNum > 0 && fallCounter < (ROWS-1) && timePassed >= keyDelay &&  Time.timeScale != 0)
+		    {
             //prevents overlapping
             if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter, colNum - 1].GetComponent<AnimuHead>() == null)
             {
@@ -261,7 +293,7 @@ public class TileGenerator : MonoBehaviour
             timePassed = 0f;
         }
 
-		if (Input.GetKey (KeyCode.RightArrow) && colNum < (COLUMNS-1) && fallCounter < (ROWS-1) && timePassed >= keyDelay)
+		if (Input.GetKey (KeyCode.RightArrow) && colNum < (COLUMNS-1) && fallCounter < (ROWS-1) && timePassed >= keyDelay && Time.timeScale != 0)
 		{
             //prevents overlapping
 			if (transform.parent.GetComponent<GameBoundary>().gameGrid[fallCounter,colNum + 1].GetComponent<AnimuHead>() == null)
@@ -310,7 +342,7 @@ public class TileGenerator : MonoBehaviour
             timePassed = 0f;
         }
 
-		if (Input.GetKeyDown (KeyCode.DownArrow))
+		if (Input.GetKeyDown (KeyCode.DownArrow) && Time.timeScale != 0)
 		{
 			Destroy(goBelow);
 			Destroy(rowZeroClone);
@@ -377,6 +409,6 @@ public class TileGenerator : MonoBehaviour
 				}
 				Destroy(dropSpot);
 			}
-		} 
-	}		
+		}
+    }		
 }
