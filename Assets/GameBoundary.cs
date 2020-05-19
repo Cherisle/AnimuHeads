@@ -122,7 +122,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,rightOfCol+ii] = myObject;
 					identifier[row,rightOfCol+ii] = HEAD_MAX;
 				}
-				SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
                 PostComboFall();
             }
 		} // END Possibility 1 ---------------------------------------------------------------------------
@@ -149,7 +150,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove-ii,rightOfCol+ii] = myObject;
 					identifier[rowAbove-ii,rightOfCol+ii]= HEAD_MAX;
 				}
-				SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt); // refer to above comment for function, will no longer be commented below
                 PostComboFall();
             }
 		} // END Possibility 2 ---------------------------------------------------------------------------
@@ -194,7 +196,8 @@ public class GameBoundary : MonoBehaviour
 					}
 				}
 				else {comboCnt--;}
-				SubtractGrid(comboCnt);
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt);
                 PostComboFall();
             }
 		}
@@ -253,7 +256,8 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[row,leftOfCol-ii] = myObject;
 					identifier[row,leftOfCol-ii] = HEAD_MAX;
 				}
-				SubtractGrid(comboCnt);
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt);
                 PostComboFall();
             }
 		} // END Possibility 1 ---------------------------------------------------------------------------
@@ -280,8 +284,9 @@ public class GameBoundary : MonoBehaviour
 					gameGrid[rowAbove-ii,leftOfCol-ii] = myObject;
 					identifier[rowAbove-ii,leftOfCol-ii]= HEAD_MAX;
 				}
-				//-------------------------------------------------------------
-				SubtractGrid(comboCnt);
+                //-------------------------------------------------------------
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt);
                 PostComboFall();
             }
 		} // END Possibility 2 ---------------------------------------------------------------------------
@@ -322,7 +327,8 @@ public class GameBoundary : MonoBehaviour
 					}
 				}
 				else {comboCnt--;}
-				SubtractGrid(comboCnt);
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt);
                 PostComboFall();
             }
 		}
@@ -459,7 +465,8 @@ public class GameBoundary : MonoBehaviour
 					Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-					SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
                     PostComboFall();
                 }
 				else // MUST be 3 combo w/ focal point in middle (comboCnt == 3) e.g. M FP M , THIS IS A FINAL STEP before GRIDALLCHECK 
@@ -473,7 +480,8 @@ public class GameBoundary : MonoBehaviour
 					Destroy(gameGrid[row,rightOfCol], FALL_DOWN_DELAY);
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-					SubtractGrid(comboCnt); // subtracts the 3 destroyed objects from goGridCnt
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt); // subtracts the 3 destroyed objects from goGridCnt
                     PostComboFall();
                 }
 			}
@@ -545,7 +553,8 @@ public class GameBoundary : MonoBehaviour
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-				SubtractGrid(comboCnt);
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt);
                 PostComboFall();
             }
 			if(checkNorthWest == true && checkNorthEast == false) // NW initial matches, NE initial fails
@@ -600,7 +609,8 @@ public class GameBoundary : MonoBehaviour
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY);
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-				SubtractGrid(comboCnt);
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt);
                 PostComboFall();
             }
 			if(checkNorthWest == false && checkNorthEast == true) // NW initial fails, NE initial matches
@@ -656,7 +666,8 @@ public class GameBoundary : MonoBehaviour
 				Destroy(gameGrid[row,rightOfCol],FALL_DOWN_DELAY); // due to instant combo
 				gameGrid[row,leftOfCol] = gameGrid[row,col] = gameGrid[row,rightOfCol] = myObject;
 				identifier[row,leftOfCol] = identifier[row,col] = identifier[row,rightOfCol] = HEAD_MAX;
-				SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
+                ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                SubtractGrid(comboCnt); // subtracts proper # of destroyed objects from goGridCnt
 				PostComboFall(); // checking to see if it works properly
 			}
 		} // end checkWest == TRUE && checkEast == TRUE INITIAL(ENTRY) condition
@@ -680,7 +691,8 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[row,leftOfCol] = gameGrid[row,col] = myObject;
 					identifier[row,leftOfCol] = identifier[row,col] = HEAD_MAX;
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -739,7 +751,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					gameGrid[row,col] = myObject;
 					identifier[row,col] = HEAD_MAX;
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                     Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 				}
@@ -780,7 +793,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -820,7 +834,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -845,7 +860,8 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[row,rightOfCol] = gameGrid[row,col] = myObject;
 					identifier[row,rightOfCol] = identifier[row,col] = HEAD_MAX;
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -900,7 +916,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -940,7 +957,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -980,7 +998,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			} 
@@ -1005,7 +1024,8 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[rowAbove,leftOfCol] = gameGrid[row,col] = myObject;
 					identifier[rowAbove,leftOfCol] = identifier[row,col] = HEAD_MAX;
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -1026,7 +1046,8 @@ public class GameBoundary : MonoBehaviour
 					}
 					gameGrid[rowAbove,rightOfCol] = gameGrid[row,col] = myObject;
 					identifier[rowAbove,rightOfCol] = identifier[row,col] = HEAD_MAX;
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
@@ -1066,7 +1087,8 @@ public class GameBoundary : MonoBehaviour
 					else {comboCnt--;}
 					Debug.Log ("UPDATED Total Combo Count is " + comboCnt);
 					resetGridFP(row,col);
-					SubtractGrid(comboCnt);
+                    ScoreboardScript.scoreBoardPoints = ScoreboardScript.calculatePoints(fpIdentifier, comboCnt);
+                    SubtractGrid(comboCnt);
                     PostComboFall();
                 }
 			}
